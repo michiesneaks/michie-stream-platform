@@ -1,0 +1,172 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "title": "MusicMetadata",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "description",
+    "creator",
+    "content_type",
+    "availability_type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "creator": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "wallet_address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "user_id"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "release_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "music",
+        "podcast",
+        "art"
+      ]
+    },
+    "availability_type": {
+      "type": "string",
+      "enum": [
+        "on_demand",
+        "live"
+      ]
+    },
+    "files": {
+      "type": "object",
+      "properties": {
+        "cover_image": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        }
+      }
+    },
+    "album": {
+      "type": "string"
+    },
+    "track_number": {
+      "type": "integer"
+    },
+    "bpm": {
+      "type": "number"
+    },
+    "key": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "number"
+    },
+    "lyrics": {
+      "type": "string"
+    },
+    "record_label": {
+      "type": "string"
+    },
+    "ipfs_audio_url": {
+      "type": "string"
+    },
+    "mlc_metadata": {
+      "type": "object",
+      "properties": {
+        "work_title": {
+          "type": "string"
+        },
+        "iswc": {
+          "type": "string"
+        },
+        "isrc": {
+          "type": "string"
+        },
+        "ipi_name_number": {
+          "type": "string"
+        },
+        "ipi_base_number": {
+          "type": "string"
+        },
+        "writers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "role",
+              "ipi_name_number",
+              "ownership_percent"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "ipi_name_number": {
+                "type": "string"
+              },
+              "ownership_percent": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "publishers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "ipi_name_number",
+              "ownership_percent"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "ipi_name_number": {
+                "type": "string"
+              },
+              "ownership_percent": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

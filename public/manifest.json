@@ -1,0 +1,13 @@
+{
+  "name": "Michie Stream Platform",
+  "short_name": "MSP",
+  "description": "Blockchain music and NFT streaming platform",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#08080A",
+  "theme_color": "#F5F000",
+  "icons": [
+    { "src": "assets/msp-vinyl-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/msp-vinyl-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/msp-vinyl.svg">
+  <link rel="apple-touch-icon" href="assets/msp-vinyl-180.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#F5F000">
+  <title>My Favorites — Michie Stream Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+<style>
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   FAVORITES PAGE — SIGNAL Design System
+───────────────────────────────────────────────────────────────────────────── */
+body { padding-bottom: 40px; }
+
+/* ── Page header ─────────────────────────────────────────────────────────── */
+.fav-page-header {
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+}
+.fav-page-title {
+  color: var(--text-primary);
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 300;
+  letter-spacing: .04em;
+}
+.fav-total-badge {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 14px;
+}
+.fav-total-badge span { color: var(--gold); font-weight: 700; }
+
+/* ── Section groups ──────────────────────────────────────────────────────── */
+.fav-group {
+  margin-bottom: 12px;
+}
+.fav-group-label {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+/* ── Accordion section ───────────────────────────────────────────────────── */
+.fav-section {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color .15s;
+}
+.fav-section:has(.fav-section-body.open) {
+  border-color: var(--border-mid);
+}
+
+.fav-section-head {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  user-select: none;
+}
+.fav-section-head:hover { background: var(--bg-raised); }
+
+.fav-section-icon { flex-shrink: 0; font-size: 16px; }
+.fav-section-label {
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+}
+.fav-section-count {
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 22px;
+  padding: 2px 8px;
+  text-align: center;
+}
+.fav-section-chevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  font-size: 12px;
+  transition: transform .2s;
+}
+.fav-section-body.open ~ * .fav-section-chevron,
+.fav-section-head[aria-expanded="true"] .fav-section-chevron {
+  transform: rotate(180deg);
+}
+
+.fav-section-body {
+  border-top: 1px solid var(--border-subtle);
+  display: none;
+  padding: 0 16px 12px;
+}
+.fav-section-body.open { display: block; }
+
+/* ── Playlist action bar (inside section body for eligible types) ────────── */
+.fav-playlist-bar {
+  align-items: center;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 10px 14px;
+}
+.fav-playlist-bar input[type="text"] {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 5px;
+  color: var(--text-primary);
+  flex: 1;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  min-width: 140px;
+  outline: none;
+  padding: 5px 10px;
+  transition: border-color .15s;
+}
+.fav-playlist-bar input[type="text"]:focus { border-color: var(--gold); }
+.fav-playlist-bar input[type="text"]::placeholder { color: var(--text-muted); }
+
+/* Public / Private toggle */
+.fav-visibility-toggle {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+.fav-vis-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  transition: all .12s;
+}
+.fav-vis-btn.active.public  { background: rgba(0,212,187,.15); border-color: var(--teal);  color: var(--teal); }
+.fav-vis-btn.active.private { background: rgba(139,92,246,.15); border-color: var(--violet); color: var(--violet); }
+
+.fav-royalty-note {
+  color: var(--text-muted);
+  font-size: 10px;
+  width: 100%;
+}
+.fav-royalty-note.public-mode { color: var(--gold); }
+
+.fav-create-btn {
+  background: var(--gold);
+  border: none;
+  border-radius: 6px;
+  color: #000;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 6px 16px;
+  text-transform: uppercase;
+  transition: background .12s, transform .1s;
+  white-space: nowrap;
+}
+.fav-create-btn:hover { background: var(--gold-bright); transform: translateY(-1px); }
+.fav-create-btn:disabled { opacity: .4; cursor: default; transform: none; }
+
+/* ── Favorite item rows ───────────────────────────────────────────────────── */
+.fav-item-list { display: flex; flex-direction: column; }
+.fav-item {
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  gap: 10px;
+  padding: 9px 0;
+}
+.fav-item:last-child { border-bottom: none; }
+.fav-item:hover { background: rgba(255,255,255,.01); }
+
+.fav-item-dot {
+  border-radius: 50%;
+  flex-shrink: 0;
+  height: 7px;
+  width: 7px;
+}
+.fav-item-cover {
+  border-radius: 4px;
+  flex-shrink: 0;
+  height: 36px;
+  object-fit: cover;
+  width: 36px;
+}
+.fav-item-cover-placeholder {
+  align-items: center;
+  background: var(--bg-raised);
+  border-radius: 4px;
+  color: var(--text-muted);
+  display: flex;
+  flex-shrink: 0;
+  font-size: 16px;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+.fav-item-text { flex: 1; min-width: 0; }
+.fav-item-label {
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fav-item-sub {
+  color: var(--text-secondary);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fav-item-play {
+  background: none;
+  border: none;
+  color: var(--teal);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 13px;
+  padding: 3px 7px;
+  transition: color .12s, transform .1s;
+}
+.fav-item-play:hover { color: var(--teal-bright); transform: scale(1.1); }
+
+.fav-item-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 13px;
+  padding: 3px 6px;
+  transition: color .12s;
+}
+.fav-item-remove:hover { color: var(--ember); }
+
+/* Empty state per section */
+.fav-empty {
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 16px 0 8px;
+  text-align: center;
+}
+
+/* ── Section color themes ─────────────────────────────────────────────────── */
+.fav-section[data-color="ember"] .fav-section-label { color: var(--ember); }
+.fav-section[data-color="ember"] .fav-section-count { background: rgba(232,93,58,.15); color: var(--ember); }
+.fav-section[data-color="gold"]  .fav-section-label { color: var(--gold); }
+.fav-section[data-color="gold"]  .fav-section-count { background: rgba(212,168,83,.15); color: var(--gold); }
+.fav-section[data-color="teal"]  .fav-section-label { color: var(--teal); }
+.fav-section[data-color="teal"]  .fav-section-count { background: rgba(0,212,187,.15); color: var(--teal); }
+.fav-section[data-color="violet"].fav-section-label { color: var(--violet); }
+.fav-section[data-color="violet"].fav-section-count { background: rgba(139,92,246,.15); color: var(--violet); }
+
+/* ── Empty page state ────────────────────────────────────────────────────── */
+#fav-empty-state {
+  border: 1px dashed var(--border-mid);
+  border-radius: 12px;
+  color: var(--text-muted);
+  display: none;
+  font-size: 14px;
+  padding: 60px 20px;
+  text-align: center;
+}
+#fav-empty-state a { color: var(--teal); }
+
+/* ── Wallet prompt ───────────────────────────────────────────────────────── */
+#fav-wallet-prompt {
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 40px 20px;
+  text-align: center;
+}
+</style>
+</head>
+<body class="page-favorites">
+
+<!-- ═══ NAVBAR ═══════════════════════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">Michie Stream Platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="listen.html">Just Listen</a></li>
+        <li class="nav-item"><a class="nav-link" href="creators.html">Creators Corner</a></li>
+        <li class="nav-item"><a class="nav-link" href="marketplace.html">NFT Marketplace</a></li>
+        <li class="nav-item"><a class="nav-link active" href="favorites.html">♥ Favorites</a></li>
+        <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+        <li class="nav-item" data-requires="hostConcert" style="display:none;">
+          <a class="nav-link" href="live_studio.html">🔴 Live Studio</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-primary btn-sm" data-connect-wallet>Connect Wallet</button>
+        <button id="btn-disconnect" class="btn btn-outline-light btn-sm d-none">Disconnect</button>
+        <span id="walletAddress" class="small text-light wallet-address-display"></span>
+        <span class="small text-warning fw-semibold user-name-display"></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ PAGE CONTENT ══════════════════════════════════════════════════════════ -->
+<div class="container py-4">
+
+  <!-- Page header -->
+  <div class="fav-page-header">
+    <h1 class="fav-page-title">♥ My Favorites</h1>
+    <span class="fav-total-badge" id="fav-total-badge">
+      <span id="fav-total-count">0</span> saved
+    </span>
+  </div>
+
+  <!-- Wallet not connected -->
+  <div id="fav-wallet-prompt" style="display:none;">
+    <p class="mb-3">Connect your wallet to see your favorites.</p>
+    <button class="btn btn-primary btn-sm" data-connect-wallet>Connect Wallet</button>
+  </div>
+
+  <!-- Empty state -->
+  <div id="fav-empty-state">
+    <p class="mb-2" style="font-size:32px;">♥</p>
+    <p class="mb-3">You haven't favorited anything yet.</p>
+    <p>Browse <a href="listen.html">music</a> or the <a href="marketplace.html">marketplace</a> and tap ♥ to start building your lists.</p>
+  </div>
+
+  <!-- ── LISTEN PAGE FAVORITES ─────────────────────────────────────────── -->
+  <div id="fav-listen-group" class="fav-group" style="display:none;">
+    <div class="fav-group-label">🎵 Listen — Music &amp; Audio</div>
+    <div id="fav-sections-listen"></div>
+  </div>
+
+  <!-- ── MARKETPLACE FAVORITES ─────────────────────────────────────────── -->
+  <div id="fav-market-group" class="fav-group" style="display:none;">
+    <div class="fav-group-label">🖼 Marketplace — NFT Assets</div>
+    <div id="fav-sections-market"></div>
+  </div>
+
+</div><!-- /container -->
+
+
+<!-- ═══ WALLET MODAL ═════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="walletModal" tabindex="-1" aria-labelledby="walletModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="walletModalLabel">Connect a Wallet</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="list-group">
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-metamask">
+            <img src="https://cdn.jsdelivr.net/gh/MetaMask/brand-resources/SVG/metamask-fox.svg" alt="" width="28" height="28">
+            <span>MetaMask (EVM)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-coinbase">
+            <img src="https://avatars.githubusercontent.com/u/1885080?s=200&v=4" alt="" width="28" height="28">
+            <span>Coinbase Wallet (EVM)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-phantom">
+            <img src="https://avatars.githubusercontent.com/u/78782331?s=200&v=4" alt="" width="28" height="28">
+            <span>Phantom (Solana)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-solflare">
+            <img src="https://avatars.githubusercontent.com/u/64856450?s=200&v=4" alt="" width="28" height="28">
+            <span>Solflare (Solana)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-zcash">
+            <img src="https://avatars.githubusercontent.com/u/21111808?s=200&v=4" alt="" width="28" height="28">
+            <span>Zcash Wallet / Hardware</span>
+          </button>
+        </div>
+        <div class="small text-secondary mt-3" id="wallet-help"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VENDOR + APP SCRIPTS ══════════════════════════════════════════════════ -->
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="vendor/ethers/ethers.umd.min.js"></script>
+<script src="vendor/hls/hls.min.js"></script>
+<script src="vendor/ipfs/index.min.js"></script>
+<script src="Scripts/wallets.js"></script>
+<script src="Scripts/common.js"></script>
+<script src="Scripts/favorites.js"></script>
+<script src="Scripts/live_broadcast.js"></script>
+<script src="Scripts/main.js"></script>
+
+<!-- ═══ PAGE LOGIC ════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  var F = window.MSPFavorites; // shorthand
+
+  // ── HTML escape ───────────────────────────────────────────────────────────
+  function esc(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── Type config for each section — order determines render order ──────────
+  var LISTEN_TYPES  = ['track','video','album','artist','dj','podcast','livestream','concert','nft_music','nft_video'];
+  var MARKET_TYPES  = ['nft_artwork','nft_artist','nft_collection','nft_music','nft_video'];
+
+  // ── Build one accordion section ───────────────────────────────────────────
+  function buildSection(type, catalogData) {
+    var meta    = F.FAV_TYPES[type];
+    var ids     = F.getAll(type);
+    var count   = ids.length;
+
+    // Playlist bar HTML (only for eligible types)
+    var playlistBar = '';
+    if (meta.canPlaylist) {
+      playlistBar =
+        '<div class="fav-playlist-bar" id="pbar-' + type + '">' +
+          '<input type="text" id="pname-' + type + '" placeholder="Name this playlist…" maxlength="80">' +
+          '<div class="fav-visibility-toggle">' +
+            '<button class="fav-vis-btn active public"  data-vis="public"  data-type="' + type + '">🌐 Public</button>' +
+            '<button class="fav-vis-btn private"        data-vis="private" data-type="' + type + '">🔒 Private</button>' +
+          '</div>' +
+          '<button class="fav-create-btn" data-type="' + type + '"' + (count === 0 ? ' disabled' : '') + '>Create Playlist</button>' +
+          '<p class="fav-royalty-note public-mode" id="rnote-' + type + '">' +
+            '🟡 Public playlists earn you <strong>supporter royalties</strong> for plays of tracks enabled by their creators. ' +
+            'Look for the ' +
+            '<img src="assets/msp-vinyl.svg" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin:0 2px;" alt="royalty-enabled">' +
+            ' vinyl icon on tracks and videos — those are the ones that will earn you supporter royalties.' +
+          '</p>' +
+        '</div>';
+    }
+
+    // Item rows
+    var itemsHtml = '';
+    if (!count) {
+      itemsHtml = '<div class="fav-empty">Nothing here yet — tap ♥ on any ' + meta.label.toLowerCase().replace(/s$/, '') + ' to save it.</div>';
+    } else {
+      itemsHtml = '<div class="fav-item-list">';
+      ids.forEach(function (id) {
+        // Try to look up richer data from catalog if available
+        var item    = catalogData ? catalogData.find(function (c) { return c.contentId === id; }) : null;
+        var label   = item ? (item.title || item.artistName || id.slice(0,20)) : id.slice(0, 24) + (id.length > 24 ? '…' : '');
+        var sub     = item ? (item.artistName || '') : '';
+        var coverUrl = item ? (item.coverUrl || '') : '';
+
+        var cover = coverUrl
+          ? '<img class="fav-item-cover" src="' + esc(coverUrl) + '" alt="">'
+          : '<div class="fav-item-cover-placeholder">' + meta.icon + '</div>';
+
+        var playBtn = (item && item.hlsUrl)
+          ? '<button class="fav-item-play" data-hlsurl="' + esc(item.hlsUrl) + '" data-metaurl="' + esc(item.metadataUrl||'') + '" data-title="' + esc(item.title||'') + '" data-artist="' + esc(item.artistName||'') + '" data-cover="' + esc(coverUrl) + '" title="Play">▶</button>'
+          : '';
+
+        itemsHtml +=
+          '<div class="fav-item" data-fav-type="' + esc(type) + '" data-fav-id="' + esc(id) + '">' +
+            '<span class="fav-item-dot" style="background:' + meta.cssColor + ';"></span>' +
+            cover +
+            '<div class="fav-item-text">' +
+              '<div class="fav-item-label">' + esc(label) + '</div>' +
+              (sub ? '<div class="fav-item-sub">' + esc(sub) + '</div>' : '') +
+            '</div>' +
+            playBtn +
+            '<button class="fav-item-remove" data-fav-type="' + esc(type) + '" data-fav-id="' + esc(id) + '" title="Remove from favorites">✕</button>' +
+          '</div>';
+      });
+      itemsHtml += '</div>';
+    }
+
+    return '<div class="fav-section" data-color="' + meta.color + '" data-type="' + type + '" id="fsec-' + type + '">' +
+      '<div class="fav-section-head" data-type="' + type + '">' +
+        '<span class="fav-section-icon">' + meta.icon + '</span>' +
+        '<span class="fav-section-label">' + esc(meta.label) + '</span>' +
+        '<span class="fav-section-count" id="fcnt-' + type + '">' + count + '</span>' +
+        '<span class="fav-section-chevron">▾</span>' +
+      '</div>' +
+      '<div class="fav-section-body" id="fbody-' + type + '">' +
+        playlistBar +
+        itemsHtml +
+      '</div>' +
+    '</div>';
+  }
+
+  // ── Render all sections ───────────────────────────────────────────────────
+  function renderAll(catalogData) {
+    var listenEl = document.getElementById('fav-sections-listen');
+    var marketEl = document.getElementById('fav-sections-market');
+    var listenGroup = document.getElementById('fav-listen-group');
+    var marketGroup = document.getElementById('fav-market-group');
+    var emptyState  = document.getElementById('fav-empty-state');
+    var totalEl     = document.getElementById('fav-total-count');
+
+    if (listenEl) listenEl.innerHTML = LISTEN_TYPES.map(function (t) { return buildSection(t, catalogData); }).join('');
+    if (marketEl) marketEl.innerHTML = MARKET_TYPES.map(function (t) { return buildSection(t, catalogData); }).join('');
+
+    var total = F.totalCount();
+    if (totalEl) totalEl.textContent = total;
+
+    var listenHasAny = LISTEN_TYPES.some(function (t) { return F.countOf(t) > 0; });
+    var marketHasAny = MARKET_TYPES.some(function (t) { return F.countOf(t) > 0; });
+    if (listenGroup) listenGroup.style.display = listenHasAny ? '' : 'none';
+    if (marketGroup) marketGroup.style.display = marketHasAny ? '' : 'none';
+    if (emptyState)  emptyState.style.display  = (!listenHasAny && !marketHasAny) ? '' : 'none';
+
+    wireAll();
+  }
+
+  // ── Wire accordion toggles ────────────────────────────────────────────────
+  function wireAll() {
+    // Accordion toggle
+    document.querySelectorAll('.fav-section-head').forEach(function (head) {
+      head.addEventListener('click', function () {
+        var type = head.dataset.type;
+        var body = document.getElementById('fbody-' + type);
+        if (!body) return;
+        var isOpen = body.classList.contains('open');
+        body.classList.toggle('open', !isOpen);
+        head.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+
+    // Remove buttons
+    document.querySelectorAll('.fav-item-remove').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        F.remove(btn.dataset.favType, btn.dataset.favId);
+        // Re-render just the body of this section
+        var sec  = btn.closest('.fav-section');
+        var type = sec ? sec.dataset.type : null;
+        if (!type) return;
+        var body = document.getElementById('fbody-' + type);
+        var wasOpen = body && body.classList.contains('open');
+        renderAll(window._favCatalogCache);
+        // Re-open the section that was open
+        if (wasOpen && type) {
+          var newBody = document.getElementById('fbody-' + type);
+          if (newBody) newBody.classList.add('open');
+        }
+      });
+    });
+
+    // Play buttons
+    document.querySelectorAll('.fav-item-play').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (typeof window.playHls === 'function') {
+          window.playHls(btn.dataset.hlsurl, btn.dataset.metaurl || '');
+          // Update player bar if elements exist
+          var tn = document.getElementById('track-name');
+          var an = document.getElementById('player-artist-name');
+          var vi = document.getElementById('vinyl-icon');
+          if (tn) { tn.textContent = btn.dataset.title || ''; tn.style.fontStyle = ''; }
+          if (an) an.textContent = btn.dataset.artist || '';
+          if (vi && btn.dataset.cover) vi.src = btn.dataset.cover;
+        }
+      });
+    });
+
+    // Visibility toggle buttons
+    document.querySelectorAll('.fav-vis-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var type    = btn.dataset.type;
+        var vis     = btn.dataset.vis;
+        var bar     = document.getElementById('pbar-' + type);
+        if (!bar) return;
+        bar.querySelectorAll('.fav-vis-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var note = document.getElementById('rnote-' + type);
+        var vinylSvg = '<img src="assets/msp-vinyl.svg" width="14" height="14" style="display:inline-block;vertical-align:middle;flex-shrink:0;margin:0 2px;" alt="royalty-enabled">';
+        if (note) {
+          note.classList.toggle('public-mode', vis === 'public');
+          note.innerHTML = vis === 'public'
+            ? '🟡 Public playlists earn you <strong>supporter royalties</strong> for plays of tracks enabled by their creators. Look for the ' + vinylSvg + ' vinyl icon on tracks and videos — those are the ones that will earn you supporter royalties.'
+            : '🔒 Private playlists do not earn royalties and are only visible to you.';
+        }
+      });
+    });
+
+    // Create playlist buttons
+    document.querySelectorAll('.fav-create-btn').forEach(function (btn) {
+      btn.addEventListener('click', async function () {
+        var type    = btn.dataset.type;
+        var nameEl  = document.getElementById('pname-' + type);
+        var bar     = document.getElementById('pbar-' + type);
+        var name    = nameEl ? nameEl.value.trim() : '';
+        if (!name) { if (nameEl) nameEl.focus(); return; }
+
+        var visBtn  = bar ? bar.querySelector('.fav-vis-btn.active') : null;
+        var isPublic = visBtn ? visBtn.dataset.vis === 'public' : true;
+        var ids      = F.getAll(type);
+        if (!ids.length) return;
+
+        btn.disabled    = true;
+        btn.textContent = 'Creating…';
+
+        try {
+          var res = await fetch('/api/favorites/convert-to-playlist', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+              wallet:    window.walletAddress,
+              name:      name,
+              cids:      ids,
+              isPublic:  isPublic,
+              type:      type,
+              royaltyEligible: isPublic, // backend gates actual royalties
+            }),
+          });
+          var data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Failed');
+          btn.textContent = '✔ Created!';
+          btn.style.background = 'var(--teal)';
+          if (nameEl) nameEl.value = '';
+          setTimeout(function () {
+            btn.textContent = 'Create Playlist';
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 2500);
+        } catch (err) {
+          btn.textContent = 'Error: ' + err.message;
+          btn.style.background = 'var(--ember)';
+          setTimeout(function () {
+            btn.textContent = 'Create Playlist';
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 3000);
+        }
+      });
+    });
+  }
+
+  // ── Boot ──────────────────────────────────────────────────────────────────
+  async function boot() {
+    if (!window.walletAddress) {
+      var prompt = document.getElementById('fav-wallet-prompt');
+      if (prompt) prompt.style.display = '';
+      // Re-check when wallet connects
+      document.addEventListener('walletConnected', function () {
+        if (prompt) prompt.style.display = 'none';
+        boot();
+      });
+      return;
+    }
+
+    // Fetch catalog for richer item display
+    var catalog = [];
+    try {
+      var r = await fetch('/api/catalog');
+      if (r.ok) catalog = await r.json();
+    } catch (_) {}
+    window._favCatalogCache = catalog;
+
+    renderAll(catalog);
+
+    // Auto-open sections that have items
+    Object.keys(F.FAV_TYPES).forEach(function (type) {
+      if (F.countOf(type) > 0) {
+        var body = document.getElementById('fbody-' + type);
+        if (body) body.classList.add('open');
+      }
+    });
+  }
+
+  // Wait for wallet module to fire before booting, but also try immediately
+  document.addEventListener('walletConnected', function (e) {
+    boot();
+  });
+  // If wallet already connected (page reload with session)
+  if (window.walletAddress) boot();
+
+})();
+</script>
+
+</body>
+</html>

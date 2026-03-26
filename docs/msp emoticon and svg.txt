@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14"
+  style="display:inline-block;vertical-align:middle;flex-shrink:0;">
+  <!-- Outer edge — dark gray, thicker -->
+  <circle cx="12" cy="12" r="11.5" fill="#1A1A20"/>
+  <circle cx="12" cy="12" r="11"   fill="none" stroke="#252530" stroke-width="1.2"/>
+  <circle cx="12" cy="12" r="10.2" fill="none" stroke="#1E1E28" stroke-width=".8"/>
+  <!-- Teal grooves -->
+  <circle cx="12" cy="12" r="9.6"  fill="#004a40"/>
+  <circle cx="12" cy="12" r="9.1"  fill="none" stroke="rgba(0,212,187,0.07)" stroke-width=".7"/>
+  <circle cx="12" cy="12" r="8.4"  fill="none" stroke="rgba(0,212,187,0.05)" stroke-width=".6"/>
+  <circle cx="12" cy="12" r="7.7"  fill="none" stroke="rgba(0,212,187,0.07)" stroke-width=".7"/>
+  <circle cx="12" cy="12" r="7.0"  fill="none" stroke="rgba(0,212,187,0.04)" stroke-width=".6"/>
+  <circle cx="12" cy="12" r="6.3"  fill="none" stroke="rgba(0,212,187,0.06)" stroke-width=".7"/>
+  <circle cx="12" cy="12" r="5.6"  fill="none" stroke="rgba(0,212,187,0.05)" stroke-width=".6"/>
+  <!-- Magenta center -->
+  <circle cx="12" cy="12" r="4.9"  fill="#6B0099"/>
+  <circle cx="12" cy="12" r="4.3"  fill="#8B00CC"/>
+  <circle cx="12" cy="12" r="3.5"  fill="none" stroke="rgba(210,60,255,0.35)" stroke-width=".6"/>
+  <circle cx="12" cy="12" r="2.8"  fill="none" stroke="rgba(210,60,255,0.20)" stroke-width=".5"/>
+  <!-- Ember spindle -->
+  <circle cx="12" cy="12" r="2"    fill="#E85D3A"/>
+</svg>

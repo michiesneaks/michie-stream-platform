@@ -1,0 +1,17 @@
+{
+  "0fe9212e-15dc-43cc-94b1-9f45d811808a": {
+    "contentId": "0fe9212e-15dc-43cc-94b1-9f45d811808a",
+    "title": "Do Watchu Wanna Do",
+    "artistName": "Michie Sneaks",
+    "wallet": "0xde1f33ce3e81bc54ebd0f4bc3ce0a2f64d7ef399",
+    "contentType": "music",
+    "metadataUrl": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/metadata.json",
+    "hlsUrl": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/hls/master.m3u8",
+    "coverUrl": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/cover.jpeg",
+    "previewUrl": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/preview.mp3",
+    "uploadedAt": 1774258489141,
+    "isPrivate": false,
+    "supporterRoyaltyEnabled": true,
+    "supporterRoyaltyChangedAt": 1774411192142
+  }
+}

@@ -1,0 +1,47 @@
+// Schema validator using AJV (Another JSON Validator)
+// Install with: npm install ajv
+
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
+import coreSchema from './schemas/core.schema.json';
+import musicSchema from './schemas/music.schema.json';
+import podcastSchema from './schemas/podcast.schema.json';
+import artSchema from './schemas/art.schema.json';
+
+const ajv = new Ajv({ allErrors: true });
+addFormats(ajv);
+
+const SCHEMAS = {
+  music: musicSchema,
+  podcast: podcastSchema,
+  art: artSchema
+};
+
+// Compile all schemas
+Object.values(SCHEMAS).forEach((schema) => ajv.addSchema(schema));
+
+export function validateMetadata(contentType, data) {
+  const schema = SCHEMAS[contentType];
+  if (!schema) {
+    throw new Error(`Unsupported content type: ${contentType}`);
+  }
+
+  const validate = ajv.compile(schema);
+  const valid = validate(data);
+
+  if (!valid) {
+    return {
+      valid: false,
+      errors: validate.errors
+    };
+  }
+
+  return { valid: true, errors: [] };
+}
+
+// Example usage
+/*
+import sampleMusic from './examples/sampleMusic.json';
+const result = validateMetadata('music', sampleMusic);
+console.log(result);
+*/

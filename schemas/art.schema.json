@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "title": "ArtMetadata",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "description",
+    "creator",
+    "content_type",
+    "availability_type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "creator": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "wallet_address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "user_id"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "release_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "music",
+        "podcast",
+        "art"
+      ]
+    },
+    "availability_type": {
+      "type": "string",
+      "enum": [
+        "on_demand",
+        "live"
+      ]
+    },
+    "files": {
+      "type": "object",
+      "properties": {
+        "cover_image": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        }
+      }
+    },
+    "medium": {
+      "type": "string"
+    },
+    "style": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "string"
+    },
+    "dpi": {
+      "type": "integer"
+    },
+    "color_profile": {
+      "type": "string"
+    },
+    "series_name": {
+      "type": "string"
+    },
+    "edition_number": {
+      "type": "integer"
+    },
+    "total_editions": {
+      "type": "integer"
+    },
+    "signed": {
+      "type": "boolean"
+    },
+    "exhibition_history": {
+      "type": "string"
+    },
+    "license_rights": {
+      "type": "string"
+    },
+    "inspiration": {
+      "type": "string"
+    }
+  }
+}

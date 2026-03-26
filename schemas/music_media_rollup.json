@@ -1,0 +1,2571 @@
+{
+    "mediaId": "279e0635-a783-4933-b478-400db725b289",
+    "productType": "MAIN",
+    "initialStreamingType": "LIVE",
+    "presentations": [
+        {
+            "id": "9e389269-58d2-3841-b1b1-6b5d52fb9b06",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-all-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "6b4defd1-f993-37ca-a431-ffca6e44f3ba",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-minimum-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "2f5e137a-d94f-3613-b9e8-e1f43f502c02",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-all-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "3a1e46f6-2789-3fcb-a038-0b248f6957e7",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-minimum-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "b5266599-ee44-31de-979d-1c13f217706d",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-all-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "e7b54752-2971-33d9-971a-1e79f261c668",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-minimum-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "d42b07a9-1470-382e-8bd4-c55ffc104c17",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-all-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "799598e9-caea-3cfc-9126-32d5e58f4130",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-cbcs-minimum-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "81e0d4b5-1298-34c9-97ab-ba744117ebff",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-all-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "50f035fc-1f29-3be2-9042-5fc87a0ed995",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-minimum-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "8c68e8e1-1fef-36eb-ba57-8bf0b83c71ba",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-all-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "306870ed-116d-3148-8e72-b2ad907bb925",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-minimum-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "da110f04-906f-3f56-bfdf-6f7e8aa936fa",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-all-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "9686a5dd-2753-30d3-acab-26eb597897f5",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-minimum-sliding",
+                "streamingFormat": "HLS",
+                "playlistType": "SLIDING",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "02dacb36-12a8-3fcc-9773-50eb5f4b766d",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-all-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 9798000,
+                    "min": 448000,
+                    "default": 1200000,
+                    "averageMin": 302000,
+                    "averageMax": 8426000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 4948000,
+                        "averageBandwidth": 3526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 7548000,
+                        "averageBandwidth": 5526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 8398000,
+                        "averageBandwidth": 6926000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 9798000,
+                        "averageBandwidth": 8426000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        },
+        {
+            "id": "ec003f90-dae4-35c7-8e4a-02007076bab8",
+            "facet": {
+                "label": "default"
+            },
+            "audio": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English",
+                        "role": "PRIMARY"
+                    }
+                ],
+                "audioGroups": [
+                    {
+                        "audioType": "STEREO",
+                        "languages": [
+                            {
+                                "code": "en",
+                                "name": "English",
+                                "role": "PRIMARY"
+                            }
+                        ]
+                    }
+                ],
+                "audioTypes": [
+                    "STEREO"
+                ],
+                "containerFormats": [
+                    "FMP4"
+                ],
+                "codecFormats": [
+                    "AAC"
+                ],
+                "muxed": false
+            },
+            "closedCaptions": {
+                "languages": [
+                    {
+                        "code": "en",
+                        "name": "English [Lyrics]",
+                        "instreamId": "CC1"
+                    }
+                ]
+            },
+            "streamingType": "LIVE",
+            "playlist": {
+                "description": "audio-ctr-minimum-complete",
+                "streamingFormat": "HLS",
+                "playlistType": "COMPLETE",
+                "bandwidth": {
+                    "max": 3648000,
+                    "min": 448000,
+                    "default": 800000,
+                    "averageMin": 302000,
+                    "averageMax": 2526000
+                },
+                "iframeSupported": false,
+                "streams": [
+                    {
+                        "bandwidth": 448000,
+                        "averageBandwidth": 302000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 653000,
+                        "averageBandwidth": 482000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1188000,
+                        "averageBandwidth": 842000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 1728000,
+                        "averageBandwidth": 1202000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 2588000,
+                        "averageBandwidth": 1812000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    },
+                    {
+                        "bandwidth": 3648000,
+                        "averageBandwidth": 2526000,
+                        "audioType": "STEREO",
+                        "audioChannels": "2",
+                        "audioCodecs": [
+                            "mp4a.40.2"
+                        ],
+                        "audioCodecFormats": [
+                            "AAC"
+                        ]
+                    }
+                ]
+            },
+            "state": "ON",
+            "createdAt": "1970-01-01T00:00:00Z"
+        }
+    ],
+    "state": "ON",
+    "version": "5.0",
+    "createdAt": "2024-09-07T09:55:07.512878969Z",
+    "updatedAt": "2024-09-07T09:55:07.629404595Z"
+}

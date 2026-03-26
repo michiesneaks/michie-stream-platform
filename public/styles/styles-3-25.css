@@ -1,0 +1,619 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   MSP Global Styles  —  SIGNAL Design System
+   public/styles/styles.css
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── Design tokens ────────────────────────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg-void:       #08080A;
+  --bg-base:       #0F0F12;
+  --bg-surface:    #151518;
+  --bg-raised:     #1C1C21;
+  --bg-hover:      #222228;
+
+  /* Borders */
+  --border-subtle: #222228;
+  --border-mid:    #2E2E36;
+  --border-strong: #3E3E4A;
+
+  /* Brand colors */
+  --gold:          #D4A853;   /* royalties, premium, earnings  */
+  --gold-bright:   #F0C060;
+  --gold-dim:      #8A6A2A;
+  --teal:          #00D4BB;   /* streaming, on-chain, active   */
+  --teal-bright:   #20F0D8;
+  --teal-dim:      #007A6A;
+  --ember:         #E85D3A;   /* live, alerts, energy          */
+  --ember-dim:     #6A2A1A;
+  --violet:        #8B5CF6;   /* NFT, ownership, minting       */
+  --violet-dim:    #3D2080;
+
+  /* Text */
+  --text-primary:  #EEEAE4;
+  --text-secondary:#8A8A98;
+  --text-muted:    #484852;
+  --text-inverse:  #0F0F12;
+
+  /* Typography */
+  --font-display:  'Cormorant', Georgia, serif;
+  --font-ui:       'Syne', sans-serif;
+  --font-mono:     'Space Mono', monospace;
+
+  /* Motion */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+
+/* ─── Reset ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ─── Base body ─────────────────────────────────────────────────────────────── */
+body {
+  background:    var(--bg-void);
+  color:         var(--text-primary);
+  font-family:   var(--font-ui);
+  font-size:     14px;
+  line-height:   1.6;
+  min-height:    100vh;
+  overflow-x:    hidden;
+  padding-top:   70px;   /* navbar clearance */
+  position:      relative;
+  isolation:     isolate;
+}
+
+/* ── Per-page body padding (accounts for fixed player bar where present) ── */
+.page-listen        { padding-bottom: 90px; }  /* fixed player bar */
+.page-dashboard     { padding-bottom: 40px; }
+.page-favorites     { padding-bottom: 40px; }
+.page-profile       { padding-bottom: 40px; }
+.page-asset-manager { padding-bottom: 40px; }
+.page-creators      { padding-bottom: 40px; }
+.page-marketplace   { padding-bottom: 40px; }
+.page-index         { padding-bottom: 0; }
+.page-live-studio   { padding-bottom: 0; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VINYL RECORD BACKGROUND  —  MSP signature effect
+   Two pseudo-elements stacked behind all content:
+
+   ::before  — fine groove texture  (micro radial rings)
+   ::after   — vinyl color rings    (SIGNAL palette, pulsing)
+
+   Your original CSS mapped to SIGNAL tokens:
+     pink   → --ember  (live / energy)
+     purple → --violet (NFT / ownership)
+     teal   → --teal   (streaming / on-chain)
+     dark   → --bg-void
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Layer 1 — fine groove texture (fades in after vinyl boot) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-radial-gradient(
+    circle,
+    transparent,
+    transparent     4px,
+    rgba(244, 238, 238, 0.06) 3px,
+    transparent     8px
+  );
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  animation: groove-in 1.2s ease-out 2s forwards;
+}
+
+@keyframes groove-in {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Layer 2 — vinyl color rings (boot flicker then steady pulse) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle,
+      var(--ember)       0%,
+      var(--ember)       6%,
+      var(--violet-dim)  6%,
+      var(--violet)      22%,
+      var(--teal-dim)    22%,
+      #004a40            42%,
+      #0a0a0e            42%,
+      var(--bg-void)     70%,
+      var(--bg-void)     100%
+    ),
+    repeating-radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.06) 2px,
+      rgba(255, 255, 255, 0.06) 3px,
+      transparent               4px,
+      transparent               8px
+    );
+  background-blend-mode:   overlay;
+  background-attachment:   fixed;
+  pointer-events:          none;
+  z-index:                 -2;
+  animation:
+    vinyl-boot  2.8s ease-out forwards,
+    vinyl-pulse 3s   ease-in-out infinite 2.8s;
+}
+
+@keyframes vinyl-boot {
+  0%   { opacity: 0;    transform: scale(0.96); }
+  6%   { opacity: .45;  transform: scale(1.01); }
+  8%   { opacity: 0;    transform: scale(0.97); }
+  13%  { opacity: .6;   transform: scale(1.02); }
+  15%  { opacity: .05;  transform: scale(0.98); }
+  21%  { opacity: .55;  transform: scale(1);    }
+  23%  { opacity: .1;   transform: scale(0.99); }
+  29%  { opacity: .65;  transform: scale(1.01); }
+  31%  { opacity: .3;   transform: scale(1);    }
+  38%  { opacity: .6;   transform: scale(1.015);}
+  100% { opacity: .55;  transform: scale(1);    }
+}
+
+@keyframes vinyl-pulse {
+  0%,  100% { opacity: .55; transform: scale(1);     }
+  50%        { opacity: .70; transform: scale(1.015); }
+}
+
+/* Neon text boot then steady flicker */
+.neon-title {
+  animation:
+    neon-boot    2.4s ease-out forwards,
+    neon-flicker 5s   ease-in-out infinite 2.4s;
+}
+
+@keyframes neon-boot {
+  0%   { opacity: 0;    text-shadow: none; }
+  8%   { opacity: 1;    text-shadow: 0 0 4px #F5F000, 0 0 12px #F5F000, 0 0 28px rgba(245,240,0,.8); }
+  10%  { opacity: .1;   text-shadow: none; }
+  14%  { opacity: 1;    text-shadow: 0 0 4px #F5F000, 0 0 20px #F5F000, 0 0 40px rgba(245,240,0,.9); }
+  16%  { opacity: .3;   text-shadow: none; }
+  20%  { opacity: 1;    text-shadow: 0 0 4px #F5F000, 0 0 12px #F5F000; }
+  22%  { opacity: .05;  text-shadow: none; }
+  28%  { opacity: 1;    text-shadow: 0 0 4px #F5F000, 0 0 28px rgba(245,240,0,.8), 0 0 60px rgba(245,240,0,.4); }
+  30%  { opacity: .6;   text-shadow: none; }
+  36%  { opacity: 1;    text-shadow: 0 0 4px #F5F000, 0 0 28px rgba(245,240,0,.8), 0 0 60px rgba(245,240,0,.4), 0 0 100px rgba(245,240,0,.15); }
+  100% { opacity: 1;    text-shadow: 0 0 4px #F5F000, 0 0 28px rgba(245,240,0,.8), 0 0 60px rgba(245,240,0,.4), 0 0 100px rgba(245,240,0,.15); }
+}
+
+@keyframes neon-flicker {
+  0%,18%,20%,22%,24%,53%,55%,100% {
+    text-shadow: 0 0 4px #F5F000, 0 0 12px #F5F000, 0 0 28px rgba(245,240,0,.8), 0 0 60px rgba(245,240,0,.4), 0 0 100px rgba(245,240,0,.15);
+    opacity: 1;
+  }
+  19%, 23%, 54% { text-shadow: none; opacity: .82; }
+}
+
+
+/* ─── Navbar ────────────────────────────────────────────────────────────────── */
+.navbar {
+  background:     rgba(8, 8, 10, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom:  1px solid var(--border-subtle);
+  position:       fixed;
+  top: 0; left: 0; right: 0;
+  z-index:        100;
+}
+
+.navbar-brand {
+  font-family:    var(--font-display);
+  font-size:      22px;
+  font-weight:    400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          var(--text-primary) !important;
+}
+
+.nav-link {
+  font-family:  var(--font-ui);
+  font-size:    13px;
+  font-weight:  600;
+  color:        var(--text-secondary) !important;
+  letter-spacing: 0.03em;
+  transition:   color 0.15s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--gold) !important;
+}
+
+.user-name-display {
+  font-family:  var(--font-mono);
+  font-size:    11px;
+  color:        var(--teal);
+  letter-spacing: 0.06em;
+}
+
+
+/* ─── Cards ─────────────────────────────────────────────────────────────────── */
+.card,
+.nft-card {
+  background:   var(--bg-raised);
+  border:       1px solid var(--border-subtle) !important;
+  border-radius: 10px;
+  color:        var(--text-primary);
+  transition:   all 0.25s var(--ease-out);
+}
+
+.card:hover,
+.nft-card:hover {
+  border-color: var(--border-mid) !important;
+  transform:    translateY(-3px);
+  box-shadow:   0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+.card-header {
+  background:   var(--bg-surface) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  font-family:  var(--font-ui);
+  font-weight:  600;
+}
+
+
+/* ─── Buttons ───────────────────────────────────────────────────────────────── */
+.btn-primary {
+  background:    var(--gold);
+  border-color:  var(--gold);
+  color:         var(--text-inverse);
+  font-family:   var(--font-ui);
+  font-weight:   700;
+  letter-spacing: 0.04em;
+  transition:    all 0.2s var(--ease-out);
+}
+.btn-primary:hover {
+  background:   var(--gold-bright);
+  border-color: var(--gold-bright);
+  transform:    translateY(-1px);
+  box-shadow:   0 8px 24px rgba(212, 168, 83, 0.3);
+}
+
+.btn-success  { background: var(--teal);   border-color: var(--teal);   color: var(--text-inverse); }
+.btn-danger   { background: var(--ember);  border-color: var(--ember);  color: #fff; }
+.btn-warning  { background: var(--gold);   border-color: var(--gold);   color: var(--text-inverse); }
+.btn-secondary { background: var(--bg-raised); border-color: var(--border-mid); color: var(--text-secondary); }
+
+.btn-outline-primary { border-color: var(--gold);   color: var(--gold); }
+.btn-outline-primary:hover { background: var(--gold); color: var(--text-inverse); }
+
+.btn-outline-warning { border-color: var(--gold);   color: var(--gold); }
+.btn-outline-warning:hover { background: var(--gold); color: var(--text-inverse); }
+
+
+/* ─── Forms ─────────────────────────────────────────────────────────────────── */
+.form-control,
+.form-select {
+  background:   var(--bg-raised);
+  border:       1px solid var(--border-mid);
+  border-radius: 5px;
+  color:        var(--text-primary);
+  font-family:  var(--font-ui);
+  transition:   border-color 0.15s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background:  var(--bg-raised);
+  border-color: var(--gold);
+  box-shadow:  0 0 0 3px rgba(212, 168, 83, 0.12);
+  color:       var(--text-primary);
+}
+
+.form-control::placeholder { color: var(--text-muted); }
+.form-label {
+  font-family:   var(--font-mono);
+  font-size:     10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:         var(--text-muted);
+}
+
+
+/* ─── Typography ────────────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  color:       var(--text-primary);
+  line-height: 1.1;
+}
+
+.font-mono,
+code,
+.badge-mono {
+  font-family: var(--font-mono);
+  font-size:   0.85em;
+}
+
+.text-gold    { color: var(--gold) !important; }
+.text-teal    { color: var(--teal) !important; }
+.text-ember   { color: var(--ember) !important; }
+.text-violet  { color: var(--violet) !important; }
+.text-muted   { color: var(--text-muted) !important; }
+
+
+/* ─── Badges ────────────────────────────────────────────────────────────────── */
+.badge {
+  font-family:   var(--font-mono);
+  font-size:     9px;
+  letter-spacing: 0.1em;
+  font-weight:   700;
+  text-transform: uppercase;
+}
+
+.badge.bg-warning { background: var(--gold)   !important; color: var(--text-inverse); }
+.badge.bg-danger  { background: var(--ember)  !important; }
+.badge.bg-success { background: var(--teal)   !important; color: var(--text-inverse); }
+.badge.bg-primary { background: var(--violet) !important; }
+
+
+/* ─── Alerts ────────────────────────────────────────────────────────────────── */
+.alert {
+  background:   var(--bg-surface);
+  border:       1px solid var(--border-mid);
+  color:        var(--text-secondary);
+  border-radius: 6px;
+}
+.alert-dark { background: var(--bg-raised); border-color: var(--border-subtle); }
+
+
+/* ─── Tables ────────────────────────────────────────────────────────────────── */
+.table {
+  color:        var(--text-primary);
+  border-color: var(--border-subtle);
+}
+.table th {
+  font-family:   var(--font-mono);
+  font-size:     10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:         var(--text-muted);
+  border-color:  var(--border-mid);
+  background:    var(--bg-surface);
+}
+.table td { border-color: var(--border-subtle); }
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+
+/* ─── Modals ────────────────────────────────────────────────────────────────── */
+.modal-content {
+  background:   var(--bg-surface);
+  border:       1px solid var(--border-mid);
+  border-radius: 12px;
+}
+.modal-header {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.modal-footer {
+  border-top: 1px solid var(--border-subtle);
+}
+.btn-close-white { filter: invert(1); }
+
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+
+
+/* ─── Subscription status bar ──────────────────────────────────────────────── */
+#subscription-status-bar {
+  background:    var(--bg-surface);
+  border:        1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding:       10px 16px;
+  font-family:   var(--font-mono);
+  font-size:     11px;
+  color:         var(--text-secondary);
+}
+
+.text-success { color: var(--teal)  !important; }
+.text-danger  { color: var(--ember) !important; }
+
+
+/* ─── Drag-drop upload zone ─────────────────────────────────────────────────── */
+.drag-over {
+  border-color: var(--ember) !important;
+  background:   rgba(232, 93, 58, 0.04) !important;
+}
+
+
+/* ─── Live indicator ────────────────────────────────────────────────────────── */
+.live-dot {
+  display:       inline-block;
+  width:         8px; height: 8px;
+  border-radius: 50%;
+  background:    var(--ember);
+  box-shadow:    0 0 0 3px rgba(232, 93, 58, 0.25);
+  animation:     live-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%,  100% { box-shadow: 0 0 0 3px rgba(232, 93, 58, 0.25); }
+  50%        { box-shadow: 0 0 0 7px rgba(232, 93, 58, 0.05); }
+}
+
+
+/* ─── Favorites heart button ─────────────────────────────────────────────────── */
+.fav-btn {
+  background:    none;
+  border:        none;
+  cursor:        pointer;
+  font-size:     18px;
+  line-height:   1;
+  padding:       2px 5px;
+  color:         var(--text-muted);
+  transition:    color 0.15s, transform 0.15s;
+}
+.fav-btn:hover        { color: var(--ember); transform: scale(1.2); }
+.fav-btn.fav-active   { color: var(--ember); }
+.fav-btn:disabled     { opacity: 0.4; }
+
+
+/* ─── Progress bar ──────────────────────────────────────────────────────────── */
+#upload-progress {
+  width:        100%;
+  height:       4px;
+  appearance:   none;
+  border:       none;
+  border-radius: 2px;
+}
+#upload-progress::-webkit-progress-bar   { background: var(--border-mid);  border-radius: 2px; }
+#upload-progress::-webkit-progress-value { background: var(--gold);        border-radius: 2px; transition: width 0.3s; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE NAVBAR  —  MSP Signal Design System
+   Problem solved: between 992px (navbar-expand-lg threshold) and ~1280px
+   the nav is expanded but cramped. Text wraps, buttons are oversized,
+   the wallet address overflows. These rules fix all of that proportionally.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Prevent nav link text from ever wrapping ───────────────────────────── */
+.navbar-nav .nav-link {
+  white-space: nowrap;
+}
+
+/* ── Brand — scale down gracefully instead of pushing nav items ─────────── */
+.navbar-brand {
+  font-size:   clamp(13px, 1.6vw, 22px);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Wallet address — truncate, never overflow ──────────────────────────── */
+.wallet-address-display {
+  display:       inline-block;
+  font-family:   var(--font-mono);
+  font-size:     10px;
+  max-width:     80px;
+  overflow:      hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  white-space:   nowrap;
+}
+
+/* ── Wallet action buttons — compact at all times ───────────────────────── */
+.navbar [data-connect-wallet],
+#btn-disconnect {
+  font-size:     11px !important;
+  padding:       3px 10px !important;
+  white-space:   nowrap;
+}
+
+/* ── Wallet + address wrapper — never grow, never push nav items ────────── */
+.navbar .d-flex.align-items-center {
+  flex-shrink: 1;
+  gap:         4px !important;
+  min-width:   0;
+}
+
+/* ── Nav items row — allow shrink, keep items on one line ───────────────── */
+.navbar-collapse .navbar-nav {
+  flex-wrap:  nowrap;
+  align-items: center;
+}
+
+/* ══ Medium screens 992–1199px — scale everything down proportionally ══════ */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+  .navbar-brand {
+    font-size:    clamp(11px, 1.2vw, 16px);
+    letter-spacing: 0.04em;
+  }
+
+  .navbar-nav .nav-link {
+    font-size:  11px;
+    padding:    0.4rem 0.5rem;
+  }
+
+  .navbar [data-connect-wallet],
+  #btn-disconnect {
+    font-size: 10px !important;
+    padding:   2px 8px !important;
+  }
+
+  .wallet-address-display {
+    max-width: 60px;
+    font-size: 9px;
+  }
+
+  .user-name-display {
+    font-size: 9px;
+    max-width: 60px;
+    overflow:  hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ══ Large screens 1200–1399px — mild scaling ════════════════════════════ */
+@media (min-width: 1200px) and (max-width: 1399px) {
+
+  .navbar-brand {
+    font-size: clamp(14px, 1.4vw, 20px);
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 12px;
+    padding:   0.4rem 0.65rem;
+  }
+
+  .wallet-address-display {
+    max-width: 72px;
+  }
+}
+
+/* ══ When collapsed (< 992px) — tidy up the dropdown menu ════════════════ */
+@media (max-width: 991px) {
+
+  body {
+    padding-top: 60px;
+  }
+
+  .navbar-brand {
+    font-size: 14px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Stack wallet controls neatly inside the collapsed menu */
+  .navbar-collapse .d-flex.align-items-center {
+    flex-wrap:  wrap;
+    padding:    8px 0 4px;
+    gap:        6px !important;
+  }
+
+  .wallet-address-display {
+    max-width:  none;
+    font-size:  10px;
+    width:      100%;
+  }
+
+  .user-name-display {
+    width: 100%;
+  }
+
+  .navbar-nav .nav-link {
+    font-size:  13px;
+    padding:    0.5rem 0;
+  }
+}

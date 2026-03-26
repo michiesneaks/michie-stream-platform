@@ -1,0 +1,36 @@
+﻿# Runtime data
+profiles.json
+dj_sets.json
+live_sessions.json
+
+# Environment â€” NEVER commit
+.env
+
+# Media output (served by Nginx, not tracked in Git)
+public/live/
+public/streams/
+temp/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Logs
+logs/
+*.log
+
+# Certs
+certs/*.pem
+certs/*.key
+certs/*.crt
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/
+
+# Backups
+*.bak
+*.bak.*

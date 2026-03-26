@@ -1,0 +1,49 @@
+{
+  "id": "0fe9212e-15dc-43cc-94b1-9f45d811808a",
+  "title": "Do Watchu Wanna Do",
+  "description": "",
+  "creator": {
+    "name": "Michie Sneaks",
+    "user_id": "ef1fdf4c-ecd8-436f-80c4-b748d63889e5",
+    "wallet_address": "0xdbb059d82ac540646913c9c01ba3c945684bcef163238838cbd7e7b444141b8c"
+  },
+  "content_type": "music",
+  "availability_type": "on_demand",
+  "release_date": "2026-03-02",
+  "tags": [
+    "rap",
+    "hiphop",
+    "freestyle",
+    "michie sneaks",
+    "boombap"
+  ],
+  "files": {
+    "cover_image": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/cover.jpeg",
+    "preview_url": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/preview.mp3",
+    "hls_url": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/hls/master.m3u8"
+  },
+  "royalty_fee_rate": 0.05,
+  "integrityHashes": {
+    "sha256Audio": "02ffc222dc09d0766412de767a1612701a605792d2976e8ace7ecb487c50fc6f",
+    "sha256Cover": "84af701e0d9bbd6e720ac99b13c7e97e039d5f268330bcb040b2cb89e16c6e0b",
+    "blake3Audio": "e9763cbb7c42743f15edb1f6e908afac50177ea47f3d2bb9652ebeb7d33112be",
+    "blake3Cover": "0e34facecf5e15cff94486c2e89a61a9c28eaab9d4291fdc9af0aa3456a6bd9a",
+    "sha256Metadata": "ab5e8d31f4e9257613c1218c1df555a3385776e39ad63e68cbf9d09a5b0f5dc0"
+  },
+  "mlc_metadata": {
+    "work_title": "Do Watchu Wanna Do",
+    "iswc": "",
+    "isrc": "",
+    "ipi_name_number": "",
+    "writers": [
+      {
+        "name": "Michie Sneaks",
+        "role": "artist",
+        "ipi_name_number": "",
+        "ownership_percent": 100
+      }
+    ],
+    "publishers": []
+  },
+  "ipfs_audio_url": "/catalog/0fe9212e-15dc-43cc-94b1-9f45d811808a/hls/master.m3u8"
+}
