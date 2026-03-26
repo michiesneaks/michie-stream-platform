@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Just Listen — Michie Stream Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+<style>
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   LISTEN PAGE — all local styles
+   Depends on: styles/styles.css for CSS custom properties
+───────────────────────────────────────────────────────────────────────────── */
+
+body { padding-bottom: 90px; }
+
+/* ── Off-screen stubs — common.js needs these IDs, they must never be visible.
+   1×1px clipped, pointer-events:none, so nothing can interact with them.    */
+#play-btn, #pause-btn, #stop-btn, #duration-display {
+  position: absolute !important;
+  width: 1px !important; height: 1px !important;
+  overflow: hidden !important; clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important; border: 0 !important;
+  pointer-events: none !important; opacity: 0 !important;
+}
+
+/* ══ CONTENT TYPE TABS ══════════════════════════════════════════════════════ */
+.ct-tabs {
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; gap: 4px; margin-bottom: 20px;
+}
+.ct-tab {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--text-secondary); cursor: pointer;
+  font-family: var(--font-ui); font-size: 13px; font-weight: 700;
+  letter-spacing: .06em; padding: 10px 18px; text-transform: uppercase;
+  transition: color .15s, border-color .15s; white-space: nowrap;
+}
+.ct-tab:hover                  { color: var(--text-primary); }
+.ct-tab.active                 { color: var(--teal);   border-bottom-color: var(--teal); }
+.ct-tab.podcast-tab.active     { color: var(--violet); border-bottom-color: var(--violet); }
+.ct-tab.live-tab.active        { color: var(--ember);  border-bottom-color: var(--ember); }
+
+/* ══ SUB-FILTER PILLS ═══════════════════════════════════════════════════════ */
+.filter-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.filter-pill {
+  background: var(--bg-raised); border: 1px solid var(--border-subtle);
+  border-radius: 20px; color: var(--text-secondary); cursor: pointer;
+  font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  padding: 4px 14px; text-transform: uppercase; transition: all .15s;
+}
+.filter-pill:hover              { border-color: var(--border-mid); color: var(--text-primary); }
+.filter-pill.active             { background: var(--bg-hover); border-color: var(--teal); color: var(--teal); }
+.filter-pill.fav-pill.active    { border-color: var(--ember); color: var(--ember); }
+
+/* ══ VIEW TOGGLE ════════════════════════════════════════════════════════════ */
+.view-toggle {
+  background: var(--bg-raised); border: 1px solid var(--border-subtle);
+  border-radius: 6px; display: flex; gap: 2px; padding: 2px;
+}
+.view-btn {
+  background: none; border: none; border-radius: 4px;
+  color: var(--text-secondary); cursor: pointer; font-size: 14px;
+  padding: 4px 9px; transition: all .15s;
+}
+.view-btn.active { background: var(--bg-hover); color: var(--teal); }
+
+/* ══ MUSIC LIST ROWS ════════════════════════════════════════════════════════ */
+.track-list { display: flex; flex-direction: column; }
+.track-row {
+  align-items: center; border-bottom: 1px solid var(--border-subtle);
+  display: grid; gap: 0 8px;
+  /* num | cover | info | duration | heart | three-dot */
+  grid-template-columns: 28px 44px 1fr auto auto auto;
+  padding: 8px 4px; position: relative; transition: background .12s;
+}
+.track-row:hover      { background: var(--bg-raised); border-radius: 6px; }
+.track-row:last-child { border-bottom: none; }
+
+.track-num {
+  color: var(--text-muted); font-family: var(--font-mono);
+  font-size: 11px; text-align: center;
+}
+.track-row:hover .track-num { display: none; }
+
+.track-play-inline {
+  align-items: center; background: none; border: none;
+  color: var(--teal); cursor: pointer; display: none;
+  font-size: 16px; justify-content: center; padding: 0; width: 28px;
+}
+.track-row:hover .track-play-inline { display: flex; }
+
+.track-cover {
+  border-radius: 4px; flex-shrink: 0; height: 44px; object-fit: cover; width: 44px;
+}
+.track-cover-placeholder {
+  align-items: center; background: var(--bg-raised); border-radius: 4px;
+  color: var(--text-muted); display: flex; flex-shrink: 0;
+  font-size: 20px; height: 44px; justify-content: center; width: 44px;
+}
+.track-info { min-width: 0; }
+.track-title {
+  color: var(--text-primary); font-size: 13px; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.track-row.is-playing .track-title { color: var(--teal); }
+.track-artist {
+  color: var(--text-secondary); font-size: 12px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.track-tags { display: none; }
+@media (min-width: 768px) {
+  .track-row  { grid-template-columns: 28px 44px 1fr 160px auto auto auto; }
+  .track-tags { display: flex; gap: 4px; flex-wrap: nowrap; max-width: 160px; overflow: hidden; }
+  .track-tag  {
+    background: var(--bg-raised); border-radius: 3px;
+    color: var(--text-muted); font-size: 10px; padding: 1px 6px; white-space: nowrap;
+  }
+}
+.track-duration { color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
+
+/* ── Vinyl badge — TOP-right corner of thumbnail ────────────────────────── */
+.track-cover-wrap {
+  flex-shrink: 0;
+  height: 44px;
+  position: relative;
+  width: 44px;
+}
+.track-cover-wrap .track-cover,
+.track-cover-wrap .track-cover-placeholder { height: 44px; width: 44px; }
+.vinyl-cover-badge {
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.9));
+  position: absolute;
+  right: -4px;
+  top: -4px;
+}
+.vinyl-inline-badge { opacity: .85; }
+
+/* ── Tile — cover wrap fills full width ─────────────────────────────────── */
+.track-tile .track-cover-wrap {
+  aspect-ratio: 1;
+  display: block;
+  height: auto;
+  position: relative;
+  width: 100%;
+}
+.track-tile .track-cover-wrap img,
+.track-tile .track-cover-wrap .track-tile-placeholder {
+  aspect-ratio: 1;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+.track-tile.is-playing { border-color: var(--teal) !important; }
+.track-tile.is-playing .track-tile-title { color: var(--teal); }
+
+/* ── Tile footer — heart · duration · three-dot ─────────────────────────── */
+.track-tile-footer {
+  align-items: center;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: 2px;
+  padding: 4px 6px;
+}
+.track-tile-footer .fav-heart-btn { font-size: 13px; padding: 3px 5px; }
+.track-tile-footer .track-duration { flex: 1; font-size: 10px; text-align: center; }
+
+/* ── Three-dot options button ───────────────────────────────────────────── */
+.track-options-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 6px;
+  transition: color .12s;
+}
+.track-options-btn:hover { color: var(--text-primary); }
+
+/* ── Floating options menu (appended to <body>) ─────────────────────────── */
+#track-options-menu {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.8);
+  display: none;
+  min-width: 210px;
+  overflow: hidden;
+  position: fixed;
+  z-index: 3000;
+}
+#track-options-menu.open { display: block; }
+.opt-section { padding: 4px 0; }
+.opt-divider { border: none; border-top: 1px solid var(--border-subtle); margin: 2px 0; }
+.opt-item {
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  gap: 10px;
+  padding: 10px 16px;
+  text-align: left;
+  transition: background .1s, color .1s;
+  width: 100%;
+}
+.opt-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.opt-item.fav-active-track  { color: var(--ember); }
+.opt-item.fav-active-artist { color: var(--gold); }
+.opt-item.fav-active-album  { color: var(--violet); }
+.opt-item.opt-disabled      { color: var(--text-muted); cursor: default; }
+.opt-item.opt-disabled:hover { background: none; color: var(--text-muted); }
+.opt-icon { flex-shrink: 0; font-style: normal; text-align: center; width: 18px; }
+.opt-tier-badge {
+  background: rgba(212,168,83,.15);
+  border-radius: 4px;
+  color: var(--gold);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  margin-left: auto;
+  padding: 1px 5px;
+  text-transform: uppercase;
+}
+.opt-submenu-head {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  padding: 8px 16px 4px;
+  text-transform: uppercase;
+}
+.opt-pl-item {
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  padding: 8px 16px 8px 40px;
+  text-align: left;
+  transition: background .1s;
+  width: 100%;
+}
+.opt-pl-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.opt-pl-empty { color: var(--text-muted); font-size: 12px; padding: 8px 16px 8px 40px; }
+
+/* ══ FAVORITES HEART + POPOVER ══════════════════════════════════════════════ */
+.fav-heart-btn {
+  background: none; border: none; color: var(--text-muted); cursor: pointer;
+  font-size: 16px; line-height: 1; padding: 4px 6px; position: relative;
+  transition: color .15s, transform .15s;
+}
+.fav-heart-btn:hover      { color: var(--ember); transform: scale(1.2); }
+.fav-heart-btn.fav-track  { color: var(--ember); }
+.fav-heart-btn.fav-artist { color: var(--gold); }
+.fav-heart-btn.fav-album  { color: var(--violet); }
+
+.fav-popover {
+  background: var(--bg-raised); border: 1px solid var(--border-mid);
+  border-radius: 8px; bottom: calc(100% + 8px); box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  display: none; flex-direction: column; min-width: 150px; overflow: hidden;
+  position: absolute; right: 0; z-index: 300;
+}
+.fav-popover.open { display: flex; }
+.fav-pop-item {
+  align-items: center; background: none; border: none; color: var(--text-secondary);
+  cursor: pointer; display: flex; font-size: 12px; font-weight: 600; gap: 8px;
+  letter-spacing: .04em; padding: 9px 14px; text-align: left;
+  text-transform: uppercase; transition: background .1s, color .1s; width: 100%;
+}
+.fav-pop-item:hover                          { background: var(--bg-hover); color: var(--text-primary); }
+.fav-pop-item.active                         { color: var(--ember); }
+.fav-pop-item[data-fav-type="artist"].active { color: var(--gold); }
+.fav-pop-item[data-fav-type="album"].active  { color: var(--violet); }
+.fav-pop-dot { border-radius: 50%; flex-shrink: 0; height: 6px; width: 6px; }
+.fav-pop-item[data-fav-type="track"]  .fav-pop-dot { background: var(--ember); }
+.fav-pop-item[data-fav-type="artist"] .fav-pop-dot { background: var(--gold); }
+.fav-pop-item[data-fav-type="album"]  .fav-pop-dot { background: var(--violet); }
+
+/* ══ GRID TILES ═════════════════════════════════════════════════════════════ */
+.track-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.track-tile {
+  background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: 8px; cursor: pointer; overflow: hidden; position: relative;
+  transition: border-color .15s, transform .15s;
+}
+.track-tile:hover { border-color: var(--border-mid); transform: translateY(-2px); }
+.track-tile img   { aspect-ratio: 1; display: block; object-fit: cover; width: 100%; }
+.track-tile-placeholder {
+  align-items: center; aspect-ratio: 1; background: var(--bg-raised);
+  color: var(--text-muted); display: flex; font-size: 36px; justify-content: center; width: 100%;
+}
+.track-tile-info   { padding: 10px 10px 8px; }
+.track-tile-title  { color: var(--text-primary); font-size: 12px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.track-tile-artist { color: var(--text-secondary); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.track-tile-play {
+  align-items: center; background: rgba(245,240,0,.9); border: none; border-radius: 50%;
+  bottom: 52px; color: #08080A; cursor: pointer; display: flex; font-size: 14px;
+  height: 34px; justify-content: center; opacity: 0; position: absolute;
+  right: 8px; transition: opacity .15s; width: 34px;
+}
+.track-tile:hover .track-tile-play { opacity: 1; }
+
+/* ══ PODCAST TILES ══════════════════════════════════════════════════════════ */
+.podcast-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.podcast-tile { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden; transition: border-color .15s; }
+.podcast-tile:hover   { border-color: var(--violet); }
+.podcast-tile img     { aspect-ratio: 1; display: block; object-fit: cover; width: 100%; }
+.podcast-tile-info    { padding: 12px; }
+.podcast-tile-title   { color: var(--text-primary); font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.podcast-tile-meta    { color: var(--text-secondary); font-size: 11px; }
+.podcast-tile-play {
+  background: var(--violet); border: none; border-radius: 6px; color: #fff;
+  cursor: pointer; font-size: 12px; font-weight: 700; margin-top: 10px; padding: 6px 12px; width: 100%;
+}
+
+/* ══ LIVE BANNERS ═══════════════════════════════════════════════════════════ */
+.live-grid { display: flex; flex-direction: column; gap: 12px; }
+.live-banner {
+  align-items: center;
+  background: linear-gradient(135deg, var(--bg-raised) 0%, var(--ember-dim) 100%);
+  border: 1px solid var(--ember); border-radius: 10px; display: flex;
+  gap: 16px; overflow: hidden; padding: 16px; transition: border-color .15s;
+}
+.live-banner:hover { border-color: var(--gold); }
+.live-dot {
+  animation: pulse-live 1.2s ease-in-out infinite; background: var(--ember);
+  border-radius: 50%; flex-shrink: 0; height: 10px; width: 10px;
+}
+@keyframes pulse-live { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:.4; transform:scale(1.5); } }
+.live-info    { flex: 1; min-width: 0; }
+.live-title   { color: var(--text-primary); font-size: 15px; font-weight: 700; }
+.live-artist  { color: var(--ember); font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+.live-viewers { color: var(--text-secondary); font-size: 11px; margin-top: 2px; }
+.live-watch-btn {
+  background: var(--ember); border: none; border-radius: 6px; color: #fff;
+  cursor: pointer; flex-shrink: 0; font-size: 12px; font-weight: 700; padding: 8px 16px;
+}
+
+/* ══ FAVORITES PANEL ════════════════════════════════════════════════════════ */
+.fav-section-header { align-items: center; display: flex; gap: 12px; margin-bottom: 12px; }
+.fav-count-badge {
+  background: var(--ember-dim); border-radius: 10px; color: var(--ember);
+  font-size: 11px; font-weight: 700; padding: 1px 8px;
+}
+
+/* ══ FIXED BOTTOM PLAYER BAR ════════════════════════════════════════════════ */
+#msp-player-bar {
+  align-items: center; background: var(--bg-raised);
+  border-top: 1px solid var(--border-mid); bottom: 0; display: grid;
+  gap: 0 16px; grid-template-columns: 220px 1fr 110px;
+  height: 80px; left: 0; padding: 0 20px; position: fixed; right: 0; z-index: 1000;
+}
+@media (max-width: 600px) {
+  #msp-player-bar { grid-template-columns: 160px 1fr; height: 72px; }
+  .player-vol-col { display: none; }
+}
+.player-track-col { align-items: center; display: flex; gap: 12px; min-width: 0; overflow: hidden; }
+#vinyl-icon { border-radius: 4px; flex-shrink: 0; height: 48px; object-fit: cover; width: 48px; }
+body.audio-playing     #vinyl-icon { animation: spin 4s linear infinite; border-radius: 50%; }
+body:not(.audio-playing) #vinyl-icon { animation: none; border-radius: 4px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.player-track-text { min-width: 0; }
+#track-name {
+  color: var(--text-primary); font-size: 13px; font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+#player-artist-name {
+  color: var(--text-secondary); font-size: 11px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.player-center-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.player-controls-row { align-items: center; display: flex; gap: 14px; justify-content: center; }
+.player-ctrl-btn {
+  align-items: center; background: none; border: none; color: var(--text-secondary);
+  cursor: pointer; display: flex; justify-content: center; padding: 4px; transition: color .12s;
+}
+.player-ctrl-btn:hover { color: var(--text-primary); }
+
+/* The real play/pause toggle — neon yellow, owned entirely by this page */
+#msp-play-toggle {
+  align-items: center; background: #F5F000; border: none; border-radius: 50%;
+  box-shadow: 0 0 10px rgba(245,240,0,.45), 0 0 22px rgba(245,240,0,.2);
+  cursor: pointer; display: flex; flex-shrink: 0; height: 40px;
+  justify-content: center; padding: 0;
+  transition: background .15s, box-shadow .15s, transform .1s; width: 40px;
+}
+#msp-play-toggle:hover {
+  box-shadow: 0 0 14px rgba(245,240,0,.8), 0 0 36px rgba(245,240,0,.4);
+  transform: scale(1.07);
+}
+#msp-play-toggle.is-playing {
+  background: #08080A; border: 2px solid #F5F000;
+  box-shadow: 0 0 10px rgba(245,240,0,.3), 0 0 22px rgba(245,240,0,.15);
+}
+#msp-play-toggle.is-playing:hover {
+  background: #111108;
+  box-shadow: 0 0 14px rgba(245,240,0,.6), 0 0 30px rgba(245,240,0,.3);
+}
+
+.player-progress-row { align-items: center; display: flex; gap: 8px; }
+#time-display {
+  color: var(--text-muted); flex-shrink: 0; font-family: var(--font-mono);
+  font-size: 10px; min-width: 34px; text-align: right;
+}
+#progress-bar {
+  --val: 0%;
+  -webkit-appearance: none; appearance: none;
+  background: linear-gradient(to right, var(--teal) var(--val), var(--border-mid) var(--val));
+  border-radius: 3px; cursor: pointer; flex: 1; height: 3px; outline: none;
+}
+#progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none; background: var(--teal-bright);
+  border-radius: 50%; cursor: pointer; height: 12px; width: 12px;
+}
+.player-vol-col { align-items: center; display: flex; gap: 8px; }
+.vol-icon       { color: var(--text-muted); font-size: 13px; }
+#volume-bar {
+  --val: 100%;
+  -webkit-appearance: none; appearance: none;
+  background: linear-gradient(to right, var(--text-secondary) var(--val), var(--border-mid) var(--val));
+  border-radius: 3px; cursor: pointer; height: 3px; outline: none; width: 80px;
+}
+#volume-bar::-webkit-slider-thumb {
+  -webkit-appearance: none; background: var(--text-primary);
+  border-radius: 50%; cursor: pointer; height: 10px; width: 10px;
+}
+
+/* ══ STATUS BAR + NEON BANNER ═══════════════════════════════════════════════ */
+.sub-status-bar {
+  align-items: center; background: var(--bg-surface); border: 1px solid var(--border-subtle);
+  border-radius: 8px; display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; padding: 10px 16px;
+}
+.neon-banner {
+  align-items: center; background: rgba(8,8,10,0.6);
+  border-bottom: 1px solid rgba(212,168,83,0.15); display: flex;
+  overflow: hidden; padding: 14px 8px; position: relative; width: 100%; z-index: 90;
+}
+.neon-banner .b-side   { align-items: center; display: flex; flex-direction: column; flex-shrink: 0; gap: 7px; width: 80px; }
+.neon-banner .b-slogan { flex: 1; text-align: center; }
+.neon-banner .b-line {
+  animation: neon-boot 2.4s ease-out forwards, neon-flicker 5s ease-in-out infinite 2.4s;
+  color: #F5F000; font-family: 'Syne','Arial Black',sans-serif;
+  font-size: clamp(13px,2vw,22px); font-weight: 800; letter-spacing: .04em; line-height: 1.3;
+}
+.neon-banner .b-line:last-child { animation: neon-boot 2.4s ease-out .15s forwards, neon-flicker 5s ease-in-out infinite 2.55s; }
+.neon-banner svg.b-ic  { animation: b-icon-in 0.4s ease-out forwards, b-fl 3s ease-in-out infinite; opacity: 0; }
+@keyframes b-icon-in { to { opacity:.85; } }
+@keyframes b-fl      { 0%,100%{opacity:.85;transform:translateY(0) scale(1);}  50%{opacity:1;transform:translateY(-4px) scale(1.1);} }
+@keyframes neon-boot {
+  0%{opacity:0;text-shadow:none;}
+  8%{opacity:1;text-shadow:0 0 4px #F5F000,0 0 12px #F5F000,0 0 28px rgba(245,240,0,.8);}
+  10%{opacity:.1;text-shadow:none;}14%{opacity:1;text-shadow:0 0 4px #F5F000,0 0 20px #F5F000,0 0 40px rgba(245,240,0,.9);}
+  16%{opacity:.3;text-shadow:none;}20%{opacity:1;text-shadow:0 0 4px #F5F000,0 0 12px #F5F000;}
+  22%{opacity:.05;text-shadow:none;}28%{opacity:1;text-shadow:0 0 4px #F5F000,0 0 28px rgba(245,240,0,.8),0 0 60px rgba(245,240,0,.4);}
+  30%{opacity:.6;text-shadow:none;}36%,100%{opacity:1;text-shadow:0 0 4px #F5F000,0 0 28px rgba(245,240,0,.8),0 0 60px rgba(245,240,0,.4),0 0 100px rgba(245,240,0,.15);}
+}
+@keyframes neon-flicker {
+  0%,18%,20%,22%,24%,53%,55%,100%{opacity:1;text-shadow:0 0 4px #F5F000,0 0 12px #F5F000,0 0 28px rgba(245,240,0,.8),0 0 60px rgba(245,240,0,.4),0 0 100px rgba(245,240,0,.15);}
+  19%,23%,54%{opacity:.82;text-shadow:none;}
+}
+
+/* ══ EMPTY / LOADING STATES ═════════════════════════════════════════════════ */
+.catalog-empty { color: var(--text-muted); font-size: 13px; padding: 40px 0; text-align: center; }
+.catalog-empty a { color: var(--teal); }
+.catalog-loading { align-items: center; color: var(--text-muted); display: flex; font-size: 13px; gap: 10px; padding: 32px 0; }
+.catalog-loading .spinner {
+  animation: spin .8s linear infinite; border: 2px solid var(--border-subtle);
+  border-radius: 50%; border-top-color: var(--teal); flex-shrink: 0; height: 18px; width: 18px;
+}
+</style>
+</head>
+<body class="page-listen">
+
+<!-- ═══ NAVBAR ═══════════════════════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">Michie Stream Platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" href="listen.html">Just Listen</a></li>
+        <li class="nav-item"><a class="nav-link" href="creators.html">Creators Corner</a></li>
+        <li class="nav-item"><a class="nav-link" href="marketplace.html">NFT Marketplace</a></li>
+        <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+        <li class="nav-item" data-requires="hostConcert" style="display:none;">
+          <a class="nav-link" href="live_studio.html">🔴 Live Studio</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-primary btn-sm" data-connect-wallet>Connect Wallet</button>
+        <button id="btn-disconnect" class="btn btn-outline-light btn-sm d-none">Disconnect</button>
+        <span id="walletAddress" class="small text-light wallet-address-display"></span>
+        <span class="small text-warning fw-semibold user-name-display"></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ NEON BANNER ══════════════════════════════════════════════════════════ -->
+<div class="neon-banner">
+  <div class="b-side">
+    <svg class="b-ic" style="animation-delay:.1s,0s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 28 24" fill="none"><rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#00D4BB" stroke-width="1.7"/><circle cx="14" cy="15" r="4.5" stroke="#00D4BB" stroke-width="1.7"/><circle cx="14" cy="15" r="1.8" fill="#00D4BB"/><path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#00D4BB" stroke-width="1.7" fill="none"/><rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#00D4BB"/></svg>
+    <svg class="b-ic" style="animation-delay:.4s,.35s;width:36px;height:24px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 44 30"><path d="M10 22V10l24-4v12" stroke="#F5F000" stroke-width="1.8" fill="none" stroke-linecap="round"/><line x1="10" y1="10" x2="34" y2="6" stroke="#F5F000" stroke-width="1.8"/><circle cx="7.5" cy="22" r="3.2" fill="#F5F000"/><circle cx="31.5" cy="18" r="3.2" fill="#F5F000"/></svg>
+    <svg class="b-ic" style="animation-delay:.7s,.7s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(232,93,58,.9))" viewBox="0 0 32 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="#E85D3A" stroke-width="1.7"/><path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#E85D3A" stroke-width="1.7" fill="none" stroke-linejoin="round"/><circle cx="8" cy="11" r="2" fill="#E85D3A" opacity=".6"/></svg>
+    <svg class="b-ic" style="animation-delay:1.05s,1.05s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 28 24" fill="none"><rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#8B5CF6" stroke-width="1.7"/><circle cx="14" cy="15" r="4.5" stroke="#8B5CF6" stroke-width="1.7"/><circle cx="14" cy="15" r="1.8" fill="#8B5CF6"/><path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#8B5CF6" stroke-width="1.7" fill="none"/><rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#8B5CF6"/></svg>
+    <svg class="b-ic" style="animation-delay:1.4s,1.4s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 32 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="#00D4BB" stroke-width="1.7"/><path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#00D4BB" stroke-width="1.7" fill="none" stroke-linejoin="round"/><circle cx="8" cy="11" r="2" fill="#00D4BB" opacity=".6"/></svg>
+    <svg class="b-ic" style="animation-delay:1.75s,1.75s;width:38px;height:26px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 48 32"><path d="M8 24V11l32-5v13" stroke="#F5F000" stroke-width="1.7" fill="none" stroke-linecap="round"/><line x1="8" y1="11" x2="40" y2="6" stroke="#F5F000" stroke-width="1.7"/><circle cx="5.5" cy="24" r="3" fill="#F5F000"/><circle cx="21" cy="19.5" r="3" fill="#F5F000"/><circle cx="37" cy="19.5" r="3" fill="#F5F000"/></svg>
+    <svg class="b-ic" style="animation-delay:2.1s,2.1s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 32 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="#8B5CF6" stroke-width="1.7"/><path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#8B5CF6" stroke-width="1.7" fill="none" stroke-linejoin="round"/><circle cx="8" cy="11" r="2" fill="#8B5CF6" opacity=".6"/></svg>
+  </div>
+  <div class="b-slogan">
+    <div class="b-line">Put the Needle on the Record</div>
+    <div class="b-line">That is on a Blockchain</div>
+  </div>
+  <div class="b-side">
+    <svg class="b-ic" style="animation-delay:.2s,.2s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 28 24" fill="none"><rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#00D4BB" stroke-width="1.7"/><circle cx="14" cy="15" r="4.5" stroke="#00D4BB" stroke-width="1.7"/><circle cx="14" cy="15" r="1.8" fill="#00D4BB"/><path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#00D4BB" stroke-width="1.7" fill="none"/><rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#00D4BB"/></svg>
+    <svg class="b-ic" style="animation-delay:.55s,.55s;width:36px;height:24px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 44 30"><path d="M10 22V10l24-4v12" stroke="#F5F000" stroke-width="1.8" fill="none" stroke-linecap="round"/><line x1="10" y1="10" x2="34" y2="6" stroke="#F5F000" stroke-width="1.8"/><circle cx="7.5" cy="22" r="3.2" fill="#F5F000"/><circle cx="31.5" cy="18" r="3.2" fill="#F5F000"/></svg>
+    <svg class="b-ic" style="animation-delay:.9s,.9s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(232,93,58,.9))" viewBox="0 0 32 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="#E85D3A" stroke-width="1.7"/><path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#E85D3A" stroke-width="1.7" fill="none" stroke-linejoin="round"/><circle cx="8" cy="11" r="2" fill="#E85D3A" opacity=".6"/></svg>
+    <svg class="b-ic" style="animation-delay:1.25s,1.25s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 28 24" fill="none"><rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#8B5CF6" stroke-width="1.7"/><circle cx="14" cy="15" r="4.5" stroke="#8B5CF6" stroke-width="1.7"/><circle cx="14" cy="15" r="1.8" fill="#8B5CF6"/><path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#8B5CF6" stroke-width="1.7" fill="none"/><rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#8B5CF6"/></svg>
+    <svg class="b-ic" style="animation-delay:1.6s,1.6s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 32 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="#00D4BB" stroke-width="1.7"/><path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#00D4BB" stroke-width="1.7" fill="none" stroke-linejoin="round"/><circle cx="8" cy="11" r="2" fill="#00D4BB" opacity=".6"/></svg>
+    <svg class="b-ic" style="animation-delay:1.95s,1.95s;width:38px;height:26px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 48 32"><path d="M8 24V11l32-5v13" stroke="#F5F000" stroke-width="1.7" fill="none" stroke-linecap="round"/><line x1="8" y1="11" x2="40" y2="6" stroke="#F5F000" stroke-width="1.7"/><circle cx="5.5" cy="24" r="3" fill="#F5F000"/><circle cx="21" cy="19.5" r="3" fill="#F5F000"/><circle cx="37" cy="19.5" r="3" fill="#F5F000"/></svg>
+    <svg class="b-ic" style="animation-delay:2.3s,2.3s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 32 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="#8B5CF6" stroke-width="1.7"/><path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#8B5CF6" stroke-width="1.7" fill="none" stroke-linejoin="round"/><circle cx="8" cy="11" r="2" fill="#8B5CF6" opacity=".6"/></svg>
+  </div>
+</div>
+<!-- ═══ END NEON BANNER ══════════════════════════════════════════════════════ -->
+
+
+<!-- ═══ PAGE CONTENT ══════════════════════════════════════════════════════════ -->
+<div class="container py-4">
+
+  <!-- Subscription status bar -->
+  <div class="sub-status-bar">
+    <div class="d-flex align-items-center gap-2 flex-grow-1">
+      <span id="subscription-status" class="fw-semibold small"></span>
+      <span id="subscription-expiry" class="small text-muted"></span>
+      <span id="platform-nft-badge" class="badge bg-warning text-dark" style="display:none;"></span>
+    </div>
+    <button class="btn btn-outline-secondary btn-sm"
+      data-bs-toggle="collapse" data-bs-target="#subscribe-panel" aria-expanded="false">
+      Plans &amp; Pricing ↓
+    </button>
+  </div>
+
+  <!-- Collapsible subscription plans -->
+  <div class="collapse mb-4" id="subscribe-panel">
+    <section id="subscribe" class="border border-secondary rounded p-4">
+      <h5 class="mb-1">Choose Your Plan</h5>
+      <p class="text-muted small mb-3">All plans include ad-free streaming. Cancel or change anytime.</p>
+      <div class="btn-group btn-group-sm mb-3" role="group">
+        <input type="radio" class="btn-check" name="billing-period" id="bp-monthly" value="monthly" checked>
+        <label class="btn btn-outline-secondary" for="bp-monthly">Monthly</label>
+        <input type="radio" class="btn-check" name="billing-period" id="bp-annual" value="annual">
+        <label class="btn btn-outline-secondary" for="bp-annual">Annual <span class="badge bg-success ms-1">~10% off</span></label>
+        <input type="radio" class="btn-check" name="billing-period" id="bp-rolling" value="rolling">
+        <label class="btn btn-outline-secondary" for="bp-rolling">3-Day</label>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="card h-100 border-secondary bg-dark text-light">
+            <div class="card-header bg-secondary text-white text-center py-2"><strong>Tier 1 — Listener</strong></div>
+            <div class="card-body d-flex flex-column py-3">
+              <p class="fs-4 text-center fw-bold mb-2"><span class="price-t1">$10.99</span><small class="fs-6 text-muted period-label">/mo</small></p>
+              <ul class="list-unstyled small flex-grow-1">
+                <li>✅ On-demand streaming</li><li>✅ Browse &amp; buy NFTs</li>
+                <li>✅ Watch live concerts</li><li>✅ Anonymous tipping</li>
+                <li class="text-muted">❌ Playlists</li><li class="text-muted">❌ Activity earnings</li>
+              </ul>
+              <button class="btn btn-secondary btn-sm w-100 mt-2"
+                data-subscribe-plan="listener_tier1_monthly"
+                data-plan-monthly="listener_tier1_monthly" data-plan-annual="listener_tier1_annual" data-plan-rolling="listener_tier1_rolling">
+                Subscribe — Tier 1</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 border-primary bg-dark text-light">
+            <div class="card-header bg-primary text-white text-center py-2"><strong>Tier 2 — Active</strong> <small class="opacity-75">Popular</small></div>
+            <div class="card-body d-flex flex-column py-3">
+              <p class="fs-4 text-center fw-bold mb-2"><span class="price-t2">$19.99</span><small class="fs-6 text-muted period-label">/mo</small></p>
+              <ul class="list-unstyled small flex-grow-1">
+                <li>✅ Everything in Tier 1</li><li>✅ Concert chat</li>
+                <li>✅ Create playlists</li><li>✅ Host DJ sets</li>
+                <li>✅ Activity royalty earning</li><li class="text-muted">❌ Passive earnings</li>
+              </ul>
+              <button class="btn btn-primary btn-sm w-100 mt-2"
+                data-subscribe-plan="listener_tier2_monthly"
+                data-plan-monthly="listener_tier2_monthly" data-plan-annual="listener_tier2_annual" data-plan-rolling="listener_tier2_rolling">
+                Subscribe — Tier 2</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 border-warning bg-dark text-light">
+            <div class="card-header bg-warning text-dark text-center py-2"><strong>Tier 3 — Supporter</strong> <small>Full access</small></div>
+            <div class="card-body d-flex flex-column py-3">
+              <p class="fs-4 text-center fw-bold mb-2"><span class="price-t3">$34.99</span><small class="fs-6 text-muted period-label">/mo</small></p>
+              <ul class="list-unstyled small flex-grow-1">
+                <li>✅ Everything in Tier 2</li><li>✅ Passive royalty split</li>
+                <li>✅ Offline downloads</li><li>✅ Priority support</li>
+              </ul>
+              <button class="btn btn-warning btn-sm w-100 mt-2 text-dark"
+                data-subscribe-plan="listener_tier3_monthly"
+                data-plan-monthly="listener_tier3_monthly" data-plan-annual="listener_tier3_annual" data-plan-rolling="listener_tier3_rolling">
+                Subscribe — Tier 3</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-dark mt-3 mb-0 small">
+        <strong>Creator or artist?</strong> Plans on <a href="creators.html" class="alert-link">Creators Corner</a>.
+        Platform NFT holder? <a href="profile.html#claim-nft" class="alert-link">Claim on your profile</a>.
+      </div>
+    </section>
+  </div>
+
+  <!-- Content type tabs -->
+  <div class="ct-tabs" role="tablist">
+    <button class="ct-tab active"      data-ct-tab="music"    role="tab" aria-selected="true">🎵 Music</button>
+    <button class="ct-tab podcast-tab" data-ct-tab="podcasts" role="tab" aria-selected="false">🎙 Podcasts</button>
+    <button class="ct-tab live-tab"    data-ct-tab="live"     role="tab" aria-selected="false">🔴 Live</button>
+  </div>
+
+  <!-- MUSIC TAB -->
+  <div id="tab-music" class="tab-pane">
+    <div class="d-flex align-items-center justify-content-between mb-3 gap-2 flex-wrap">
+      <div class="filter-pills">
+        <button class="filter-pill active"   data-music-filter="all">All</button>
+        <button class="filter-pill"          data-music-filter="videos">Videos</button>
+        <button class="filter-pill fav-pill" data-music-filter="favorites">♥ Favorites</button>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="list" title="List view">≡</button>
+        <button class="view-btn"        data-view="grid" title="Grid view">⊞</button>
+      </div>
+    </div>
+    <!-- Catalog renders here. Named msp-catalog so main.js (which targets
+         #library-list) never overwrites it. -->
+    <div id="msp-catalog">
+      <div class="catalog-loading"><div class="spinner"></div>Loading catalog…</div>
+    </div>
+    <!-- Favorites sub-panel — compact summary + link to full management -->
+    <div id="favorites-section" style="display:none;">
+      <div class="fav-section-header">
+        <h5 class="mb-0" style="color:var(--ember);">♥ Your Favorites</h5>
+        <a href="favorites.html" class="btn btn-sm btn-outline-warning ms-auto">Manage All →</a>
+      </div>
+      <!-- Per-category summary chips rendered by JS -->
+      <div id="fav-summary-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;"></div>
+      <!-- Playable track quick-list -->
+      <div id="favorites-list">
+        <p class="text-muted small py-2">No favorites yet. Tap ♥ on any track.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PODCASTS TAB -->
+  <div id="tab-podcasts" class="tab-pane" style="display:none;">
+    <div class="podcast-grid" id="podcast-list">
+      <div class="catalog-empty">No podcasts yet. Check back soon.</div>
+    </div>
+  </div>
+
+  <!-- LIVE TAB -->
+  <div id="tab-live" class="tab-pane" style="display:none;">
+    <div class="live-grid" id="live-concerts">
+      <div class="catalog-empty">No live shows right now.</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+
+<!-- ═══ FIXED BOTTOM PLAYER BAR ═══════════════════════════════════════════════
+  RULE: Each of these IDs appears EXACTLY ONCE in the entire document.
+  #audio-player  #play-btn  #pause-btn  #stop-btn  #duration-display
+  All hidden off-screen via CSS. The visible player is #msp-play-toggle.
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="msp-player-bar">
+
+  <!-- Hidden stubs for common.js — do not duplicate, do not remove -->
+  <audio id="audio-player"    preload="none" style="display:none;"></audio>
+  <button id="play-btn"       aria-hidden="true" tabindex="-1">▶</button>
+  <button id="pause-btn"      aria-hidden="true" tabindex="-1">⏸</button>
+  <button id="stop-btn"       aria-hidden="true" tabindex="-1">⏹</button>
+  <span   id="duration-display" aria-hidden="true"></span>
+
+  <!-- Left: cover art + track info -->
+  <div class="player-track-col">
+    <img id="vinyl-icon"
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%231C1C21'/%3E%3Ccircle cx='24' cy='24' r='8' fill='%23222228'/%3E%3Ccircle cx='24' cy='24' r='2.5' fill='%23F5F000'/%3E%3C/svg%3E"
+      alt="Now playing" width="48" height="48">
+    <div class="player-track-text">
+      <div id="track-name" style="color:var(--text-secondary);font-style:italic;">No track selected</div>
+      <div id="player-artist-name" style="color:var(--text-muted);font-size:11px;">—</div>
+    </div>
+  </div>
+
+  <!-- Centre: skip / play toggle / progress -->
+  <div class="player-center-col">
+    <div class="player-controls-row">
+
+      <button class="player-ctrl-btn" id="btn-skip-back" title="Back 15s">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
+          <text x="8" y="16" font-size="5.5" font-family="monospace" fill="currentColor" stroke="none">15</text>
+        </svg>
+      </button>
+
+      <!-- Neon yellow ▶ / inverted ⏸ — wired in inline script, no Bootstrap -->
+      <button id="msp-play-toggle" aria-label="Play">
+        <svg id="icon-play"  width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <polygon points="3,1 15,8 3,15" fill="#08080A"/>
+        </svg>
+        <svg id="icon-pause" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:none;">
+          <rect x="2"  y="1" width="4" height="14" rx="1" fill="#F5F000"/>
+          <rect x="10" y="1" width="4" height="14" rx="1" fill="#F5F000"/>
+        </svg>
+      </button>
+
+      <button class="player-ctrl-btn" id="btn-skip-fwd" title="Forward 15s">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-.49-3.5"/>
+          <text x="8" y="16" font-size="5.5" font-family="monospace" fill="currentColor" stroke="none">15</text>
+        </svg>
+      </button>
+
+    </div>
+    <div class="player-progress-row">
+      <span id="time-display">0:00</span>
+      <input type="range" id="progress-bar" min="0" max="100" value="0" step="0.1">
+    </div>
+  </div>
+
+  <!-- Right: volume -->
+  <div class="player-vol-col">
+    <span class="vol-icon">🔊</span>
+    <input type="range" id="volume-bar" min="0" max="1" step="0.01" value="1">
+  </div>
+
+</div><!-- /msp-player-bar -->
+
+
+<!-- ═══ WALLET MODAL ═════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="walletModal" tabindex="-1" aria-labelledby="walletModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="walletModalLabel">Connect a Wallet</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-0">
+        <div class="list-group">
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-metamask">
+            <img src="https://cdn.jsdelivr.net/gh/MetaMask/brand-resources/SVG/metamask-fox.svg" alt="" width="28" height="28">
+            <span>MetaMask (EVM)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-coinbase">
+            <img src="https://avatars.githubusercontent.com/u/1885080?s=200&v=4" alt="" width="28" height="28">
+            <span>Coinbase Wallet (EVM)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-phantom">
+            <img src="https://avatars.githubusercontent.com/u/78782331?s=200&v=4" alt="" width="28" height="28">
+            <span>Phantom (Solana)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-solflare">
+            <img src="https://avatars.githubusercontent.com/u/64856450?s=200&v=4" alt="" width="28" height="28">
+            <span>Solflare (Solana)</span>
+          </button>
+          <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-zcash">
+            <img src="https://avatars.githubusercontent.com/u/21111808?s=200&v=4" alt="" width="28" height="28">
+            <span>Zcash Wallet / Hardware</span>
+          </button>
+        </div>
+        <div class="small text-secondary mt-3" id="wallet-help"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FLOATING OPTIONS MENU ═════════════════════════════════════════════════ -->
+<div id="track-options-menu" role="menu" aria-label="Track options">
+  <div class="opt-section">
+    <button class="opt-item" data-opt="fav-track">
+      <i class="opt-icon">♥</i> Favorite Track
+    </button>
+    <button class="opt-item" data-opt="fav-artist">
+      <i class="opt-icon">★</i> Favorite Artist
+    </button>
+  </div>
+  <hr class="opt-divider">
+  <div class="opt-section">
+    <div class="opt-submenu-head">Add to Playlist</div>
+    <div id="opt-playlist-list">
+      <span class="opt-pl-empty">No playlists yet</span>
+    </div>
+  </div>
+  <hr class="opt-divider">
+  <div class="opt-section">
+    <button class="opt-item" data-opt="share">
+      <i class="opt-icon">🔗</i> Share
+    </button>
+    <button class="opt-item" data-opt="download">
+      <i class="opt-icon">⬇</i> Download
+      <span class="opt-tier-badge" id="opt-download-badge">Tier 2+</span>
+    </button>
+    <button class="opt-item" data-opt="lyrics">
+      <i class="opt-icon">🎤</i> Lyrics
+    </button>
+    <button class="opt-item" data-opt="info">
+      <i class="opt-icon">ℹ</i> Info
+    </button>
+  </div>
+</div>
+
+<!-- ═══ VENDOR + APP SCRIPTS ══════════════════════════════════════════════════ -->
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="vendor/ethers/ethers.umd.min.js"></script>
+<script src="vendor/hls/hls.min.js"></script>
+<script src="vendor/ipfs/index.min.js"></script>
+<script src="Scripts/wallets.js"></script>
+<script src="Scripts/common.js"></script>
+<script src="Scripts/favorites.js"></script>
+<script src="Scripts/live_broadcast.js"></script>
+<script src="Scripts/main.js"></script>
+
+<script src="Scripts/listen.js"></script>
+
+</body>
+</html>

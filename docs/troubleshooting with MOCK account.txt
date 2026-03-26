@@ -1,0 +1,375 @@
+
+PS C:\WINDOWS\system32> cd ..
+
+PS C:\WINDOWS> cd ..
+
+PS C:\> cd .\michie-stream-platform
+
+PS C:\michie-stream-platform> dir
+
+
+    Directory: C:\michie-stream-platform
+
+
+Mode                 LastWriteTime         Length Name                                                                                                                   
+----                 -------------         ------ ----                                                                                                                   
+d-----         3/18/2026  11:53 AM                bin                                                                                                                    
+d-----         3/18/2026  11:53 AM                certs                                                                                                                  
+d-----         3/17/2026   7:19 AM                contracts                                                                                                              
+d-----         3/18/2026  12:22 PM                docs                                                                                                                   
+d-----         3/18/2026  11:53 AM                examples                                                                                                               
+d-----         3/17/2026   7:19 AM                infra                                                                                                                  
+d-----         3/18/2026  11:53 AM                logs                                                                                                                   
+d-----         3/17/2026   7:19 AM                public                                                                                                                 
+d-----         3/17/2026   7:19 AM                schemas                                                                                                                
+d-----         3/17/2026   7:19 AM                src                                                                                                                    
+d-----         3/18/2026  11:53 AM                temp                                                                                                                   
+-a----         3/18/2026   4:03 AM           8921 .env                                                                                                                   
+-a----         3/18/2026   3:52 AM           8861 .env.bak                                                                                                               
+-a----         3/18/2026  11:53 AM            376 .gitignore                                                                                                             
+-a----         3/18/2026  11:53 AM              7 dj_sets.json                                                                                                           
+-a----         3/18/2026  11:59 AM           5225 index.html                                                                                                             
+-a----         3/18/2026  11:53 AM              7 live_sessions.json                                                                                                     
+-a----         3/18/2026  11:53 AM              7 profiles.json                                                                                                          
+-a----         3/18/2026  11:52 AM           5338 scaffold.ps1                                                                                                           
+
+
+
+PS C:\michie-stream-platform> powershell -ExecutionPolicy Bypass -File copy-outputs.ps1 -From "C:\Users\miche\Downloads\msp-outputs"
+powershell : The argument 'copy-outputs.ps1' to the -File parameter does not exist. Provide the path to an existing '.ps1' file as an argument to the -File parameter.
+At line:1 char:1
++ powershell -ExecutionPolicy Bypass -File copy-outputs.ps1 -From "C:\U ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (The argument 'c...File parameter.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+
+PS C:\michie-stream-platform> 
+PS C:\michie-stream-platform> powershell -ExecutionPolicy Bypass -File copy-outputs.ps1 -From "C:\Users\miche\Downloads\msp-outputs"
+
+  MSP -- Copy Output Files to Project
+
+  Source : C:\Users\miche\Downloads\msp-outputs
+  Target : C:\michie-stream-platform
+
+[HTML Pages]
+  [OK] index.html
+       -> public\index.html
+  [OK] listen.html
+       -> public\listen.html
+  [OK] creators.html
+       -> public\creators.html
+  [OK] marketplace.html
+       -> public\marketplace.html
+  [OK] profile.html
+       -> public\profile.html
+  [OK] live_ui.html
+       -> public\live_studio.html
+
+[Browser Scripts]
+  [OK] main.js
+       -> public\Scripts\main.js
+  [OK] wallets.js
+       -> public\Scripts\wallets.js
+  [OK] router.js
+       -> public\Scripts\router.js
+  [OK] live_broadcast.js
+       -> public\Scripts\live_broadcast.js
+
+[Server]
+  [OK] server.cjs
+       -> src\server.cjs
+  [OK] validator.js
+       -> src\validator.js
+  [OK] gst_pipeline.js
+       -> src\gst_pipeline.js
+  [OK] server_gst_additions.js
+       -> src\server_gst_additions.js
+  [OK] server_live.js
+       -> src\server_live.js
+
+[Infrastructure]
+  [OK] nginx.conf
+       -> infra\nginx.conf
+  [OK] install-media.sh
+       -> infra\install-media.sh
+  [OK] gst-transcode.sh
+       -> infra\scripts\gst-transcode.sh
+  [OK] gst-transcode-done.sh
+       -> infra\scripts\gst-transcode-done.sh
+
+[Docs]
+  [OK] README.md
+       -> README.md
+  [OK] MSP_Design_System.html
+       -> docs\MSP_Design_System.html
+  [OK] MSP_Technical_Overview.docx
+       -> docs\MSP_Technical_Overview.docx
+  [OK] MSP_File_Tree_GitHub.docx
+       -> docs\MSP_File_Tree_GitHub.docx
+  [OK] FEATURE_SPEC_Favorites_and_Playlists.md
+       -> docs\FEATURE_SPEC_Favorites_and_Playlists.md
+
+[Root config]
+  [OK] package.json
+       -> package.json
+  [!] MISSING: .env.example
+      Expected at: C:\Users\miche\Downloads\msp-outputs\.env.example
+
+--------------------------------------------
+  Copy these manually from your OLD project:
+    contracts\  (all .sol files)
+    public\vendor\  (bootstrap, ethers, hls, ipfs)
+    src\module_aws.js
+    public\Scripts\common.js
+    public\Scripts\wallet-boot.js
+    public\styles\styles.css
+
+  FFmpeg: update FFMPEG_PATH in .env to your existing path.
+--------------------------------------------
+
+  Done. Next steps:
+    cd C:\michie-stream-platform
+    npm install
+    copy .env.example .env
+    npm run dev
+
+
+PS C:\michie-stream-platform> 
+PS C:\michie-stream-platform> powershell -ExecutionPolicy Bypass -File copy-outputs.ps1 -From "C:\Users\miche\Downloads\msp-outputs"
+
+  MSP -- Copy Output Files to Project
+
+  Source : C:\Users\miche\Downloads\msp-outputs
+  Target : C:\michie-stream-platform
+
+[HTML Pages]
+  [OK] index.html
+       -> public\index.html
+  [OK] listen.html
+       -> public\listen.html
+  [OK] creators.html
+       -> public\creators.html
+  [OK] marketplace.html
+       -> public\marketplace.html
+  [OK] profile.html
+       -> public\profile.html
+  [OK] live_ui.html
+       -> public\live_studio.html
+
+[Browser Scripts]
+  [OK] main.js
+       -> public\Scripts\main.js
+  [OK] wallets.js
+       -> public\Scripts\wallets.js
+  [OK] router.js
+       -> public\Scripts\router.js
+  [OK] live_broadcast.js
+       -> public\Scripts\live_broadcast.js
+
+[Server]
+  [OK] server.cjs
+       -> src\server.cjs
+  [OK] validator.js
+       -> src\validator.js
+  [OK] gst_pipeline.js
+       -> src\gst_pipeline.js
+  [OK] server_gst_additions.js
+       -> src\server_gst_additions.js
+  [OK] server_live.js
+       -> src\server_live.js
+
+[Infrastructure]
+  [OK] nginx.conf
+       -> infra\nginx.conf
+  [OK] install-media.sh
+       -> infra\install-media.sh
+  [OK] gst-transcode.sh
+       -> infra\scripts\gst-transcode.sh
+  [OK] gst-transcode-done.sh
+       -> infra\scripts\gst-transcode-done.sh
+
+[Docs]
+  [OK] README.md
+       -> README.md
+  [OK] MSP_Design_System.html
+       -> docs\MSP_Design_System.html
+  [OK] MSP_Technical_Overview.docx
+       -> docs\MSP_Technical_Overview.docx
+  [OK] MSP_File_Tree_GitHub.docx
+       -> docs\MSP_File_Tree_GitHub.docx
+  [OK] FEATURE_SPEC_Favorites_and_Playlists.md
+       -> docs\FEATURE_SPEC_Favorites_and_Playlists.md
+
+[Root config]
+  [OK] package.json
+       -> package.json
+  [OK] .env.example
+       -> .env.example
+
+--------------------------------------------
+  Copy these manually from your OLD project:
+    contracts\  (all .sol files)
+    public\vendor\  (bootstrap, ethers, hls, ipfs)
+    src\module_aws.js
+    public\Scripts\common.js
+    public\Scripts\wallet-boot.js
+    public\styles\styles.css
+
+  FFmpeg: update FFMPEG_PATH in .env to your existing path.
+--------------------------------------------
+
+  Done. Next steps:
+    cd C:\michie-stream-platform
+    npm install
+    copy .env.example .env
+    npm run dev
+
+
+PS C:\michie-stream-platform> 
+PS C:\michie-stream-platform> copy .env.example .env
+notepad .env
+
+PS C:\michie-stream-platform> curl http://localhost:3001/api/fees
+curl : Operation cancelled due to security concerns. Use -UseBasicParsing parameter for 
+safe HTML parsing without script execution.
+At line:1 char:1
++ curl http://localhost:3001/api/fees
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : SecurityError: (http://localhost:3001/api/fees:Uri) [Invoke- 
+   WebRequest], InvalidOperationException
+    + FullyQualifiedErrorId : WebCmdletIEParsingDeclined,Microsoft.PowerShell.Commands.Inv 
+   okeWebRequestCommand
+ 
+
+PS C:\michie-stream-platform> curl.exe http://localhost:3001/api/fees
+curl.exe :   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+At line:1 char:1
++ curl.exe http://localhost:3001/api/fees
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  % Total    % ... Time   Current:String) [], 
+    RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+100   1197 100   1197   0      0 453.9k      0                              0
+100   1197 100   1197   0      0 447.1k      0                              0
+100   1197 100   1197   0      0 441.7k      0                              0
+{"royalty_standard_pct":5,"royalty_nft_pct":1.5,"tip_pct":3,"nft_sale_pct":2.5,"platform_nft
+_price_usd":10000,"subscription_plans":{"listener_tier1_monthly":{"price_usd":10.99,"days":3
+0,"type":"listener","tier":1},"listener_tier1_annual":{"price_usd":131.88,"days":365,"type":
+"listener","tier":1},"listener_tier1_rolling":{"price_usd":10.99,"days":3,"type":"listener",
+"tier":1},"listener_tier2_monthly":{"price_usd":19.99,"days":30,"type":"listener","tier":2},
+"listener_tier2_annual":{"price_usd":239.88,"days":365,"type":"listener","tier":2},"listener
+_tier2_rolling":{"price_usd":19.99,"days":3,"type":"listener","tier":2},"listener_tier3_mont
+hly":{"price_usd":34.99,"days":30,"type":"listener","tier":3},"listener_tier3_annual":{"pric
+e_usd":419.88,"days":365,"type":"listener","tier":3},"listener_tier3_rolling":{"price_usd":3
+4.99,"days":3,"type":"listener","tier":3},"creator_monthly":{"price_usd":29.99,"days":30,"ty
+pe":"creator","tier":null},"creator_annual":{"price_usd":299.88,"days":365,"type":"creator",
+"tier":null},"nft_creator_monthly":{"price_usd":14.99,"days":30,"type":"nft_creator","tier":
+null},"nft_creator_annual":{"price_usd":179.88,"days":365,"type":"nft_creator","tier":null}}
+}
+
+PS C:\michie-stream-platform> curl.exe -X POST http://localhost:3001/api/create-profile -H "Content-Type: application/json" -d "{\"wallet\": \"0xDe1f33Ce3E81bc54ebD0F4BC3Ce0a2F64d7Ef399\", \"name\": \"MSP Dev\", \"account_type\": \"creator\"}"
+curl.exe :   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+At line:1 char:1
++ curl.exe -X POST http://localhost:3001/api/create-profile -H "Content ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  % Total    % ... Time   Current:String) [], 
+    RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+100     35 100     33 100      2   1669    101                              0
+100     35 100     33 100      2   1665    100                              0
+100     35 100     33 100      2   1662    100                              0
+curl: (3) URL rejected: Malformed input to a URL function
+curl: (3) URL rejected: Malformed input to a URL function
+{"error":"Internal server error"}
+
+PS C:\michie-stream-platform> $body = '{"wallet": "0xDe1f33Ce3E81bc54ebD0F4BC3Ce0a2F64d7Ef399", "name": "MSP Dev", "account_type": "creator"}'
+curl.exe -X POST http://localhost:3001/api/create-profile -H "Content-Type: application/json" -d $body
+curl.exe :   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+At line:2 char:1
++ curl.exe -X POST http://localhost:3001/api/create-profile -H "Content ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  % Total    % ... Time   Current:String) [], 
+    RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+100     95 100     33 100     62  11482  21572                              0
+100     95 100     33 100     62  11312  21254                              0
+100     95 100     33 100     62  11182  21009                              0
+curl: (3) unmatched close brace/bracket in URL position 27:
+Dev, account_type: creator}
+                          ^
+{"error":"Internal server error"}
+
+PS C:\michie-stream-platform> 
+PS C:\michie-stream-platform> '{"wallet": "0xDe1f33Ce3E81bc54ebD0F4BC3Ce0a2F64d7Ef399", "name": "MSP Dev", "account_type": "creator"}' | Out-File -Encoding utf8 -FilePath body.json
+curl.exe -X POST http://localhost:3001/api/create-profile -H "Content-Type: application/json" -d "@body.json"
+curl.exe :   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+At line:2 char:1
++ curl.exe -X POST http://localhost:3001/api/create-profile -H "Content ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  % Total    % ... Time   Current:String) [], 
+    RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+100    650 100    545 100    105  28071   5408                              0
+100    650 100    545 100    105  27964   5387                              0
+100    650 100    545 100    105  27868   5369                              0
+{"user_id":"34643935-355a-4d95-95d5-14c39b9652ca","name":"MSP Dev","wallet_address":"0xDe1f3
+3Ce3E81bc54ebD0F4BC3Ce0a2F64d7Ef399","account_type":"creator","listener_tier":null,"listener
+_plan":null,"subscription_start":null,"subscription_expiry":null,"platform_nft_address":null
+,"royalty_fee_rate":0.05,"nft_contract_address":null,"playlist_cids":[],"favorites":[],"dj_s
+ettings":{"tips_enabled_default":true},"supporter_subaccount":{"enabled":false,"linked_creat
+or_wallet":"0xDe1f33Ce3E81bc54ebD0F4BC3Ce0a2F64d7Ef399","royalty_beneficiary_of":[]}}
+
+PS C:\michie-stream-platform> '{"wallet": "0xDe1f33Ce3E81bc54ebD0F4BC3Ce0a2F64d7Ef399", "plan": "creator_monthly"}' | Out-File -Encoding utf8 -FilePath body.json
+curl.exe -X POST http://localhost:3001/api/subscribe -H "Content-Type: application/json" -d "@body.json"
+curl.exe :   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+At line:2 char:1
++ curl.exe -X POST http://localhost:3001/api/subscribe -H "Content-Type ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  % Total    % ... Time   Current:String) [], 
+    RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+100    205 100    119 100     86  33672  24335                              0
+100    205 100    119 100     86  33221  24008                              0
+100    205 100    119 100     86  32380  23401                              0
+{"success":true,"plan":"creator_monthly","tier":null,"expiry":1776530746425,"price_usd":29.9
+9,"price_eth":"0.01199600"}
+
+PS C:\michie-stream-platform> curl.exe http://localhost:3001/api/access/0xDe1f33Ce3E81bc54ebD0F4BC3Ce0a2F64d7Ef399
+curl.exe :   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+At line:1 char:1
++ curl.exe http://localhost:3001/api/access/0xDe1f33Ce3E81bc54ebD0F4BC3 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  % Total    % ... Time   Current:String) [], 
+    RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+100    183 100    183   0      0  61824      0                              0
+100    183 100    183   0      0  60316      0                              0
+100    183 100    183   0      0  59415      0                              0
+{"level":"creator_active","tier":0,"account_type":"creator","subscription_expiry":1776530746
+425,"active":true,"royalty_fee_rate":0.05,"dj_tips_default":true,"supporter_enabled":false}
+
+PS C:\michie-stream-platform> 

@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/msp-vinyl.svg">
+  <link rel="apple-touch-icon" href="assets/msp-vinyl-180.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#F5F000">
+  <title>Creators Corner — Michie Stream Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+<style>
+/* ── MSP Neon Banner ─────────────────────────────────────── */
+.neon-banner {
+  position: relative;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 8px;
+  background: rgba(8,8,10,0.6);
+  border-bottom: 1px solid rgba(212,168,83,0.15);
+  overflow: hidden;
+}
+
+.neon-banner .b-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+  width: 80px;
+}
+
+.neon-banner .b-slogan {
+  flex: 1;
+  text-align: center;
+}
+
+.neon-banner .b-line {
+  font-family: 'Syne', 'Arial Black', sans-serif;
+  font-weight: 800;
+  font-size: clamp(13px, 2vw, 22px);
+  letter-spacing: .04em;
+  line-height: 1.3;
+  color: #F5F000;
+  animation:
+    neon-boot    2.4s ease-out forwards,
+    neon-flicker 5s  ease-in-out infinite 2.4s;
+}
+
+.neon-banner .b-line:last-child {
+  animation:
+    neon-boot    2.4s ease-out .15s forwards,
+    neon-flicker 5s  ease-in-out infinite 2.55s;
+}
+
+.neon-banner svg.b-ic {
+  opacity: 0;
+  animation: b-icon-in 0.4s ease-out forwards, b-fl 3s ease-in-out infinite;
+}
+
+@keyframes b-icon-in { 0%{opacity:0;} 100%{opacity:.85;} }
+@keyframes b-fl { 0%,100%{transform:translateY(0) scale(1);opacity:.85;} 50%{transform:translateY(-4px) scale(1.1);opacity:1;} }
+
+@keyframes neon-boot {
+  0%   {opacity:0;   text-shadow:none;}
+  8%   {opacity:1;   text-shadow:0 0 4px #F5F000,0 0 12px #F5F000,0 0 28px rgba(245,240,0,.8);}
+  10%  {opacity:.1;  text-shadow:none;}
+  14%  {opacity:1;   text-shadow:0 0 4px #F5F000,0 0 20px #F5F000,0 0 40px rgba(245,240,0,.9);}
+  16%  {opacity:.3;  text-shadow:none;}
+  20%  {opacity:1;   text-shadow:0 0 4px #F5F000,0 0 12px #F5F000;}
+  22%  {opacity:.05; text-shadow:none;}
+  28%  {opacity:1;   text-shadow:0 0 4px #F5F000,0 0 28px rgba(245,240,0,.8),0 0 60px rgba(245,240,0,.4);}
+  30%  {opacity:.6;  text-shadow:none;}
+  36%  {opacity:1;   text-shadow:0 0 4px #F5F000,0 0 28px rgba(245,240,0,.8),0 0 60px rgba(245,240,0,.4),0 0 100px rgba(245,240,0,.15);}
+  100% {opacity:1;   text-shadow:0 0 4px #F5F000,0 0 28px rgba(245,240,0,.8),0 0 60px rgba(245,240,0,.4),0 0 100px rgba(245,240,0,.15);}
+}
+
+@keyframes neon-flicker {
+  0%,18%,20%,22%,24%,53%,55%,100% {
+    text-shadow:0 0 4px #F5F000,0 0 12px #F5F000,0 0 28px rgba(245,240,0,.8),0 0 60px rgba(245,240,0,.4),0 0 100px rgba(245,240,0,.15);
+    opacity:1;
+  }
+  19%,23%,54%{text-shadow:none;opacity:.82;}
+}
+</style>
+</head>
+<body style="padding-top:70px;" class="page-creators">
+
+  <!-- ═══════ NAVBAR ═══════ -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">Michie Stream Platform</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="listen.html">Just Listen</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="creators.html">Creators Corner</a></li>
+          <li class="nav-item"><a class="nav-link" href="marketplace.html">NFT Marketplace</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+          <li class="nav-item" data-requires="hostConcert" style="display:none;"><a class="nav-link" href="live_studio.html">🔴 Live Studio</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-primary btn-sm" data-connect-wallet>Connect Wallet</button>
+          <button id="btn-disconnect" class="btn btn-outline-light btn-sm d-none">Disconnect</button>
+          <span id="walletAddress" class="small text-light wallet-address-display"></span>
+          <span class="small text-warning fw-semibold user-name-display"></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- ═══ MSP NEON BANNER ═══════════════════════════════════ -->
+  <div class="neon-banner">
+
+    <!-- Left icons -->
+    <div class="b-side">
+      <svg class="b-ic" style="animation-delay:.1s,0s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 28 24" fill="none">
+        <rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#00D4BB" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="4.5" stroke="#00D4BB" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="1.8" fill="#00D4BB"/>
+        <path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#00D4BB" stroke-width="1.7" fill="none"/>
+        <rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#00D4BB"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:.4s,.35s;width:36px;height:24px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 44 30">
+        <path d="M10 22V10l24-4v12" stroke="#F5F000" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <line x1="10" y1="10" x2="34" y2="6" stroke="#F5F000" stroke-width="1.8"/>
+        <circle cx="7.5" cy="22" r="3.2" fill="#F5F000"/>
+        <circle cx="31.5" cy="18" r="3.2" fill="#F5F000"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:.7s,.7s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(232,93,58,.9))" viewBox="0 0 32 22" fill="none">
+        <rect x="2" y="5" width="18" height="13" rx="2" stroke="#E85D3A" stroke-width="1.7"/>
+        <path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#E85D3A" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+        <circle cx="8" cy="11" r="2" fill="#E85D3A" opacity=".6"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:1.05s,1.05s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 28 24" fill="none">
+        <rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#8B5CF6" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="4.5" stroke="#8B5CF6" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="1.8" fill="#8B5CF6"/>
+        <path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#8B5CF6" stroke-width="1.7" fill="none"/>
+        <rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#8B5CF6"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:1.4s,1.4s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 32 22" fill="none">
+        <rect x="2" y="5" width="18" height="13" rx="2" stroke="#00D4BB" stroke-width="1.7"/>
+        <path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#00D4BB" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+        <circle cx="8" cy="11" r="2" fill="#00D4BB" opacity=".6"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:1.75s,1.75s;width:38px;height:26px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 48 32">
+        <path d="M8 24V11l32-5v13" stroke="#F5F000" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+        <line x1="8" y1="11" x2="40" y2="6" stroke="#F5F000" stroke-width="1.7"/>
+        <circle cx="5.5" cy="24" r="3" fill="#F5F000"/>
+        <circle cx="21" cy="19.5" r="3" fill="#F5F000"/>
+        <circle cx="37" cy="19.5" r="3" fill="#F5F000"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:2.1s,2.1s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 32 22" fill="none">
+        <rect x="2" y="5" width="18" height="13" rx="2" stroke="#8B5CF6" stroke-width="1.7"/>
+        <path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#8B5CF6" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+        <circle cx="8" cy="11" r="2" fill="#8B5CF6" opacity=".6"/>
+      </svg>
+    </div>
+
+    <!-- Slogan -->
+    <div class="b-slogan">
+      <div class="b-line">Put the Needle on the Record</div>
+      <div class="b-line">That is on a Blockchain</div>
+    </div>
+
+    <!-- Right icons (staggered offsets) -->
+    <div class="b-side">
+      <svg class="b-ic" style="animation-delay:.2s,.2s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 28 24" fill="none">
+        <rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#00D4BB" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="4.5" stroke="#00D4BB" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="1.8" fill="#00D4BB"/>
+        <path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#00D4BB" stroke-width="1.7" fill="none"/>
+        <rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#00D4BB"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:.55s,.55s;width:36px;height:24px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 44 30">
+        <path d="M10 22V10l24-4v12" stroke="#F5F000" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <line x1="10" y1="10" x2="34" y2="6" stroke="#F5F000" stroke-width="1.8"/>
+        <circle cx="7.5" cy="22" r="3.2" fill="#F5F000"/>
+        <circle cx="31.5" cy="18" r="3.2" fill="#F5F000"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:.9s,.9s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(232,93,58,.9))" viewBox="0 0 32 22" fill="none">
+        <rect x="2" y="5" width="18" height="13" rx="2" stroke="#E85D3A" stroke-width="1.7"/>
+        <path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#E85D3A" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+        <circle cx="8" cy="11" r="2" fill="#E85D3A" opacity=".6"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:1.25s,1.25s;width:24px;height:20px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 28 24" fill="none">
+        <rect x="2" y="7" width="24" height="15" rx="2.5" stroke="#8B5CF6" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="4.5" stroke="#8B5CF6" stroke-width="1.7"/>
+        <circle cx="14" cy="15" r="1.8" fill="#8B5CF6"/>
+        <path d="M10 7V5.5C10 4.7 10.7 4 11.5 4h5C17.3 4 18 4.7 18 5.5V7" stroke="#8B5CF6" stroke-width="1.7" fill="none"/>
+        <rect x="20" y="10" width="3" height="2.5" rx=".6" fill="#8B5CF6"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:1.6s,1.6s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(0,212,187,.9))" viewBox="0 0 32 22" fill="none">
+        <rect x="2" y="5" width="18" height="13" rx="2" stroke="#00D4BB" stroke-width="1.7"/>
+        <path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#00D4BB" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+        <circle cx="8" cy="11" r="2" fill="#00D4BB" opacity=".6"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:1.95s,1.95s;width:38px;height:26px;filter:drop-shadow(0 0 5px rgba(245,240,0,.9))" viewBox="0 0 48 32">
+        <path d="M8 24V11l32-5v13" stroke="#F5F000" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+        <line x1="8" y1="11" x2="40" y2="6" stroke="#F5F000" stroke-width="1.7"/>
+        <circle cx="5.5" cy="24" r="3" fill="#F5F000"/>
+        <circle cx="21" cy="19.5" r="3" fill="#F5F000"/>
+        <circle cx="37" cy="19.5" r="3" fill="#F5F000"/>
+      </svg>
+      <svg class="b-ic" style="animation-delay:2.3s,2.3s;width:26px;height:18px;filter:drop-shadow(0 0 5px rgba(139,92,246,.9))" viewBox="0 0 32 22" fill="none">
+        <rect x="2" y="5" width="18" height="13" rx="2" stroke="#8B5CF6" stroke-width="1.7"/>
+        <path d="M20 8.5l8-4v13l-8-4V8.5z" stroke="#8B5CF6" stroke-width="1.7" fill="none" stroke-linejoin="round"/>
+        <circle cx="8" cy="11" r="2" fill="#8B5CF6" opacity=".6"/>
+      </svg>
+    </div>
+
+  </div>
+  <!-- ═══ END NEON BANNER ═══════════════════════════════════ -->
+
+
+  <!-- ═══════ PAGE CONTENT ═══════ -->
+  <div class="container py-5 mt-5">
+
+    <!-- ── Creator Status Bar ── -->
+    <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
+      <div>
+        <span id="account-type-display" class="fw-semibold text-muted">Connect wallet to load</span>
+        <span id="subscription-expiry" class="ms-2 small"></span>
+      </div>
+      <span id="platform-nft-badge" class="badge bg-warning text-dark" style="display:none;"></span>
+      <div class="ms-auto small text-muted" id="fee-row" style="display:none;">
+        Royalty platform fee: <strong><span id="royalty-fee-rate"></span></strong>
+        &nbsp;·&nbsp; <a href="profile.html#claim-nft" class="text-muted">Manage NFT status</a>
+      </div>
+    </div>
+
+    <!-- ── Creator Access Gate Message ── -->
+    <div id="creator-gate-msg" class="alert alert-warning" style="display:none;">
+      <strong>Creator account required.</strong>
+      Upload, mint, and live tools are available to Standard Creator subscribers ($29.99/mo) and Platform NFT holders.
+      <a href="listen.html#subscribe" class="alert-link">Subscribe here</a> or
+      <a href="profile.html#claim-nft" class="alert-link">claim your Platform NFT</a>.
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         UPLOAD FORM
+    ════════════════════════════════════════════════ -->
+    <section id="creators" class="mb-5">
+
+      <!-- ── Content type tabs ── -->
+      <div class="upload-type-bar" id="upload-type-bar">
+        <button class="utype-btn active" data-type="music">
+          <span class="utype-icon">♪</span>
+          <span>Music</span>
+        </button>
+        <button class="utype-btn" data-type="podcast">
+          <span class="utype-icon">🎙</span>
+          <span>Podcast</span>
+        </button>
+        <button class="utype-btn" data-type="video">
+          <span class="utype-icon">▶</span>
+          <span>Video</span>
+        </button>
+        <button class="utype-btn" data-type="art_still">
+          <span class="utype-icon">◈</span>
+          <span>Art — Still</span>
+        </button>
+        <button class="utype-btn" data-type="art_animated">
+          <span class="utype-icon">◉</span>
+          <span>Art — Animated</span>
+        </button>
+      </div>
+
+      <!-- ── Requirements line (changes with type) ── -->
+      <p class="upload-reqs" id="upload-reqs">
+        Audio ≥ 128 kbps · 44.1 / 48 kHz · MP3, WAV, OGG, FLAC, AAC, M4A · max 500 MB
+      </p>
+
+      <form id="upload-form" enctype="multipart/form-data">
+        <input type="hidden" id="content-type-field" name="contentType" value="music">
+
+        <!-- ── Drop zone ── -->
+        <div class="drop-zone" id="drag-drop-area">
+          <div class="drop-zone-inner" id="drop-zone-inner">
+            <div class="drop-icon" id="drop-icon">↑</div>
+            <div class="drop-primary">Drop your file here</div>
+            <div class="drop-secondary">or <button type="button" id="browse-btn" class="drop-browse">browse</button></div>
+            <div class="drop-hint" id="drop-hint">MP3 · WAV · OGG · FLAC · AAC · M4A</div>
+          </div>
+          <input type="file" id="audio-file" name="audio-file"
+                 accept="audio/mpeg,audio/wav,audio/ogg,audio/flac,audio/aac,audio/mp4,audio/x-m4a"
+                 hidden>
+        </div>
+
+        <!-- ── Cover image ── -->
+        <div class="upload-field-row">
+          <div class="upload-field cover-field">
+            <label class="ufield-label" for="cover-image">Cover Image <span class="req">*</span></label>
+            <div class="cover-drop" id="cover-drop">
+              <div class="cover-preview" id="cover-preview" style="display:none">
+                <img id="cover-preview-img" src="" alt="cover">
+                <button type="button" id="cover-clear" class="cover-clear">✕</button>
+              </div>
+              <div class="cover-placeholder" id="cover-placeholder">
+                <span style="font-size:28px;opacity:0.3">◈</span>
+                <span style="font-size:11px;color:var(--text-3)">PNG / JPG / WebP · any size in DEV mode</span>
+                <button type="button" id="cover-browse-btn" class="drop-browse" style="font-size:12px">Select image</button>
+              </div>
+              <input type="file" id="cover-image" name="cover-image"
+                     accept="image/png,image/jpeg,image/webp" hidden>
+            </div>
+          </div>
+
+          <!-- ── Core fields ── -->
+          <div class="upload-field flex-fields">
+            <div class="ufield">
+              <label class="ufield-label" for="song-title">Title <span class="req">*</span></label>
+              <input class="ufield-input" type="text" id="song-title" name="songTitle" required placeholder="Track or episode title">
+            </div>
+            <div class="ufield">
+              <label class="ufield-label" for="artist-name">Artist / Creator <span class="req">*</span></label>
+              <input class="ufield-input" type="text" id="artist-name" name="artistName" required placeholder="Your artist name">
+            </div>
+            <div class="ufield">
+              <label class="ufield-label" for="description">Description</label>
+              <textarea class="ufield-input" id="description" name="description" rows="2" placeholder="Tell listeners what this is about…"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Music-specific fields ── -->
+        <div class="type-fields" id="fields-music">
+          <div class="ufield-group">
+            <div class="ufield">
+              <label class="ufield-label" for="album">Album / EP</label>
+              <input class="ufield-input" type="text" id="album" name="album" placeholder="Leave blank for singles">
+            </div>
+            <div class="ufield ufield-sm">
+              <label class="ufield-label" for="bpm">BPM</label>
+              <input class="ufield-input" type="number" id="bpm" name="bpm" placeholder="120" min="40" max="300">
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Podcast-specific fields ── -->
+        <div class="type-fields" id="fields-podcast" style="display:none">
+          <div class="ufield-group">
+            <div class="ufield">
+              <label class="ufield-label" for="series-name">Series / Show Name</label>
+              <input class="ufield-input" type="text" id="series-name" name="seriesName" placeholder="Your podcast series">
+            </div>
+            <div class="ufield ufield-sm">
+              <label class="ufield-label" for="episode-number">Episode #</label>
+              <input class="ufield-input" type="number" id="episode-number" name="episodeNumber" placeholder="1" min="1">
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Dates & registration ── -->
+        <div class="ufield-group">
+          <div class="ufield">
+            <label class="ufield-label" for="release-date">Release Date</label>
+            <input class="ufield-input" type="date" id="release-date" name="releaseDate">
+          </div>
+          <div class="ufield" style="display:none">
+            <label class="ufield-label">Date Created <span class="ufield-auto">auto-filled</span></label>
+            <input class="ufield-input" type="date" id="date-created" name="dateCreated" readonly>
+          </div>
+          <div class="ufield">
+            <label class="ufield-label" for="withdraw-address">Withdraw Address <span class="ufield-opt">optional</span></label>
+            <input class="ufield-input ufield-mono" type="text" id="withdraw-address" name="withdrawAddress" placeholder="0x…">
+          </div>
+        </div>
+
+        <!-- ── Rights metadata (music/podcast only) ── -->
+        <div class="type-fields" id="fields-rights">
+          <details class="rights-details">
+            <summary class="rights-summary">Rights & Registration <span class="rights-opt">optional — MLC / ISRC</span></summary>
+            <div class="ufield-group" style="margin-top:14px">
+              <div class="ufield">
+                <label class="ufield-label" for="mlc-iswc">ISWC</label>
+                <input class="ufield-input ufield-mono" type="text" id="mlc-iswc" name="mlc_iswc" placeholder="T-000.000.000-0">
+              </div>
+              <div class="ufield">
+                <label class="ufield-label" for="mlc-isrc">ISRC</label>
+                <input class="ufield-input ufield-mono" type="text" id="mlc-isrc" name="isrc" placeholder="USRC17607839">
+              </div>
+              <div class="ufield">
+                <label class="ufield-label" for="mlc-ipi">IPI Name Number</label>
+                <input class="ufield-input ufield-mono" type="text" id="mlc-ipi" name="mlc_ipi_name_number" placeholder="00000000000">
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <!-- ── Tags ── -->
+        <div class="ufield">
+          <label class="ufield-label" for="tags">Tags <span class="ufield-opt">optional, comma-separated</span></label>
+          <input class="ufield-input" type="text" id="tags" name="tags"
+                 placeholder="e.g. electronic, deep house, original">
+          <div class="tags-preview" id="tags-preview"></div>
+        </div>
+
+        <!-- ── Mint + chain selector ── -->
+        <div class="mint-row">
+          <div class="mint-toggle-wrap">
+            <label class="mint-switch">
+              <input type="checkbox" id="mint-nft" name="mint_nft" checked>
+              <span class="mint-slider"></span>
+            </label>
+            <div class="mint-label-wrap">
+              <span class="mint-label-main">Mint as NFT on-chain</span>
+              <span class="mint-label-sub">Registers on your connected wallet after upload</span>
+            </div>
+          </div>
+          <div class="mint-chain-wrap" id="mint-chain-wrap">
+            <label class="ufield-label" for="mint-chain" style="margin-bottom:4px">Chain</label>
+            <select class="ufield-input ufield-select" id="mint-chain" name="mintChain" style="width:auto;min-width:120px">
+              <option value="ethereum">Ethereum</option>
+              <option value="polygon">Polygon</option>
+              <option value="base">Base</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ── Copyright confirmation ── -->
+        <label class="copyright-check">
+          <input type="checkbox" id="copyright-check" required>
+          <span>I confirm this is original content and I own all rights, or have proper licensing.</span>
+        </label>
+
+        <!-- ── Submit ── -->
+        <div class="upload-submit-row">
+          <button type="submit" id="upload-btn" class="btn-upload">
+            <span id="upload-btn-text">↑ Upload &amp; Mint</span>
+          </button>
+          <div class="upload-feedback">
+            <progress id="upload-progress" value="0" max="100" style="display:none"></progress>
+            <div id="upload-status" style="display:none"></div>
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+    <style>
+    /* ── Upload section — SIGNAL design ──────────────────── */
+    .upload-type-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .utype-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      background: #1C1C21;
+      border: 1px solid #2E2E36;
+      border-radius: 5px;
+      color: #8A8A98;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .utype-btn:hover { border-color: #E85D3A; color: #EEEAE4; }
+    .utype-btn.active { border-color: #E85D3A; color: #E85D3A; background: rgba(232,93,58,.08); }
+    .utype-icon { font-size: 15px; }
+
+    .upload-reqs {
+      font-size: 11px;
+      color: #484852;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: .04em;
+      margin-bottom: 20px;
+    }
+
+    .drop-zone {
+      background: #1C1C21;
+      border: 1.5px dashed #2E2E36;
+      border-radius: 10px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: all .2s;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .drop-zone.drag-over,
+    .drop-zone:hover { border-color: #E85D3A; background: rgba(232,93,58,.04); }
+    .drop-zone.has-file { border-style: solid; border-color: #00D4BB; background: rgba(0,212,187,.04); }
+    .drop-icon {
+      font-size: 36px;
+      color: #484852;
+      line-height: 1;
+      margin-bottom: 8px;
+      transition: color .2s;
+    }
+    .drop-zone:hover .drop-icon,
+    .drop-zone.drag-over .drop-icon { color: #E85D3A; }
+    .drop-zone.has-file .drop-icon { color: #00D4BB; font-size: 24px; }
+    .drop-primary { font-size: 14px; font-weight: 600; color: #EEEAE4; margin-bottom: 4px; }
+    .drop-secondary { font-size: 12px; color: #8A8A98; margin-bottom: 8px; }
+    .drop-hint { font-family: 'Space Mono', monospace; font-size: 10px; color: #484852; letter-spacing: .08em; }
+    .drop-browse {
+      background: none; border: none;
+      color: #E85D3A; cursor: pointer;
+      font-size: inherit; font-family: inherit; font-weight: 600;
+      text-decoration: underline;
+      padding: 0;
+    }
+
+    .upload-field-row { display: grid; grid-template-columns: 180px 1fr; gap: 20px; margin-bottom: 20px; }
+    @media (max-width: 600px) { .upload-field-row { grid-template-columns: 1fr; } }
+
+    .cover-drop {
+      background: #1C1C21;
+      border: 1px solid #2E2E36;
+      border-radius: 8px;
+      aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      transition: border-color .15s;
+    }
+    .cover-drop:hover { border-color: #E85D3A; }
+    .cover-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px; text-align: center; }
+    .cover-preview { width: 100%; height: 100%; position: relative; }
+    .cover-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cover-clear {
+      position: absolute; top: 6px; right: 6px;
+      background: rgba(8,8,10,.7); border: none; color: #EEEAE4;
+      width: 24px; height: 24px; border-radius: 50%;
+      cursor: pointer; font-size: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .flex-fields { display: flex; flex-direction: column; gap: 12px; }
+
+    .ufield { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+    .ufield-sm { max-width: 100px; }
+    .ufield-group { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+    .ufield-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9.5px; letter-spacing: .15em; text-transform: uppercase;
+      color: #484852;
+    }
+    .req { color: #E85D3A; }
+    .ufield-opt { color: #484852; font-weight: 400; text-transform: none; letter-spacing: 0; }
+    .ufield-auto { color: #484852; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 9px; }
+    .ufield-input {
+      background: #1C1C21;
+      border: 1px solid #2E2E36;
+      border-radius: 5px;
+      padding: 9px 13px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; color: #EEEAE4;
+      outline: none;
+      transition: border-color .15s;
+      width: 100%;
+      resize: vertical;
+    }
+    .ufield-input:focus { border-color: #D4A853; box-shadow: 0 0 0 3px rgba(212,168,83,.1); }
+    .ufield-input::placeholder { color: #484852; }
+    .ufield-mono { font-family: 'Space Mono', monospace; font-size: 11px; }
+    .ufield-select { appearance: none; cursor: pointer; }
+
+    .type-fields { margin-bottom: 16px; }
+
+    .rights-details { border: 1px solid #2E2E36; border-radius: 6px; padding: 0; overflow: hidden; margin-bottom: 16px; }
+    .rights-summary {
+      padding: 11px 14px; cursor: pointer;
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      letter-spacing: .1em; text-transform: uppercase; color: #484852;
+      user-select: none; list-style: none;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .rights-summary::-webkit-details-marker { display: none; }
+    .rights-summary::before { content: '+'; font-size: 14px; color: #484852; }
+    details[open] .rights-summary::before { content: '−'; }
+    details[open] { background: rgba(28,28,33,.6); }
+    details[open] .rights-summary { border-bottom: 1px solid #2E2E36; }
+    .rights-opt { color: #484852; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 9px; }
+    details .ufield-group { padding: 0 14px 14px; margin-bottom: 0; }
+
+    .tags-preview { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 0; }
+    .tag-chip {
+      background: rgba(0,212,187,.1); border: 1px solid rgba(0,212,187,.3);
+      border-radius: 3px; padding: 3px 8px;
+      font-family: 'Space Mono', monospace; font-size: 10px; color: #00D4BB;
+    }
+
+    .mint-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px; background: #1C1C21; border: 1px solid #2E2E36;
+      border-radius: 8px; margin-bottom: 14px; flex-wrap: wrap; gap: 12px;
+    }
+    .mint-toggle-wrap { display: flex; align-items: center; gap: 12px; }
+    .mint-switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+    .mint-switch input { opacity: 0; width: 0; height: 0; }
+    .mint-slider {
+      position: absolute; inset: 0; border-radius: 11px;
+      background: #2E2E36; border: 1px solid #484852;
+      transition: .2s; cursor: pointer;
+    }
+    .mint-slider::before {
+      content: ''; position: absolute;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #484852; left: 2px; top: 2px;
+      transition: .2s;
+    }
+    .mint-switch input:checked + .mint-slider { background: rgba(139,92,246,.25); border-color: #8B5CF6; }
+    .mint-switch input:checked + .mint-slider::before { transform: translateX(18px); background: #8B5CF6; }
+    .mint-label-main { font-size: 13px; font-weight: 600; color: #EEEAE4; }
+    .mint-label-sub { font-size: 11px; color: #484852; display: block; margin-top: 2px; }
+
+    .copyright-check {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 12px; color: #484852; cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .copyright-check input { margin-top: 2px; accent-color: #D4A853; flex-shrink: 0; }
+
+    .upload-submit-row { display: flex; flex-direction: column; gap: 10px; }
+    .btn-upload {
+      background: #D4A853; color: #0F0F12;
+      border: none; border-radius: 6px;
+      padding: 14px 28px;
+      font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+      letter-spacing: .05em; text-transform: uppercase;
+      cursor: pointer; transition: all .2s;
+      align-self: flex-start;
+    }
+    .btn-upload:hover:not(:disabled) { background: #F0C060; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(212,168,83,.3); }
+    .btn-upload:disabled { opacity: .5; cursor: not-allowed; }
+
+    #upload-progress { width: 100%; height: 4px; appearance: none; border-radius: 2px; border: none; }
+    #upload-progress::-webkit-progress-bar { background: #2E2E36; border-radius: 2px; }
+    #upload-progress::-webkit-progress-value { background: #D4A853; border-radius: 2px; transition: width .3s; }
+    #upload-status { font-family: 'Space Mono', monospace; font-size: 11px; padding: 8px 12px; border-radius: 5px; }
+    #upload-status.success { background: rgba(0,212,187,.1); color: #00D4BB; border: 1px solid rgba(0,212,187,.2); }
+    #upload-status.error   { background: rgba(232,93,58,.1);  color: #E85D3A; border: 1px solid rgba(232,93,58,.2); }
+    </style>
+
+    <!-- ══════════════════════════════════════════════
+         DJ SET  (Tier 2+ or active creator)
+    ═══════════════════════════════════════════════ -->
+    <section class="mb-5" data-requires="hostDjSet">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header">
+          <h4 class="mb-0">🎛️ Start a DJ Set</h4>
+        </div>
+        <div class="card-body">
+          <p class="text-muted small mb-3">
+            Host a live DJ set. Tips are on by default — you set your own split between yourself
+            and the artists whose tracks you played.
+            Platform takes 3% of all tips before your split.
+          </p>
+          <form id="dj-set-form">
+            <div class="mb-3">
+              <label for="dj-set-name" class="form-label">Set Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="dj-set-name" placeholder="Friday Night Mix Vol.1" required>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6">
+                <label for="dj-tip-percent" class="form-label">Your cut of tips (%)</label>
+                <input type="number" class="form-control" id="dj-tip-percent" value="70" min="0" max="100">
+                <small class="form-text text-muted">Remaining goes to the artists whose tracks were played.</small>
+              </div>
+              <div class="col-sm-6 d-flex align-items-end pb-1">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="dj-tips-enabled" checked>
+                  <label class="form-check-label" for="dj-tips-enabled">Accept tips for this set</label>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Start DJ Set</button>
+            <p id="dj-set-status" class="mt-2 small"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         LIVE CONCERT  (active creator only)
+    ═══════════════════════════════════════════════ -->
+    <section class="mb-5" data-requires="hostConcert">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header">
+          <h4 class="mb-0">🔴 Start Live Concert</h4>
+        </div>
+        <div class="card-body">
+          <p class="text-muted small mb-3">
+            Push an RTMP stream to the server and start a live HLS encode.
+            Tier 1 listeners can watch. Tier 2+ can interact in the chat.
+          </p>
+          <form id="liveEncodeForm">
+            <div class="mb-3">
+              <label for="eventTitle" class="form-label">Event Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="eventTitle" placeholder="Summer Night Live" required>
+            </div>
+            <div class="mb-3">
+              <label for="artistName" class="form-label">Artist / Band Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="artistName" placeholder="DJ Michie" required>
+            </div>
+            <button type="submit" class="btn btn-danger">🔴 Go Live</button>
+            <p id="liveStatus" class="mt-2 small"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /container -->
+
+  <!-- ═══════ WALLET MODAL ═══════ -->
+  <div class="modal fade" id="walletModal" tabindex="-1" aria-labelledby="walletModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="walletModalLabel">Connect a Wallet</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-0">
+          <div class="list-group">
+            <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-metamask">
+              <img src="https://cdn.jsdelivr.net/gh/MetaMask/brand-resources/SVG/metamask-fox.svg" alt="" width="28" height="28">
+              <span>MetaMask (EVM)</span>
+            </button>
+            <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-coinbase">
+              <img src="https://avatars.githubusercontent.com/u/1885080?s=200&v=4" alt="" width="28" height="28">
+              <span>Coinbase Wallet (EVM)</span>
+            </button>
+            <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-phantom">
+              <img src="https://avatars.githubusercontent.com/u/78782331?s=200&v=4" alt="" width="28" height="28">
+              <span>Phantom (Solana)</span>
+            </button>
+            <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-solflare">
+              <img src="https://avatars.githubusercontent.com/u/64856450?s=200&v=4" alt="" width="28" height="28">
+              <span>Solflare (Solana)</span>
+            </button>
+            <button class="list-group-item list-group-item-action d-flex align-items-center gap-3" id="btn-zcash">
+              <img src="https://avatars.githubusercontent.com/u/21111808?s=200&v=4" alt="" width="28" height="28">
+              <span>Zcash Wallet / Hardware</span>
+            </button>
+          </div>
+          <div class="small text-secondary mt-3" id="wallet-help"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor scripts -->
+  <script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="vendor/ethers/ethers.umd.min.js"></script>
+  <script src="vendor/hls/hls.min.js"></script>
+  <script src="vendor/ipfs/index.min.js"></script>
+  <!-- App scripts -->
+  <script src="Scripts/wallets.js"></script>
+  <script src="Scripts/common.js"></script>
+  <script src="Scripts/live_broadcast.js"></script>
+  <script src="Scripts/main.js"></script>
+
+  <!-- Show/hide creator gate message and fee row after access loads -->
+  <script>
+    document.addEventListener('walletConnected', function() {
+      // Brief delay to allow main.js applyCapabilityGates() to run first
+      setTimeout(function() {
+        var feeEl  = document.getElementById('royalty-fee-rate');
+        var feeRow = document.getElementById('fee-row');
+        if (feeEl && feeRow) feeRow.style.display = feeEl.textContent.trim() ? '' : 'none';
+
+        // Show gate message if upload section is not accessible
+        var uploadBtn = document.getElementById('upload-btn');
+        var gateMsg   = document.getElementById('creator-gate-msg');
+        if (gateMsg && uploadBtn) gateMsg.style.display = uploadBtn.disabled ? '' : 'none';
+      }, 300);
+    });
+  </script>
+
+</body>
+</html>

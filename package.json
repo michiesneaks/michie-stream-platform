@@ -1,0 +1,70 @@
+{
+  "name": "michie-stream-platform",
+  "version": "1.0.0",
+  "description": "Michie Stream Platform — Blockchain music & NFT streaming",
+  "main": "src/server.cjs",
+  "scripts": {
+    "start": "node src/server.cjs",
+    "dev": "nodemon src/server.cjs",
+    "lint": "eslint src/ public/Scripts/",
+    "test": "echo \"No tests configured yet\" && exit 0"
+  },
+  "keywords": [
+    "music",
+    "streaming",
+    "nft",
+    "blockchain",
+    "ipfs",
+    "hls"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-cloudfront": "^3.600.0",
+    "@aws-sdk/client-dynamodb": "^3.600.0",
+    "@aws-sdk/client-kms": "^3.600.0",
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/lib-dynamodb": "^3.1011.0",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "ethers": "^5.7.2",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "ffprobe": "^1.1.2",
+    "ffprobe-static": "^3.1.0",
+    "fluent-ffmpeg": "^2.1.3",
+    "fs-extra": "^11.2.0",
+    "helmet": "^7.1.0",
+    "ipfs-http-client": "^56.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "node-fetch": "^2.7.0",
+    "pino": "^9.2.0",
+    "redis": "^4.6.14",
+    "sharp": "^0.33.4",
+    "uuid": "^9.0.1",
+    "ws": "^8.19.0"
+  },
+  "optionalDependencies": {
+    "blake3": "^2.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src/"
+    ],
+    "ext": "cjs,js,json",
+    "ignore": [
+      "logs/",
+      "temp/",
+      "public/live/",
+      "public/streams/"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playlists — Michie Stream Platform</title>
+  <link rel="icon" type="image/svg+xml" href="assets/msp-vinyl.svg">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#F5F000">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/styles.css">
+  <style>
+    body.page-playlists { background: var(--bg-primary, #0b0b12); }
+    .playlist-shell { padding-top: 92px; padding-bottom: 40px; }
+    .playlist-panel {
+      background: rgba(12, 12, 18, 0.78);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.32);
+      overflow: hidden;
+    }
+    .playlist-panel-head {
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      padding: 16px 18px;
+    }
+    .playlist-panel-title { font-size: 14px; font-weight: 700; letter-spacing: .02em; }
+    .playlist-panel-body { padding: 18px; }
+    .summary-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-bottom: 20px;
+    }
+    .summary-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .summary-label { color: var(--text-secondary, #9ba0ad); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+    .summary-value { color: var(--text-primary, #f7f8fb); font-size: 26px; font-weight: 700; line-height: 1.1; margin-top: 6px; }
+    .summary-sub { color: var(--text-secondary, #9ba0ad); font-size: 12px; margin-top: 6px; }
+    .playlist-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .playlist-card.active-playlist { border-color: rgba(0,212,187,0.8); box-shadow: 0 0 0 1px rgba(0,212,187,0.15); }
+    .playlist-card-head { align-items: flex-start; display: flex; gap: 14px; justify-content: space-between; padding: 16px 16px 10px; }
+    .playlist-card-body { padding: 0 16px 16px; }
+    .playlist-name-input,
+    .playlist-textarea,
+    .playlist-search-input,
+    .playlist-share-input,
+    .playlist-create-input,
+    .playlist-create-textarea,
+    .playlist-filter-select {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: var(--text-primary, #fff);
+      width: 100%;
+    }
+    .playlist-name-input,
+    .playlist-share-input,
+    .playlist-create-input,
+    .playlist-filter-select { min-height: 42px; padding: 10px 12px; }
+    .playlist-textarea,
+    .playlist-create-textarea { min-height: 86px; padding: 12px; resize: vertical; }
+    .playlist-controls { display: grid; gap: 10px; grid-template-columns: 1.6fr 1fr 1fr; margin-top: 12px; }
+    .playlist-stat-row { display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 14px 0 16px; }
+    .playlist-stat {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .playlist-stat .label { color: var(--text-secondary, #9ba0ad); font-size: 11px; text-transform: uppercase; }
+    .playlist-stat .value { color: var(--text-primary, #fff); font-size: 18px; font-weight: 700; margin-top: 4px; }
+    .playlist-items-table { width: 100%; }
+    .playlist-items-table th,
+    .playlist-items-table td {
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      padding: 10px 8px;
+      vertical-align: middle;
+    }
+    .playlist-items-table th { color: var(--text-secondary, #9ba0ad); font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+    .playlist-item-title { color: var(--text-primary, #fff); font-weight: 600; }
+    .playlist-item-sub { color: var(--text-secondary, #9ba0ad); font-size: 11px; }
+    .mini-badge {
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 999px;
+      color: var(--text-secondary, #c7cada);
+      display: inline-flex;
+      font-size: 11px;
+      font-weight: 600;
+      gap: 6px;
+      padding: 6px 10px;
+    }
+    .mini-badge.gold { border-color: rgba(245,240,0,.28); color: #f5f000; }
+    .mini-badge.teal { border-color: rgba(0,212,187,.28); color: #00d4bb; }
+    .library-list { display: grid; gap: 12px; }
+    .library-card {
+      align-items: flex-start;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 56px 1fr auto;
+      padding: 12px;
+    }
+    .library-cover {
+      align-items: center;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      display: flex;
+      height: 56px;
+      justify-content: center;
+      object-fit: cover;
+      width: 56px;
+    }
+    .top-assets-list { display: grid; gap: 10px; margin-bottom: 14px; }
+    .top-asset-row {
+      align-items: center;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr auto auto;
+    }
+    .bar-track { background: rgba(255,255,255,0.08); border-radius: 999px; height: 8px; overflow: hidden; }
+    .bar-fill { background: linear-gradient(90deg, #00d4bb, #f5f000); height: 100%; }
+    .empty-state {
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 16px;
+      color: var(--text-secondary, #9ba0ad);
+      padding: 24px;
+      text-align: center;
+    }
+    .playlist-toast {
+      background: rgba(12,12,18,.96);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-left: 3px solid #00d4bb;
+      border-radius: 10px;
+      bottom: 22px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      color: #fff;
+      opacity: 0;
+      padding: 12px 14px;
+      position: fixed;
+      right: 22px;
+      transition: opacity .2s ease;
+      z-index: 4500;
+    }
+    @media (max-width: 991px) {
+      .playlist-controls { grid-template-columns: 1fr; }
+      .playlist-stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .library-card { grid-template-columns: 56px 1fr; }
+      .library-card > div:last-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 767px) {
+      .playlist-shell { padding-top: 84px; }
+      .playlist-stat-row { grid-template-columns: 1fr; }
+      .playlist-items-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body class="page-playlists">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">Michie Stream Platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="listen.html">Just Listen</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link active" href="playlists.html">Playlists</a></li>
+        <li class="nav-item"><a class="nav-link" href="favorites.html">Favorites</a></li>
+        <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-primary btn-sm" data-connect-wallet>Connect Wallet</button>
+        <button id="btn-disconnect" class="btn btn-outline-light btn-sm d-none">Disconnect</button>
+        <span id="walletAddress" class="small text-light wallet-address-display"></span>
+        <span class="small text-warning fw-semibold user-name-display"></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container playlist-shell">
+  <div id="playlist-wallet-prompt" class="playlist-panel" style="display:none;">
+    <div class="playlist-panel-body text-center py-5">
+      <h1 class="h4 mb-3">Connect your wallet to manage playlists</h1>
+      <p class="text-secondary mb-4">Public playlists can earn supporter royalties only on eligible playable assets whose creators enabled supporter royalty fees.</p>
+      <button class="btn btn-primary" data-connect-wallet>Connect Wallet</button>
+    </div>
+  </div>
+
+  <div id="playlist-app" style="display:none;">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+      <div>
+        <h1 class="mb-1" style="font-family:var(--font-display);font-size:clamp(24px,4vw,38px);font-weight:300;">Playlist Management</h1>
+        <p class="text-secondary mb-0">Create public playlists, curate playable assets, and track supporter royalty revenue by playlist and by asset.</p>
+      </div>
+      <div class="mini-badge teal" id="playlist-entitlement-chip">Checking playlist access…</div>
+    </div>
+
+    <div class="summary-grid" id="playlist-summary-grid"></div>
+
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="playlist-panel mb-4">
+          <div class="playlist-panel-head">
+            <span class="playlist-panel-title">Create Playlist</span>
+            <span class="mini-badge gold">Public playlists can earn</span>
+          </div>
+          <div class="playlist-panel-body">
+            <form id="playlist-create-form">
+              <div class="mb-3">
+                <label class="form-label small text-secondary">Playlist name</label>
+                <input id="playlist-create-name" class="playlist-create-input" maxlength="80" placeholder="Late Night Rotation">
+              </div>
+              <div class="mb-3">
+                <label class="form-label small text-secondary">Description</label>
+                <textarea id="playlist-create-description" class="playlist-create-textarea" placeholder="What makes this playlist special?"></textarea>
+              </div>
+              <div class="row g-3 mb-3">
+                <div class="col-sm-6">
+                  <label class="form-label small text-secondary">Visibility</label>
+                  <select id="playlist-create-visibility" class="playlist-filter-select">
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                  </select>
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label small text-secondary">Curator share %</label>
+                  <input id="playlist-create-share" class="playlist-share-input" type="number" min="0" max="100" step="0.1" value="8">
+                </div>
+              </div>
+              <button class="btn btn-primary w-100" type="submit">Create Playlist</button>
+            </form>
+            <div class="small text-secondary mt-3">Favorites can still convert into playlists, but ongoing playlist management now lives here.</div>
+          </div>
+        </div>
+
+        <div class="playlist-panel">
+          <div class="playlist-panel-head">
+            <span class="playlist-panel-title">Playable Asset Library</span>
+            <span class="mini-badge" id="playlist-active-target">Pick a playlist first</span>
+          </div>
+          <div class="playlist-panel-body">
+            <div class="mb-3">
+              <input id="playlist-library-search" class="playlist-search-input" placeholder="Search title, creator, type…">
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6">
+                <select id="playlist-library-type" class="playlist-filter-select">
+                  <option value="all">All playable types</option>
+                  <option value="music">Music</option>
+                  <option value="video">Video</option>
+                  <option value="podcast">Podcast</option>
+                  <option value="nft_music">NFT Music</option>
+                  <option value="nft_video">NFT Video</option>
+                  <option value="art_animated">Animated Art</option>
+                </select>
+              </div>
+              <div class="col-sm-6">
+                <select id="playlist-library-royalty" class="playlist-filter-select">
+                  <option value="all">All royalty states</option>
+                  <option value="eligible">Supporter royalties enabled</option>
+                  <option value="ineligible">Supporter royalties disabled</option>
+                </select>
+              </div>
+            </div>
+            <div class="library-list" id="playlist-library-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="playlist-panel">
+          <div class="playlist-panel-head">
+            <span class="playlist-panel-title">Your Playlists</span>
+            <a href="favorites.html" class="btn btn-sm btn-outline-secondary">Convert Favorites →</a>
+          </div>
+          <div class="playlist-panel-body" id="playlist-cards"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="playlist-toast" id="playlist-toast"></div>
+
+<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="vendor/ethers/ethers.umd.min.js"></script>
+<script src="vendor/hls/hls.min.js"></script>
+<script src="vendor/ipfs/index.min.js"></script>
+<script src="Scripts/wallets.js"></script>
+<script src="Scripts/common.js"></script>
+<script src="Scripts/favorites.js"></script>
+<script src="Scripts/main.js"></script>
+<script src="Scripts/playlists.js"></script>
+</body>
+</html>

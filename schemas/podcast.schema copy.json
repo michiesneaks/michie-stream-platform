@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "title": "PodcastMetadata",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "description",
+    "creator",
+    "content_type",
+    "availability_type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "creator": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "wallet_address": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "user_id"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "release_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "music",
+        "podcast",
+        "art"
+      ]
+    },
+    "availability_type": {
+      "type": "string",
+      "enum": [
+        "on_demand",
+        "live"
+      ]
+    },
+    "files": {
+      "type": "object",
+      "properties": {
+        "cover_image": {
+          "type": "string"
+        },
+        "thumbnail": {
+          "type": "string"
+        }
+      }
+    },
+    "series_title": {
+      "type": "string"
+    },
+    "season_number": {
+      "type": "integer"
+    },
+    "episode_number": {
+      "type": "integer"
+    },
+    "hosts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "guests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "show_notes": {
+      "type": "string"
+    },
+    "transcript_url": {
+      "type": "string"
+    },
+    "stream_url": {
+      "type": "string"
+    },
+    "rss_feed_url": {
+      "type": "string"
+    }
+  }
+}
