@@ -94,11 +94,18 @@ router.post('/', upload.fields([{ name: 'audio-file', maxCount: 1 }, { name: 'co
       tempFiles.push(tempDir);
       await fs.ensureDir(tempDir);
 
-      if (DEV_MODE && !ipfsService.ipfs) {
+
+        if (DEV_MODE) {
         const result = await handleDevUpload(contentId, fields, audioFile, coverImage, metadata, tempDir, profiles);
         await cleanup();
         return res.json(result);
-      }
+      } 
+
+/*       if (DEV_MODE && !ipfsService.ipfs) {
+        const result = await handleDevUpload(contentId, fields, audioFile, coverImage, metadata, tempDir, profiles);
+        await cleanup();
+        return res.json(result);
+      } */
 
       const result = await handleProdUpload(contentId, fields, audioFile, coverImage, metadata, tempDir, probeData, profiles, profile);
       await cleanup();

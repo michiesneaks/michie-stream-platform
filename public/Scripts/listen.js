@@ -479,6 +479,8 @@
   function playItem(el) {
     if (!el) return;
     var hlsUrl   = el.dataset.hlsurl  || '';
+    console.log('[playItem] called. hlsUrl:', hlsUrl, 'element:', el); 
+    if (!hlsUrl) { console.warn('[playItem] hlsUrl is empty — aborting'); return; }
     var metaUrl  = el.dataset.metaurl || '';
     var title    = el.dataset.title   || 'Unknown Track';
     var artist   = el.dataset.artist  || '—';
@@ -500,42 +502,6 @@
     if (typeof window.playHls === 'function') window.playHls(hlsUrl, metaUrl);
   }
 
-  // ════════════════════════════════════════════════════════════════════════════
-  //  PLAY/PAUSE TOGGLE
-  // ════════════════════════════════════════════════════════════════════════════
-  var mspToggle = document.getElementById('msp-play-toggle');
-  var iconPlay  = document.getElementById('icon-play');
-  var iconPause = document.getElementById('icon-pause');
-
-  function setPlayingState(playing) {
-    if (!mspToggle) return;
-    mspToggle.classList.toggle('is-playing', playing);
-    if (iconPlay)  iconPlay.style.display  = playing ? 'none' : '';
-    if (iconPause) iconPause.style.display = playing ? '' : 'none';
-    mspToggle.setAttribute('aria-label', playing ? 'Pause' : 'Play');
-  }
-
-  if (mspToggle && audio) {
-    mspToggle.addEventListener('click', function () {
-      if (audio.paused || audio.ended) audio.play().catch(function () {});
-      else audio.pause();
-    });
-    audio.addEventListener('play',  function () { setPlayingState(true);  });
-    audio.addEventListener('pause', function () { setPlayingState(false); });
-    audio.addEventListener('ended', function () { setPlayingState(false); });
-  }
-
-  // ════════════════════════════════════════════════════════════════════════════
-  //  SKIP ±15 s
-  // ════════════════════════════════════════════════════════════════════════════
-  var skipBack = document.getElementById('btn-skip-back');
-  var skipFwd  = document.getElementById('btn-skip-fwd');
-  if (skipBack) skipBack.addEventListener('click', function () {
-    if (audio) audio.currentTime = Math.max(0, audio.currentTime - 15);
-  });
-  if (skipFwd) skipFwd.addEventListener('click', function () {
-    if (audio && audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 15);
-  });
 
   // ════════════════════════════════════════════════════════════════════════════
   //  CLOSE MENU on outside click / Escape

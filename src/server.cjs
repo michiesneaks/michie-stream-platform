@@ -46,7 +46,7 @@ const liveRoutes         = require('./routes/live');
 const streamKeyRoutes    = require('./routes/streamKeys');
 const playTokenRoutes    = require('./routes/playTokens');
 const utilityRoutes      = require('./routes/utility');
-const analyticsRoutes    = require('./src/routes/analytics');
+const analyticsRoutes    = require('./routes/analytics');
 
 // ── Express app ───────────────────────────────────────────────────────────────
 const app = express();

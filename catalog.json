@@ -13,5 +13,19 @@
     "isPrivate": false,
     "supporterRoyaltyEnabled": true,
     "supporterRoyaltyChangedAt": 1774411192142
+  },
+  "d90b1504-5d8e-4489-a140-ac40043e4edf": {
+    "contentId": "d90b1504-5d8e-4489-a140-ac40043e4edf",
+    "title": "Do You Follow?",
+    "artistName": "Michie Sneaks",
+    "wallet": "0xde1f33ce3e81bc54ebd0f4bc3ce0a2f64d7ef399",
+    "contentType": "music",
+    "metadataUrl": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/metadata.json",
+    "hlsUrl": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/hls/master.m3u8",
+    "coverUrl": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/cover.jpg",
+    "previewUrl": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/preview.mp3",
+    "uploadedAt": 1774600473346,
+    "supporterRoyaltyEnabled": true,
+    "supporterRoyaltyChangedAt": 1774600566204
   }
 }

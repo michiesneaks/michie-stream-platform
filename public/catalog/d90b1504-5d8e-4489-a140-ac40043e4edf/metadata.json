@@ -1,0 +1,50 @@
+{
+  "id": "d90b1504-5d8e-4489-a140-ac40043e4edf",
+  "title": "Do You Follow?",
+  "description": "",
+  "creator": {
+    "name": "Michie Sneaks",
+    "user_id": "ef1fdf4c-ecd8-436f-80c4-b748d63889e5",
+    "wallet_address": "0xdbb059d82ac540646913c9c01ba3c945684bcef163238838cbd7e7b444141b8c"
+  },
+  "content_type": "music",
+  "availability_type": "on_demand",
+  "release_date": "2026-03-27",
+  "tags": [
+    "hiphop",
+    "michie sneaks",
+    "rap",
+    "freestyle",
+    "boombap"
+  ],
+  "files": {
+    "cover_image": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/cover.jpg",
+    "preview_url": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/preview.mp3",
+    "hls_url": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/hls/master.m3u8"
+  },
+  "royalty_fee_rate": 0.05,
+  "integrityHashes": {
+    "sha256Audio": "80c30c387a92ec9c23d54cc7dee2bb502519efe4bec1597dc08de48b4a1c735b",
+    "sha256Cover": "f7ea159bb9a24feb6ccc8eb53a19d62da85f5daabbe2c01ddb0bc9a696bb8a8d",
+    "blake3Audio": "5262262b0569066eae46d91f75d02c1119d8e6a3ce64e943848b2d980a63d796",
+    "blake3Cover": "1cad9a7b6271b2a4a7c720c0d729d0cf26cab8762f15317143202d53ce9da53b",
+    "sha256Metadata": "9f3795938c7763d790251ba342211130753dcfff620cdbc64a07a9c8674dfb11"
+  },
+  "mlc_metadata": {
+    "work_title": "Do You Follow?",
+    "iswc": "",
+    "isrc": "",
+    "ipi_name_number": "",
+    "writers": [
+      {
+        "name": "Michie Sneaks",
+        "role": "artist",
+        "ipi_name_number": "",
+        "ownership_percent": 100
+      }
+    ],
+    "publishers": []
+  },
+  "album": "Do You Follow? - Single",
+  "ipfs_audio_url": "/catalog/d90b1504-5d8e-4489-a140-ac40043e4edf/hls/master.m3u8"
+}

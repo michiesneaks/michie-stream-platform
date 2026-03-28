@@ -2,18 +2,18 @@
 
 const path   = require('path');
 const fs     = require('fs-extra');
-const { create: createIpfs } = require('ipfs-http-client');
+/* const { create: createIpfs } = require('ipfs-http-client'); */
 const logger = require('../config/logger');
 
 const IPFS_GATEWAY = process.env.IPFS_GATEWAY || 'https://ipfs.io/ipfs/';
 
 let ipfs = null;
-try {
+/* try {
   ipfs = createIpfs({ url: process.env.IPFS_ENDPOINT || 'http://127.0.0.1:5001' });
   logger.info('IPFS client initialized');
 } catch (err) {
   logger.warn({ err }, 'IPFS client not configured');
-}
+} */
 
 /**
  * Adds an entire directory to IPFS and returns the folder CID.

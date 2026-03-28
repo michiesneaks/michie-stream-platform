@@ -83,4 +83,29 @@ router.get('/asset/:cid', requireRedis, async (req, res, next) => {
         next(err);
     }
 });
+
+
+
+// GET /api/analytics/assets/batch?cids=cid1,cid2,cid3
+router.get('/assets/batch', requireRedis, async (req, res, next) => {
+  try {
+    const cids = String(req.query.cids || '').split(',').filter(Boolean).slice(0, 100);
+    if (!cids.length) return res.json({});
+    const redis = redisService.getClient();
+    const results = {};
+    await Promise.all(cids.map(async (cid) => {
+      const data = await redis.hGetAll(`stats:asset:${cid}`);
+      const totalPlays = parseInt(data.totalPlays || '0', 10);
+      const totalTimeSeconds = parseInt(data.totalTimeSeconds || '0', 10);
+      results[cid] = {
+        totalPlays,
+        totalTimeSeconds,
+        averagePlayTimeSeconds: totalPlays > 0 ? Math.floor(totalTimeSeconds / totalPlays) : 0,
+      };
+    }));
+    res.json(results);
+  } catch (err) { next(err); }
+});
+
+
 module.exports = router;

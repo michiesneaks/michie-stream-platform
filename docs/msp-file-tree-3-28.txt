@@ -1,0 +1,290 @@
+┣ 📂bin
+┃ ┗ 📂contracts
+┣ 📂certs
+┣ 📂contracts
+┃ ┣ 📜ContentCA.sol
+┃ ┣ 📜Escrow.sol
+┃ ┣ 📜MusicNFT.sol
+┃ ┣ 📜NFTMetadataContract.sol
+┃ ┣ 📜RoyaltyPayout.sol
+┃ ┗ 📜StreamingRegistry.sol
+┣ 📂docs
+┃ ┣ 📜Design instructions.txt
+┃ ┣ 📜Design instructions.txt.bak
+┃ ┣ 📜FEATURE_SPEC_Favorites_and_Playlists.md
+┃ ┣ 📜INSTALL_PLAYLIST_FEATURE_GUIDE.md
+┃ ┣ 📜iTunes.css
+┃ ┣ 📜mediaControlsApple.css
+┃ ┣ 📜mediaControlsApple.js
+┃ ┣ 📜msp emoticon and svg.txt
+┃ ┣ 📜MSP_Design_System.html
+┃ ┣ 📜MSP_File_Tree_GitHub.docx
+┃ ┣ 📜MSP_Full_Export-3-25.md
+┃ ┣ 📜MSP_Full_Export.pdf
+┃ ┣ 📜MSP_Production_Guide.md
+┃ ┣ 📜MSP_Technical_Overview 3-20.docx
+┃ ┣ 📜MSP_Technical_Overview_v2.3-20.docx
+┃ ┣ 📜MSP_Technical_Overview.docx
+┃ ┣ 📜MSP_Testing_Guide.md
+┃ ┣ 📜msp_vinyl_icon_final_v3.svg
+┃ ┣ 📜msp_vod_01_ingest_validation.svg
+┃ ┣ 📜msp_vod_02_processing.svg
+┃ ┣ 📜msp-file-tree-3-25.txt
+┃ ┗ 📜troubleshooting with MOCK account.txt
+┣ 📂examples
+┣ 📂infra
+┃ ┣ 📂scripts
+┃ ┃ ┣ 📜gst-transcode-done.sh
+┃ ┃ ┗ 📜gst-transcode.sh
+┃ ┣ 📜install-media.sh
+┃ ┗ 📜nginx.conf
+┣ 📂logs
+┃ ┗ 📜metrics.log
+┣ 📂public
+┃ ┣ 📂assets
+┃ ┃ ┣ 📜msp-vinyl-1024.png
+┃ ┃ ┣ 📜msp-vinyl-128.png
+┃ ┃ ┣ 📜msp-vinyl-180.png
+┃ ┃ ┣ 📜msp-vinyl-192.png
+┃ ┃ ┣ 📜msp-vinyl-512.png
+┃ ┃ ┗ 📜msp-vinyl.svg
+┃ ┣ 📂catalog
+┃ ┃ ┣ 📂0fe9212e-15dc-43cc-94b1-9f45d811808a
+┃ ┃ ┃ ┣ 📂hls
+┃ ┃ ┃ ┃ ┣ 📜hi_000.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_001.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_002.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_003.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_004.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_005.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_006.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_007.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_008.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_009.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_010.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_011.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_012.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_013.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_014.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_015.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_016.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_017.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_018.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_019.ts
+┃ ┃ ┃ ┃ ┣ 📜hi_020.ts
+┃ ┃ ┃ ┃ ┣ 📜hi.m3u8
+┃ ┃ ┃ ┃ ┣ 📜lo_000.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_001.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_002.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_003.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_004.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_005.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_006.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_007.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_008.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_009.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_010.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_011.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_012.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_013.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_014.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_015.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_016.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_017.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_018.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_019.ts
+┃ ┃ ┃ ┃ ┣ 📜lo_020.ts
+┃ ┃ ┃ ┃ ┣ 📜lo.m3u8
+┃ ┃ ┃ ┃ ┗ 📜master.m3u8
+┃ ┃ ┃ ┣ 📜cover.jpeg
+┃ ┃ ┃ ┣ 📜metadata.json
+┃ ┃ ┃ ┗ 📜preview.mp3
+┃ ┃ ┗ 📂d90b1504-5d8e-4489-a140-ac40043e4edf
+┃ ┃   ┣ 📂hls
+┃ ┃   ┃ ┣ 📜hi_000.ts
+┃ ┃   ┃ ┣ 📜hi_001.ts
+┃ ┃   ┃ ┣ 📜hi_002.ts
+┃ ┃   ┃ ┣ 📜hi_003.ts
+┃ ┃   ┃ ┣ 📜hi_004.ts
+┃ ┃   ┃ ┣ 📜hi_005.ts
+┃ ┃   ┃ ┣ 📜hi_006.ts
+┃ ┃   ┃ ┣ 📜hi_007.ts
+┃ ┃   ┃ ┣ 📜hi_008.ts
+┃ ┃   ┃ ┣ 📜hi_009.ts
+┃ ┃   ┃ ┣ 📜hi_010.ts
+┃ ┃   ┃ ┣ 📜hi_011.ts
+┃ ┃   ┃ ┣ 📜hi_012.ts
+┃ ┃   ┃ ┣ 📜hi_013.ts
+┃ ┃   ┃ ┣ 📜hi_014.ts
+┃ ┃   ┃ ┣ 📜hi_015.ts
+┃ ┃   ┃ ┣ 📜hi_016.ts
+┃ ┃   ┃ ┣ 📜hi_017.ts
+┃ ┃   ┃ ┣ 📜hi_018.ts
+┃ ┃   ┃ ┣ 📜hi_019.ts
+┃ ┃   ┃ ┣ 📜hi_020.ts
+┃ ┃   ┃ ┣ 📜hi_021.ts
+┃ ┃   ┃ ┣ 📜hi.m3u8
+┃ ┃   ┃ ┣ 📜lo_000.ts
+┃ ┃   ┃ ┣ 📜lo_001.ts
+┃ ┃   ┃ ┣ 📜lo_002.ts
+┃ ┃   ┃ ┣ 📜lo_003.ts
+┃ ┃   ┃ ┣ 📜lo_004.ts
+┃ ┃   ┃ ┣ 📜lo_005.ts
+┃ ┃   ┃ ┣ 📜lo_006.ts
+┃ ┃   ┃ ┣ 📜lo_007.ts
+┃ ┃   ┃ ┣ 📜lo_008.ts
+┃ ┃   ┃ ┣ 📜lo_009.ts
+┃ ┃   ┃ ┣ 📜lo_010.ts
+┃ ┃   ┃ ┣ 📜lo_011.ts
+┃ ┃   ┃ ┣ 📜lo_012.ts
+┃ ┃   ┃ ┣ 📜lo_013.ts
+┃ ┃   ┃ ┣ 📜lo_014.ts
+┃ ┃   ┃ ┣ 📜lo_015.ts
+┃ ┃   ┃ ┣ 📜lo_016.ts
+┃ ┃   ┃ ┣ 📜lo_017.ts
+┃ ┃   ┃ ┣ 📜lo_018.ts
+┃ ┃   ┃ ┣ 📜lo_019.ts
+┃ ┃   ┃ ┣ 📜lo_020.ts
+┃ ┃   ┃ ┣ 📜lo_021.ts
+┃ ┃   ┃ ┣ 📜lo.m3u8
+┃ ┃   ┃ ┣ 📜master.m3u8
+┃ ┃   ┃ ┗ 📜preview.mp3
+┃ ┃   ┣ 📜cover.jpg
+┃ ┃   ┣ 📜metadata.json
+┃ ┃   ┗ 📜preview.mp3
+┃ ┣ 📂live
+┃ ┃ ┗ 📂Michie_testing_1773939562008_1589f4dd
+┃ ┣ 📂Scripts
+┃ ┃ ┣ 📜asset-manager.js
+┃ ┃ ┣ 📜common.js
+┃ ┃ ┣ 📜common.js.bak
+┃ ┃ ┣ 📜dashboard.js
+┃ ┃ ┣ 📜favorites-page.js
+┃ ┃ ┣ 📜favorites.js
+┃ ┃ ┣ 📜listen.js
+┃ ┃ ┣ 📜live_broadcast.js
+┃ ┃ ┣ 📜main-revert to this after testing.js
+┃ ┃ ┣ 📜main.js
+┃ ┃ ┣ 📜playlists.js
+┃ ┃ ┗ 📜wallets.js
+┃ ┣ 📂styles
+┃ ┃ ┗ 📜styles.css
+┃ ┣ 📂vendor
+┃ ┃ ┣ 📂bootstrap
+┃ ┃ ┃ ┗ 📜bootstrap.bundle.min.js
+┃ ┃ ┣ 📂ethers
+┃ ┃ ┃ ┗ 📜ethers.umd.min.js
+┃ ┃ ┣ 📂hls
+┃ ┃ ┃ ┗ 📜hls.min.js
+┃ ┃ ┗ 📂ipfs
+┃ ┃   ┗ 📜index.min.js
+┃ ┣ 📜asset-manager.html
+┃ ┣ 📜creators.html
+┃ ┣ 📜dashboard.html
+┃ ┣ 📜favorites.html
+┃ ┣ 📜index.html
+┃ ┣ 📜listen.html
+┃ ┣ 📜live_studio.html
+┃ ┣ 📜manifest.json
+┃ ┣ 📜marketplace.html
+┃ ┣ 📜playlists.html
+┃ ┗ 📜profile.html
+┣ 📂schemas
+┃ ┣ 📜art_animated.schema.json
+┃ ┣ 📜art_still.json
+┃ ┣ 📜art.schema.json
+┃ ┣ 📜core.schema.json
+┃ ┣ 📜music_media_rollup.json
+┃ ┣ 📜music.schema copy.json
+┃ ┣ 📜music.schema.json
+┃ ┣ 📜podcast.schema copy.json
+┃ ┗ 📜podcast.schema.json
+┣ 📂src
+┃ ┣ 📂config
+┃ ┃ ┣ 📜constants.js
+┃ ┃ ┗ 📜logger.js
+┃ ┣ 📂logs
+┃ ┃ ┗ 📜metrics.log
+┃ ┣ 📂middleware
+┃ ┃ ┣ 📜devBypass.js
+┃ ┃ ┣ 📜ownershipGuard.js
+┃ ┃ ┗ 📜walletNormalizer.js
+┃ ┣ 📂python
+┃ ┃ ┗ 📜demucs_script.py
+┃ ┣ 📂routes
+┃ ┃ ┣ 📜access.js
+┃ ┃ ┣ 📜analytics.js
+┃ ┃ ┣ 📜analytics.js.bak
+┃ ┃ ┣ 📜catalog.js
+┃ ┃ ┣ 📜djSets.js
+┃ ┃ ┣ 📜favorites.js
+┃ ┃ ┣ 📜live.js
+┃ ┃ ┣ 📜nftPlatform.js
+┃ ┃ ┣ 📜playlists.js
+┃ ┃ ┣ 📜playTokens.js
+┃ ┃ ┣ 📜profiles.js
+┃ ┃ ┣ 📜royalties.js
+┃ ┃ ┣ 📜streamKeys.js
+┃ ┃ ┣ 📜subscriptions.js
+┃ ┃ ┣ 📜upload.js
+┃ ┃ ┗ 📜utility.js
+┃ ┣ 📂services
+┃ ┃ ┣ 📜catalogService.js
+┃ ┃ ┣ 📜djService.js
+┃ ┃ ┣ 📜ethService.js
+┃ ┃ ┣ 📜ipfsService.js
+┃ ┃ ┣ 📜module_aws_shim.js
+┃ ┃ ┣ 📜playlistService.js
+┃ ┃ ┣ 📜profileService.js
+┃ ┃ ┣ 📜redisService.js
+┃ ┃ ┗ 📜transcodeService.js
+┃ ┣ 📂state
+┃ ┃ ┗ 📜liveSessions.js
+┃ ┣ 📂temp
+┃ ┃ ┣ 📜0d909f1f-15d4-42d5-a5b3-e90d84e028e9.jpg
+┃ ┃ ┣ 📜279befb2-c130-401b-94b3-0e5bf8d8ae6d.jpg
+┃ ┃ ┣ 📜285f8769-a755-4173-9a97-39b71285e3b4.mp3
+┃ ┃ ┣ 📜3383dfb6-ca72-46e7-bd7c-7b870c801358.jpg
+┃ ┃ ┣ 📜34a54b9e-5d8a-4345-a346-7df8de32c903.mp3
+┃ ┃ ┣ 📜362da077-87f2-482b-a46e-a354328cc582.mp3
+┃ ┃ ┣ 📜3f70c12a-6f54-45d7-a28c-d2091c95a4ff.jpg
+┃ ┃ ┣ 📜40fd9d63-4bdb-4203-959e-3ad105579071.jpg
+┃ ┃ ┣ 📜461ac288-28a1-49a1-9fde-0ea69fa14380.mp3
+┃ ┃ ┣ 📜5461df06-b2da-4cdb-a345-9606741a0f03.mp3
+┃ ┃ ┣ 📜80d4a2f2-5d17-4701-a667-b160c6e5bde1.jpg
+┃ ┃ ┣ 📜864370e9-f768-4064-bffa-4bf5b2f6203c.jpg
+┃ ┃ ┣ 📜8d262699-38d0-4f02-9d38-7fef789d0d64.mp3
+┃ ┃ ┣ 📜99073228-eedb-468e-9d14-93ad7b78b6d9.jpg
+┃ ┃ ┣ 📜9b9f9293-f57a-44fc-a2ce-3951fa478ba4.mp3
+┃ ┃ ┣ 📜a2ecfc93-e87f-4820-a79a-0b884b25143d.mp3
+┃ ┃ ┣ 📜a3c36d16-1aa3-45c3-9faa-00191703b018.mp3
+┃ ┃ ┣ 📜abb0988c-fb0b-425c-ad2a-602dc4b121e6.mp3
+┃ ┃ ┣ 📜c345b70a-ea1b-4460-8fcb-c3f6a5f05a7a.mp3
+┃ ┃ ┣ 📜d1aac24b-b314-428d-9862-fd91290945bd.jpg
+┃ ┃ ┣ 📜d9429b2c-2406-4e31-bdb9-f5fcc30ec448.mp3
+┃ ┃ ┣ 📜ecac06c4-3bbe-411d-afcd-a97f37b9d27f.jpg
+┃ ┃ ┣ 📜f65076a5-787b-4580-a532-7a0dcca15a6d.jpg
+┃ ┃ ┗ 📜f803b1e7-6e53-4827-b974-4f52e7fc8739.jpg
+┃ ┣ 📂websocket
+┃ ┃ ┗ 📜wsServer.js
+┃ ┣ 📜dj_sets.json
+┃ ┣ 📜gst_pipeline.js
+┃ ┣ 📜module_aws.js
+┃ ┣ 📜profiles.json
+┃ ┣ 📜server_gst_additions.js
+┃ ┣ 📜server_live.js
+┃ ┣ 📜server.cjs
+┃ ┗ 📜validator.js
+┣ 📂temp
+┣ 📜.env
+┣ 📜.gitignore
+┣ 📜body.json
+┣ 📜catalog.json
+┣ 📜copy-outputs.ps1
+┣ 📜dj_sets.json
+┣ 📜live_sessions.json
+┣ 📜npm
+┣ 📜package.json
+┣ 📜profiles.json
+┣ 📜README.md
+┗ 📜scaffold.ps1

@@ -25,6 +25,11 @@ const timeDisplay     = document.getElementById('time-display');
 const durationDisplay = document.getElementById('duration-display');
 const totalPlaysEl    = document.getElementById('total-plays');
 const vinylIcon       = document.getElementById('vinyl-icon');
+const mspPlayToggle  = document.getElementById('msp-play-toggle');
+const iconPlay       = document.getElementById('icon-play');
+const iconPause      = document.getElementById('icon-pause');
+const skipBackBtn    = document.getElementById('btn-skip-back');
+const skipFwdBtn     = document.getElementById('btn-skip-fwd');
 
 let totalPlays = 0;
 let hls = null;
@@ -36,21 +41,61 @@ function ensureHlsAvailable() {
   return (typeof window !== 'undefined' && window.Hls && typeof window.Hls.isSupported === 'function');
 }
 
-async function playHls(url, metadataUrl) {
+function safePlayAudio() {
+  if (!audio) return;
+  const p = audio.play();
+  if (p && typeof p.catch === 'function') {
+    p.catch(function (err) {
+      console.debug('audio.play blocked/delayed:', err && err.message ? err.message : err);
+    });
+  }
+}
+
+function syncVisiblePlayerState() {
+  const isPlaying = !!(audio && !audio.paused && !audio.ended);
+
+  if (mspPlayToggle) {
+    mspPlayToggle.classList.toggle('is-playing', isPlaying);
+    mspPlayToggle.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
+  }
+
+  if (iconPlay)  iconPlay.style.display  = isPlaying ? 'none' : '';
+  if (iconPause) iconPause.style.display = isPlaying ? '' : 'none';
+
+  if (playBtn)  playBtn.style.display  = isPlaying ? 'none' : 'inline';
+  if (pauseBtn) pauseBtn.style.display = isPlaying ? 'inline' : 'none';
+}
+
+function togglePlayback() {
   if (!audio) return;
 
-  const httpUrl  = ipfsToHttp(url);
-  const httpMeta = metadataUrl ? ipfsToHttp(metadataUrl) : null;
+  if (audio.paused) {
+    safePlayAudio();
+  } else {
+    audio.pause();
+  }
+}
 
+function destroyHls() {
   if (hls) {
     try { hls.destroy(); } catch (_) {}
     hls = null;
   }
+}
+
+async function playHls(url, metadataUrl) {
+  if (!audio) return;
+
+  const httpUrl = ipfsToHttp(url);
+  const httpMeta = metadataUrl ? ipfsToHttp(metadataUrl) : null;
+  
+  destroyHls();
+  audio.pause();
 
   let candidate = httpUrl;
   if (httpMeta) {
     try {
-      const res      = await fetch(httpMeta);
+      const res = await fetch(httpMeta);
       const metadata = await res.json();
       if (metadata && metadata.availability_type === 'live' &&
           metadata.rollup && metadata.rollup.presentations &&
@@ -65,30 +110,34 @@ async function playHls(url, metadataUrl) {
     }
   }
 
+  candidate = ipfsToHttp(candidate);
+
   const isM3U8   = /\.m3u8($|\?)/i.test(candidate);
   const nativeHls = audio.canPlayType('application/vnd.apple.mpegurl');
 
   if (isM3U8 && ensureHlsAvailable() && window.Hls.isSupported() && !nativeHls) {
     hls = new window.Hls({ enableWorker: false });
-    hls.loadSource(candidate);
     hls.attachMedia(audio);
-    hls.on(window.Hls.Events.MANIFEST_PARSED, function () {
-      audio.play().catch(function () {});
+	hls.loadSource(candidate);
+	
+	 // Start playback from the original user click flow
+    safePlayAudio();
+
+
+  hls.on(window.Hls.Events.ERROR, function (_, data) {
+      console.warn('HLS error:', data);
     });
+	
     hls.on(window.Hls.Events.LEVEL_SWITCHED, function (_, data) {
       const level = hls.levels && hls.levels[data.level];
       if (level && level.bitrate) {
         console.log('Switched to bitrate: ' + Math.round(level.bitrate / 1000) + ' kbps');
       }
     });
-  } else if (isM3U8 && nativeHls) {
-    audio.src = candidate;
-    audio.addEventListener('loadedmetadata', function () {
-      audio.play().catch(function () {});
-    }, { once: true });
   } else {
     audio.src = candidate;
-    audio.play().catch(function () {});
+    audio.load();
+    safePlayAudio();
   }
 }
 
@@ -134,6 +183,25 @@ function terminateTelemetry() {
 // Player controls (guarded)
 // ===========================
 if (audio) {
+
+  if (mspPlayToggle) {
+  mspPlayToggle.addEventListener('click', function () {
+    togglePlayback();
+  });
+}
+
+if (skipBackBtn) {
+  skipBackBtn.addEventListener('click', function () {
+    audio.currentTime = Math.max(0, audio.currentTime - 15);
+  });
+}
+
+if (skipFwdBtn) {
+  skipFwdBtn.addEventListener('click', function () {
+    const end = isFinite(audio.duration) ? audio.duration : (audio.currentTime + 15);
+    audio.currentTime = Math.min(end, audio.currentTime + 15);
+  });
+}
   // Wire play button — vinylIcon is optional, do not gate on it
   if (playBtn) {
     playBtn.addEventListener('click', function () {
@@ -176,6 +244,7 @@ if (audio) {
 
   audio.addEventListener('play', function () {
     document.body.classList.add('audio-playing');
+    syncVisiblePlayerState();
     if (totalPlaysEl) totalPlaysEl.textContent = String(++totalPlays);
     // ── Telemetry — must be last so currentPlayingCid is already set by listen.js ──
     if (window.currentPlayingCid) initializeTelemetry(window. currentPlayingCid);
@@ -183,11 +252,13 @@ if (audio) {
 
   audio.addEventListener('pause', function () {
     document.body.classList.remove('audio-playing');
+    syncVisiblePlayerState();
     terminateTelemetry();
   });
 
   audio.addEventListener('ended', function () {
     document.body.classList.remove('audio-playing');
+    syncVisiblePlayerState();
     if (vinylIcon) {
       vinylIcon.style.animation = 'none';
       vinylIcon.style.display   = 'none';
@@ -246,6 +317,7 @@ if (audio) {
     });
     volumeBar.style.setProperty('--val', '100%');
   }
+  syncVisiblePlayerState();
 }
 
 // ===========================
