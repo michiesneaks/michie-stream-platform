@@ -1,0 +1,2077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="assets/msp-vinyl.svg">
+<link rel="apple-touch-icon" href="assets/msp-vinyl-180.png">
+<link rel="manifest" href="manifest.json">
+<title>MSP — Live Studio</title>
+<!-- FIX #12: Added gstatic preconnect + display=swap already present in URL -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ── Design tokens ─────────────────────────────────────────── */
+:root {
+  --bg-void:      #08080A;
+  --bg-base:      #0F0F12;
+  --bg-surface:   #151518;
+  --bg-raised:    #1C1C21;
+  --bg-hover:     #222228;
+  --border-sub:   #222228;
+  --border-mid:   #2E2E36;
+  --gold:         #D4A853;
+  --gold-bright:  #F0C060;
+  --teal:         #00D4BB;
+  --ember:        #E85D3A;
+  --violet:       #8B5CF6;
+  --text-1:       #EEEAE4;
+  --text-2:       #8A8A98;
+  --text-3:       #484852;
+  --font-d:       'Cormorant', Georgia, serif;
+  --font-u:       'Syne', sans-serif;
+  --font-m:       'Space Mono', monospace;
+  --ease:         cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-void);
+  color: var(--text-1);
+  font-family: var(--font-u);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ════════════════════════════════════════════════════════════
+   BROADCASTER PANEL
+   ════════════════════════════════════════════════════════════ */
+
+.live-studio {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-sub);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ── Access gate overlay ───────────────────────────────────── */
+/* Rendered INSTEAD of the studio body when the user lacks hostConcert */
+.studio-gate {
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.studio-gate-icon {
+  font-size: 40px;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.studio-gate-title {
+  font-family: var(--font-d);
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--text-1);
+  line-height: 1.1;
+}
+
+.studio-gate-sub {
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+  max-width: 360px;
+  line-height: 1.7;
+}
+
+.studio-gate-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.studio-gate-pill {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+}
+
+.studio-gate-pill.active {
+  border-color: var(--ember);
+  color: var(--ember);
+  background: rgba(232,93,58,0.08);
+}
+
+.studio-gate-btn {
+  background: var(--ember);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 13px 28px;
+  font-family: var(--font-u);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.studio-gate-btn:hover { background: #ff7050; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,93,58,0.3); }
+
+.studio-gate-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  color: var(--text-2);
+  padding: 12px 24px;
+}
+.studio-gate-btn.secondary:hover { border-color: var(--teal); color: var(--teal); box-shadow: none; transform: none; }
+
+/* ── Studio header ─────────────────────────────────────────── */
+.studio-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-sub);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.studio-title {
+  font-family: var(--font-d);
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--text-1);
+  letter-spacing: -0.01em;
+}
+
+.studio-status {
+  font-family: var(--font-m);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.studio-status.live { color: var(--ember); }
+
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--text-3);
+  flex-shrink: 0;
+}
+
+.studio-status.live .status-dot {
+  background: var(--ember);
+  box-shadow: 0 0 0 3px rgba(232,93,58,0.25);
+  animation: pulse-live 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(232,93,58,0.25); }
+  50%       { box-shadow: 0 0 0 7px rgba(232,93,58,0.05); }
+}
+
+/* FIX #9: Spinner ──────────────────────────────────────────── */
+.status-spinner {
+  width: 10px; height: 10px;
+  border: 2px solid rgba(232,93,58,0.3);
+  border-top-color: var(--ember);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+  display: none;
+}
+
+.studio-status.spinning .status-spinner { display: block; }
+.studio-status.spinning .status-dot     { display: none; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Main studio layout ────────────────────────────────────── */
+.studio-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  min-height: 480px;
+}
+
+.studio-preview-area {
+  background: #000;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.studio-video-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.studio-no-camera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-3);
+  font-family: var(--font-m);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.studio-no-camera-icon {
+  font-size: 48px;
+  opacity: 0.4;
+}
+
+/* Camera overlay controls */
+.studio-overlay-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.studio-preview-area:hover .studio-overlay-controls { opacity: 1; }
+.studio-preview-area.live-active .studio-overlay-controls { opacity: 1; }
+
+.ov-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s var(--ease);
+  background: rgba(0,0,0,0.65);
+  color: white;
+  backdrop-filter: blur(4px);
+}
+
+.ov-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.85); }
+.ov-btn.muted, .ov-btn.cam-off { background: var(--ember); }
+
+/* FIX #14: Bitrate/resolution stats bar (visible during live) */
+.studio-bitrate-bar {
+  position: absolute;
+  bottom: 70px;
+  left: 12px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: 0.04em;
+  display: none;
+  gap: 12px;
+}
+
+.studio-bitrate-bar.visible { display: flex; }
+.bitrate-val { color: var(--text-1); }
+
+/* HLS indicator */
+.studio-hls-url {
+  position: absolute;
+  top: 12px; left: 12px; right: 12px;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--teal);
+  letter-spacing: 0.04em;
+  display: none;
+  word-break: break-all;
+}
+
+.studio-hls-url.visible { display: block; }
+
+/* ── Side panel ────────────────────────────────────────────── */
+.studio-panel {
+  border-left: 1px solid var(--border-sub);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Setup form */
+.studio-setup {
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.studio-setup.hidden { display: none; }
+
+.s-label {
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.s-input, .s-select {
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 5px;
+  padding: 10px 13px;
+  font-family: var(--font-u);
+  font-size: 13px;
+  color: var(--text-1);
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+
+.s-input:focus, .s-select:focus { border-color: var(--ember); box-shadow: 0 0 0 3px rgba(232,93,58,0.1); }
+
+/* Source picker */
+.source-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.source-btn {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  padding: 10px 8px;
+  cursor: pointer;
+  font-family: var(--font-u);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-2);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.source-btn:hover { border-color: var(--ember); color: var(--text-1); }
+.source-btn.active { border-color: var(--ember); color: var(--ember); background: rgba(232,93,58,0.08); }
+
+/* Go live button */
+.btn-go-live {
+  width: 100%;
+  background: var(--ember);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 14px;
+  font-family: var(--font-u);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+
+.btn-go-live:hover:not(:disabled) { background: #ff7050; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(232,93,58,0.35); }
+.btn-go-live:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Live stats (shown during stream) */
+.studio-live-stats {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-sub);
+  display: none;
+  gap: 16px;
+}
+
+.studio-live-stats.visible {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.ls-stat { text-align: center; }
+
+.ls-val {
+  font-family: var(--font-d);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-1);
+  display: block;
+  line-height: 1;
+}
+
+.ls-lbl {
+  font-family: var(--font-m);
+  font-size: 9px;
+  color: var(--text-3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Live chat (shown during stream) */
+.studio-live-chat {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.studio-live-chat.visible { display: flex; }
+
+.live-chat-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.live-chat-input-row {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border-sub);
+  display: flex;
+  gap: 8px;
+}
+
+.live-chat-input {
+  flex: 1;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 4px;
+  padding: 8px 11px;
+  font-family: var(--font-u);
+  font-size: 12px;
+  color: var(--text-1);
+  outline: none;
+}
+
+.live-chat-input:focus { border-color: var(--gold); }
+
+.live-chat-send {
+  background: var(--bg-hover);
+  border: 1px solid var(--border-mid);
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: var(--text-2);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+.live-chat-send:hover { color: var(--text-1); border-color: var(--gold); }
+
+/* End stream button */
+.studio-end-row {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-sub);
+  display: none;
+}
+
+.studio-end-row.visible { display: block; }
+
+.btn-end-stream {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--ember);
+  border-radius: 5px;
+  padding: 10px;
+  color: var(--ember);
+  font-family: var(--font-u);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-end-stream:hover { background: rgba(232,93,58,0.1); }
+
+/* ════════════════════════════════════════════════════════════
+   VIEWER PANEL
+   ════════════════════════════════════════════════════════════ */
+
+.live-sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.live-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-sub);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.live-card:hover {
+  border-color: var(--ember);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(232,93,58,0.15);
+}
+
+.live-thumb {
+  height: 130px;
+  background: #111;
+  position: relative;
+  overflow: hidden;
+}
+
+.live-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.live-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: var(--ember);
+  color: white;
+  font-family: var(--font-m);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 3px 7px;
+  border-radius: 3px;
+  animation: pulse-badge 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-badge { 0%,100%{opacity:1} 50%{opacity:0.75} }
+
+.live-viewers {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  background: rgba(0,0,0,0.7);
+  color: var(--text-1);
+  font-family: var(--font-m);
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 3px;
+}
+
+.live-info { padding: 12px 14px 8px; }
+.live-title { font-weight: 600; font-size: 13px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.live-artist { font-size: 11px; color: var(--text-2); }
+.live-dur { font-family: var(--font-m); font-size: 10px; color: var(--text-3); margin-top: 4px; }
+.live-join-btn {
+  display: block;
+  width: calc(100% - 28px);
+  margin: 0 14px 12px;
+  background: var(--ember);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px;
+  font-family: var(--font-u);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.live-join-btn:hover { background: #ff7050; }
+.live-empty { color: var(--text-3); font-family: var(--font-m); font-size: 12px; padding: 32px 0; text-align: center; }
+
+/* ── Viewer player overlay ──────────────────────────────────── */
+.viewer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,10,0.96);
+  z-index: 500;
+  display: none;
+  grid-template-columns: 1fr 360px;
+  grid-template-rows: 1fr;
+}
+
+.viewer-overlay.open { display: grid; }
+
+/* FIX #6: Mobile responsive viewer overlay */
+@media (max-width: 900px) {
+  .viewer-overlay {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .viewer-engage-col {
+    border-left: none !important;
+    border-top: 1px solid var(--border-sub);
+    max-height: 240px;
+  }
+}
+
+.viewer-video-col {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* FIX #10: viewer video gets playsinline + muted for iOS autoplay */
+.viewer-video {
+  flex: 1;
+  width: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Stream stats bar */
+.viewer-stats-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 12px 20px;
+  background: linear-gradient(to bottom, rgba(8,8,10,0.85), transparent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.viewer-stream-title {
+  font-family: var(--font-d);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--text-1);
+}
+
+.viewer-live-pill {
+  background: var(--ember);
+  color: white;
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 3px;
+  animation: pulse-badge 1.4s ease-in-out infinite;
+}
+
+.viewer-meta-bar {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-family: var(--font-m);
+  font-size: 10px;
+  color: var(--text-2);
+}
+
+.viewer-meta-bar .viewer-count { color: var(--teal); }
+.viewer-meta-bar .tips-total { color: var(--gold); }
+
+/* Close viewer button */
+.viewer-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: var(--text-2);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  z-index: 10;
+}
+
+.viewer-close:hover { color: var(--text-1); background: rgba(0,0,0,0.85); }
+
+/* FIX #13: Fullscreen button */
+.viewer-fullscreen-btn {
+  position: absolute;
+  bottom: 80px; right: 16px;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  width: 38px; height: 38px;
+  color: var(--text-2);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s var(--ease);
+  z-index: 10;
+}
+.viewer-fullscreen-btn:hover { color: var(--text-1); border-color: rgba(255,255,255,0.2); transform: scale(1.1); }
+
+/* Floating reactions layer */
+.reactions-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* FIX #7: Floating reactions with organic x-offset + rotation */
+.floating-reaction {
+  position: absolute;
+  bottom: 80px;
+  font-size: 28px;
+  animation: float-up 3s ease-out forwards;
+  pointer-events: none;
+  /* --rx is set inline by JS */
+  transform-origin: center bottom;
+}
+
+@keyframes float-up {
+  0%   { transform: translateY(0)      translateX(0)       rotate(0deg)   scale(1);   opacity: 1; }
+  30%  { transform: translateY(-80px)  translateX(var(--rx, 0px))  rotate(var(--rr, 4deg))  scale(1.15); opacity: 1; }
+  70%  { transform: translateY(-160px) translateX(calc(var(--rx, 0px) * 1.4)) rotate(calc(var(--rr, 4deg) * -0.5)) scale(1.05); opacity: 0.8; }
+  100% { transform: translateY(-240px) translateX(calc(var(--rx, 0px) * 1.8)) rotate(calc(var(--rr, 4deg) * 0.8))  scale(0.7);  opacity: 0; }
+}
+
+/* Reaction buttons */
+.reaction-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.react-btn {
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.react-btn:hover { transform: scale(1.2); border-color: rgba(255,255,255,0.2); }
+
+/* Tip button */
+.viewer-tip-btn {
+  background: rgba(212,168,83,0.15);
+  border: 1px solid var(--gold);
+  border-radius: 22px;
+  padding: 8px 16px;
+  color: var(--gold);
+  font-family: var(--font-u);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+
+.viewer-tip-btn:hover { background: rgba(212,168,83,0.25); }
+
+/* FIX #5: Tip Modal ─────────────────────────────────────────── */
+.tip-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,10,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 700;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.tip-modal-overlay.open { display: flex; }
+
+.tip-modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 380px;
+  padding: 28px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+  animation: modal-in 0.25s var(--ease);
+}
+
+.tip-modal-header { margin-bottom: 20px; }
+.tip-modal-eyebrow { font-family: var(--font-m); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.tip-modal-title   { font-family: var(--font-d); font-size: 26px; font-weight: 300; color: var(--text-1); }
+
+.tip-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tip-preset-btn {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  padding: 10px 4px;
+  cursor: pointer;
+  font-family: var(--font-m);
+  font-size: 11px;
+  color: var(--text-2);
+  text-align: center;
+  transition: all 0.15s;
+}
+.tip-preset-btn:hover,
+.tip-preset-btn.selected { border-color: var(--gold); color: var(--gold); background: rgba(212,168,83,0.08); }
+
+.tip-custom-row { margin-bottom: 16px; }
+.tip-custom-label { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); display: block; margin-bottom: 6px; }
+.tip-custom-input {
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 5px;
+  padding: 10px 13px;
+  font-family: var(--font-m);
+  font-size: 14px;
+  color: var(--gold);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.tip-custom-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,168,83,0.1); }
+.tip-custom-input::placeholder { color: var(--text-3); }
+
+.tip-status {
+  min-height: 18px;
+  font-family: var(--font-m);
+  font-size: 11px;
+  margin-bottom: 14px;
+  color: var(--text-3);
+}
+.tip-status.error   { color: var(--ember); }
+.tip-status.success { color: var(--teal); }
+
+.tip-actions { display: flex; gap: 8px; }
+.tip-cancel-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  padding: 11px;
+  color: var(--text-3);
+  font-family: var(--font-u);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tip-cancel-btn:hover { border-color: var(--ember); color: var(--ember); }
+
+.tip-send-btn {
+  flex: 2;
+  background: var(--gold);
+  border: none;
+  border-radius: 6px;
+  padding: 11px;
+  color: #0F0F12;
+  font-family: var(--font-u);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+.tip-send-btn:hover:not(:disabled) { background: var(--gold-bright); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212,168,83,0.35); }
+.tip-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Engagement panel ───────────────────────────────────────── */
+.viewer-engage-col {
+  border-left: 1px solid var(--border-sub);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+}
+
+.engage-header {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border-sub);
+  font-family: var(--font-m);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.engage-chat-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-mid) transparent;
+}
+
+.chat-row {
+  font-size: 12px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.chat-name {
+  font-weight: 700;
+  color: var(--teal);
+  margin-right: 4px;
+}
+
+.chat-row.chat-tip .chat-name { color: var(--gold); }
+.chat-row.chat-system { color: var(--text-3); font-family: var(--font-m); font-size: 11px; }
+.chat-text { color: var(--text-2); }
+.chat-row.chat-tip .chat-text { color: var(--gold); }
+
+.engage-input-row {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border-sub);
+  display: flex;
+  gap: 8px;
+}
+
+.engage-chat-input {
+  flex: 1;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 4px;
+  padding: 9px 11px;
+  font-family: var(--font-u);
+  font-size: 12px;
+  color: var(--text-1);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.engage-chat-input:focus { border-color: var(--teal); }
+.engage-chat-input::placeholder { color: var(--text-3); }
+
+.engage-send {
+  background: var(--teal);
+  border: none;
+  border-radius: 4px;
+  padding: 9px 14px;
+  color: #0F0F12;
+  font-family: var(--font-u);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.engage-send:hover { background: #20f0d8; }
+
+/* ════════════════════════════════════════════════════════════
+   POST-STREAM MODAL
+   ════════════════════════════════════════════════════════════ */
+
+.psm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,10,0.9);
+  backdrop-filter: blur(6px);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.psm-modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-mid);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.7);
+  animation: modal-in 0.3s var(--ease);
+}
+
+@keyframes modal-in {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.psm-header { margin-bottom: 24px; }
+.psm-eyebrow { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ember); margin-bottom: 8px; }
+.psm-title { font-family: var(--font-d); font-size: 30px; font-weight: 300; color: var(--text-1); line-height: 1.1; }
+
+.psm-stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 12px;
+  background: var(--bg-raised);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.psm-stat { text-align: center; }
+.psm-stat-val { font-family: var(--font-d); font-size: 26px; font-weight: 400; color: var(--gold); display: block; line-height: 1; }
+.psm-stat-lbl { font-family: var(--font-m); font-size: 9px; color: var(--text-3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; display: block; }
+
+.psm-fields { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+.psm-label { font-family: var(--font-m); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); display: block; margin-bottom: 6px; }
+.psm-input {
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-mid);
+  border-radius: 5px;
+  padding: 10px 13px;
+  font-family: var(--font-u);
+  font-size: 13px;
+  color: var(--text-1);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s;
+}
+.psm-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,168,83,0.1); }
+
+.psm-status {
+  min-height: 20px;
+  font-family: var(--font-m);
+  font-size: 11px;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+
+.psm-actions { display: flex; flex-direction: column; gap: 8px; }
+.psm-btn {
+  width: 100%;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-family: var(--font-u);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+  border: none;
+  text-align: center;
+}
+.psm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.psm-btn-primary   { background: var(--violet); color: white; }
+.psm-btn-primary:hover:not(:disabled) { background: #a070ff; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(139,92,246,0.35); }
+.psm-btn-secondary { background: var(--teal); color: #0f0f12; }
+.psm-btn-secondary:hover:not(:disabled) { background: #20f0d8; transform: translateY(-1px); }
+.psm-btn-warn      { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+.psm-btn-warn:hover:not(:disabled) { background: rgba(212,168,83,0.1); }
+.psm-btn-ghost     { background: transparent; border: 1px solid var(--border-mid); color: var(--text-3); }
+.psm-btn-ghost:hover:not(:disabled) { border-color: var(--ember); color: var(--ember); }
+
+
+/* ── RTMP Stream Key Panel ─────────────────────────────────── */
+.rtmp-panel { padding: 4px 0; }
+.rtmp-eyebrow { font-family: var(--font-m); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+.rtmp-row { margin-bottom: 12px; }
+.rtmp-label { font-family: var(--font-m); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); display: block; margin-bottom: 5px; }
+.rtmp-private { color: var(--ember); text-transform: none; letter-spacing: 0; font-size: 9px; }
+.rtmp-value-row { display: flex; gap: 8px; align-items: center; }
+.rtmp-code { font-family: var(--font-m); font-size: 11px; color: var(--teal); background: var(--bg-raised); padding: 7px 10px; border-radius: 4px; border: 1px solid var(--border-mid); flex: 1; word-break: break-all; display: block; }
+.rtmp-key-masked { filter: blur(5px); user-select: none; }
+.rtmp-copy-btn, .rtmp-reveal-btn { background: var(--bg-hover); border: 1px solid var(--border-mid); border-radius: 4px; padding: 6px 10px; font-family: var(--font-u); font-size: 11px; font-weight: 600; color: var(--text-2); cursor: pointer; white-space: nowrap; transition: all .15s; }
+.rtmp-copy-btn:hover, .rtmp-reveal-btn:hover { border-color: var(--teal); color: var(--teal); }
+.rtmp-instructions { border: 1px solid var(--border-sub); border-radius: 5px; margin: 12px 0; overflow: hidden; }
+.rtmp-instructions summary { padding: 9px 13px; cursor: pointer; font-family: var(--font-m); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); list-style: none; }
+.rtmp-instructions summary::-webkit-details-marker { display: none; }
+.rtmp-inst-body { padding: 12px 14px; font-size: 12px; color: var(--text-2); line-height: 1.8; border-top: 1px solid var(--border-sub); }
+.rtmp-inst-body code { font-family: var(--font-m); font-size: 10px; color: var(--teal); background: var(--bg-raised); padding: 2px 6px; border-radius: 3px; }
+.rtmp-regen-btn { background: transparent; border: 1px solid var(--border-mid); border-radius: 4px; padding: 7px 14px; font-family: var(--font-u); font-size: 11px; font-weight: 600; color: var(--text-3); cursor: pointer; transition: all .15s; margin-top: 4px; }
+.rtmp-regen-btn:hover { border-color: var(--ember); color: var(--ember); }
+
+/* FIX #8: RTMP Skeleton loading state */
+.rtmp-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0;
+}
+
+.rtmp-skeleton-row { display: flex; flex-direction: column; gap: 7px; }
+
+.rtmp-skeleton-label {
+  width: 80px;
+  height: 9px;
+  background: var(--bg-raised);
+  border-radius: 3px;
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.rtmp-skeleton-bar {
+  height: 34px;
+  background: var(--bg-raised);
+  border-radius: 4px;
+  border: 1px solid var(--border-sub);
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.rtmp-skeleton-bar:nth-child(2) { animation-delay: 0.2s; }
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+/* ── Studio mode tabs ─────────────────────────────────────────── */
+.studio-mode-tabs { display: flex; border-bottom: 1px solid var(--border-sub); }
+.studio-mode-tab { flex: 1; padding: 11px 8px; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: var(--font-u); font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--text-3); transition: all .15s; }
+.studio-mode-tab:hover { color: var(--text-2); }
+.studio-mode-tab.active { color: var(--ember); border-bottom-color: var(--ember); }
+.studio-tab-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+.studio-tab-panel.active { display: flex; flex-direction: column; }
+
+/* FIX #11: Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .status-dot,
+  .studio-status.live .status-dot,
+  .live-badge,
+  .viewer-live-pill,
+  .floating-reaction,
+  .rtmp-skeleton-label,
+  .rtmp-skeleton-bar,
+  .status-spinner {
+    animation: none !important;
+  }
+  .psm-modal,
+  .tip-modal {
+    animation: none !important;
+  }
+  .live-card:hover,
+  .btn-go-live:hover:not(:disabled),
+  .ov-btn:hover,
+  .react-btn:hover,
+  .viewer-fullscreen-btn:hover,
+  .tip-send-btn:hover:not(:disabled) {
+    transform: none !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     BROADCASTER PANEL
+     ══════════════════════════════════════════════════════════ -->
+
+<div style="max-width:900px;margin:40px auto;padding:20px;">
+
+<div class="live-studio" id="live-studio">
+
+  <!-- Header -->
+  <div class="studio-header">
+    <div>
+      <div class="studio-title">Live <em style="font-style:italic;color:var(--ember)">Studio</em></div>
+    </div>
+    <div class="studio-status" id="studio-status-badge">
+      <!-- FIX #9: spinner element alongside the dot -->
+      <div class="status-spinner" id="studio-status-spinner"></div>
+      <div class="status-dot"></div>
+      <span id="studio-status-text">Offline</span>
+    </div>
+  </div>
+
+  <!-- Access gate — shown when user lacks hostConcert permission.
+       JS: checkStudioAccess() toggles studio-gate vs studio-body -->
+  <div class="studio-gate" id="studio-gate" style="display:none;" aria-live="polite">
+    <div class="studio-gate-icon">🔒</div>
+    <div class="studio-gate-title" id="studio-gate-title">Creator Account Required</div>
+    <p class="studio-gate-sub" id="studio-gate-sub">
+      Going live on MSP requires an active Standard Creator or Platform NFT Creator subscription.
+    </p>
+    <div class="studio-gate-pills">
+      <span class="studio-gate-pill">Listener T1 — watch only</span>
+      <span class="studio-gate-pill">Listener T2/T3 — watch + chat</span>
+      <span class="studio-gate-pill active">Standard Creator ✓</span>
+      <span class="studio-gate-pill active">NFT Creator (active) ✓</span>
+    </div>
+    <a href="listen.html#subscribe" class="studio-gate-btn" id="studio-gate-cta">Upgrade to Creator</a>
+    <button class="studio-gate-btn secondary" id="studio-gate-connect" style="display:none;" aria-label="Connect wallet">Connect Wallet</button>
+  </div>
+
+  <!-- Body: preview + panel (hidden by gate until access confirmed) -->
+  <div class="studio-body" id="studio-body">
+
+    <!-- Camera preview -->
+    <div class="studio-preview-area" id="studio-preview-area">
+      <div class="studio-no-camera" id="studio-no-camera">
+        <div class="studio-no-camera-icon">◎</div>
+        <span>Camera not started</span>
+        <span style="font-size:10px;color:var(--text-3)">Select a source below to preview</span>
+      </div>
+      <!-- FIX #10: broadcaster preview already has muted + playsinline ✓ -->
+      <video class="studio-video-preview" id="studio-video-preview" autoplay muted playsinline style="display:none"></video>
+
+      <!-- HLS URL display -->
+      <div class="studio-hls-url" id="studio-hls-url"></div>
+
+      <!-- FIX #14: Bitrate / resolution bar (populated by JS during live) -->
+      <div class="studio-bitrate-bar" id="studio-bitrate-bar">
+        <span>RES <span class="bitrate-val" id="stat-resolution">—</span></span>
+        <span>BIT <span class="bitrate-val" id="stat-bitrate">—</span></span>
+        <span>FPS <span class="bitrate-val" id="stat-fps">—</span></span>
+      </div>
+
+      <!-- Overlay controls (shown on hover / during live) -->
+      <div class="studio-overlay-controls" id="studio-overlay-controls">
+        <!-- FIX #10: aria-labels on control buttons -->
+        <button class="ov-btn" id="ov-mute" aria-label="Toggle Microphone" title="Toggle Microphone">🎤</button>
+        <button class="ov-btn" id="ov-cam"  aria-label="Toggle Camera" title="Toggle Camera">📷</button>
+      </div>
+    </div>
+
+    <!-- Side panel -->
+    <div class="studio-panel">
+
+      <!-- Live stats (hidden until live) -->
+      <div class="studio-live-stats" id="studio-live-stats">
+        <div class="ls-stat"><span class="ls-val duration">00:00</span><span class="ls-lbl">Duration</span></div>
+        <div class="ls-stat"><span class="ls-val viewer-count">0</span><span class="ls-lbl">Watching</span></div>
+        <div class="ls-stat"><span class="ls-val tips-total">0</span><span class="ls-lbl">ETH Tipped</span></div>
+      </div>
+
+      <!-- Mode selector tabs -->
+      <div class="studio-mode-tabs" id="studio-mode-tabs">
+        <button class="studio-mode-tab active" data-mode="browser" aria-label="Browser live mode">📷 Browser</button>
+        <button class="studio-mode-tab" data-mode="rtmp" aria-label="OBS / App stream mode">🎥 OBS / App</button>
+      </div>
+
+      <!-- Browser mode: camera/screen + go-live setup -->
+      <div class="studio-tab-panel active" id="tab-browser">
+        <!-- Setup form -->
+        <div class="studio-setup" id="studio-setup">
+
+          <div>
+            <label class="s-label">Stream Source</label>
+            <div class="source-picker">
+              <button class="source-btn" id="src-camera" aria-label="Use camera">📷 Camera</button>
+              <button class="source-btn" id="src-screen" aria-label="Use screen share">🖥 Screen</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="s-label" for="live-title">Stream Title</label>
+            <input class="s-input" id="live-title" type="text" placeholder="What are you performing tonight?">
+          </div>
+
+          <div>
+            <label class="s-label" for="live-artist">Artist Name</label>
+            <input class="s-input" id="live-artist" type="text" placeholder="Your artist / DJ name">
+          </div>
+
+          <div>
+            <label class="s-label" for="live-quality">Quality</label>
+            <select class="s-select" id="live-quality">
+              <option value="1080p">1080p — Best quality</option>
+              <option value="720p" selected>720p — Recommended</option>
+              <option value="480p">480p — Lower bandwidth</option>
+              <option value="360p">360p — Minimal bandwidth</option>
+            </select>
+          </div>
+
+          <button class="btn-go-live" id="btn-go-live" disabled aria-label="Start live stream">
+            ● Go Live
+          </button>
+
+        </div><!-- /setup -->
+      </div><!-- /tab-browser -->
+
+      <!-- RTMP mode: stream key for OBS/mobile -->
+      <div class="studio-tab-panel" id="tab-rtmp" style="padding:20px;overflow-y:auto;">
+        <!-- FIX #8: Skeleton shown while wallet not connected; replaced by JS when ready -->
+        <div id="rtmp-key-panel">
+          <div id="rtmp-wallet-prompt" style="display:block;">
+            <p style="font-family:var(--font-m);font-size:11px;color:var(--text-3);margin-bottom:16px;">
+              Connect your wallet to reveal your stream key.
+            </p>
+            <!-- Skeleton placeholder -->
+            <div class="rtmp-skeleton">
+              <div class="rtmp-skeleton-row">
+                <div class="rtmp-skeleton-label"></div>
+                <div class="rtmp-skeleton-bar"></div>
+              </div>
+              <div class="rtmp-skeleton-row">
+                <div class="rtmp-skeleton-label" style="width:60px;"></div>
+                <div class="rtmp-skeleton-bar"></div>
+              </div>
+              <div class="rtmp-skeleton-row">
+                <div class="rtmp-skeleton-label" style="width:100px;"></div>
+                <div class="rtmp-skeleton-bar" style="height:22px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live chat (shown during stream) -->
+      <div class="studio-live-chat" id="studio-live-chat">
+        <div class="live-chat-log" id="live-chat-log" aria-live="polite" aria-label="Live chat messages"></div>
+        <div class="live-chat-input-row">
+          <input class="live-chat-input" id="live-chat-input" placeholder="Chat with your viewers…" maxlength="300" aria-label="Chat message input">
+          <button class="live-chat-send" id="live-chat-send" aria-label="Send chat message">↑</button>
+        </div>
+      </div>
+
+      <!-- End stream row -->
+      <div class="studio-end-row" id="studio-end-row">
+        <button class="btn-end-stream" id="btn-end-stream" aria-label="End live stream">■ End Stream</button>
+      </div>
+
+    </div><!-- /panel -->
+  </div><!-- /body -->
+</div><!-- /live-studio -->
+</div><!-- /max-width wrapper -->
+
+
+<!-- ══════════════════════════════════════════════════════════
+     VIEWER OVERLAY
+     (One instance in listen.html, shown/hidden by JS)
+     ══════════════════════════════════════════════════════════ -->
+
+<!-- FIX #1: Single root container, no redundant wrappers -->
+<div class="viewer-overlay open" id="viewer-overlay" style="position:fixed;">
+
+  <!-- Video column -->
+  <!-- FIX #2: id added so JS can reference it correctly -->
+  <div class="viewer-video-col" id="viewer-video-col">
+
+    <!-- FIX #10: playsinline + muted on viewer video for iOS autoplay -->
+    <video class="viewer-video" id="viewer-video" controls playsinline muted aria-label="Live stream video"></video>
+
+    <!-- Stats bar -->
+    <div class="viewer-stats-bar">
+      <div>
+        <div class="viewer-stream-title" id="viewer-stream-title">Midnight Protocol — Live</div>
+        <div class="viewer-meta-bar">
+          <span class="viewer-count">247 watching</span>
+          <span class="duration">00:42:18</span>
+          <span class="tips-total">1.204 ETH tipped</span>
+        </div>
+      </div>
+      <div class="viewer-live-pill" aria-label="Stream is live">● LIVE</div>
+    </div>
+
+    <!-- Close button -->
+    <button class="viewer-close" id="viewer-close" aria-label="Close viewer">✕</button>
+
+    <!-- FIX #13: Fullscreen button -->
+    <button class="viewer-fullscreen-btn" id="viewer-fullscreen-btn" aria-label="Toggle fullscreen" title="Fullscreen">⛶</button>
+
+    <!-- Floating reactions layer -->
+    <div class="reactions-layer" id="reactions-layer" aria-hidden="true"></div>
+
+    <!-- Reaction bar + tip -->
+    <div class="reaction-bar">
+      <button class="react-btn" data-emoji="🔥" aria-label="Fire reaction">🔥</button>
+      <button class="react-btn" data-emoji="❤️" aria-label="Heart reaction">❤️</button>
+      <button class="react-btn" data-emoji="👏" aria-label="Clap reaction">👏</button>
+      <button class="react-btn" data-emoji="🎵" aria-label="Music note reaction">🎵</button>
+      <button class="react-btn" data-emoji="💎" aria-label="Diamond reaction">💎</button>
+      <button class="viewer-tip-btn" id="viewer-tip-btn" aria-label="Tip the artist">💸 Tip Artist</button>
+    </div>
+
+  </div><!-- /viewer-video-col -->
+
+  <!-- Engagement column -->
+  <div class="viewer-engage-col">
+    <div class="engage-header">Live Chat</div>
+
+    <div class="engage-chat-log" id="engage-chat-log" aria-live="polite" aria-label="Live chat">
+      <!-- Sample messages -->
+      <div class="chat-row"><span class="chat-name">Wavelength</span><span class="chat-text">this drop goes HARD</span></div>
+      <div class="chat-row chat-tip"><span class="chat-name">💸 Nova</span><span class="chat-text">sent 0.05 ETH!</span></div>
+      <div class="chat-row"><span class="chat-name">CipherX</span><span class="chat-text">that bass line 🔥</span></div>
+      <div class="chat-row"><span class="chat-name">Listener99</span><span class="chat-text">first time watching, wow</span></div>
+      <div class="chat-row"><span class="chat-name">vera.eth</span><span class="chat-text">next track??</span></div>
+    </div>
+
+    <div class="engage-input-row">
+      <input class="engage-chat-input" id="engage-chat-input" placeholder="Say something…" maxlength="300" aria-label="Chat message">
+      <button class="engage-send" id="engage-send" aria-label="Send message">↑</button>
+    </div>
+  </div>
+
+</div><!-- /viewer-overlay -->
+
+
+<!-- FIX #5: Tip Modal HTML ─────────────────────────────────── -->
+<div class="tip-modal-overlay" id="tip-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="tip-modal-title">
+  <div class="tip-modal">
+    <div class="tip-modal-header">
+      <div class="tip-modal-eyebrow">Support the Artist</div>
+      <div class="tip-modal-title" id="tip-modal-title">Send a Tip</div>
+    </div>
+
+    <div class="tip-presets" id="tip-presets">
+      <button class="tip-preset-btn" data-amount="0.005">0.005</button>
+      <button class="tip-preset-btn" data-amount="0.01">0.01</button>
+      <button class="tip-preset-btn selected" data-amount="0.05">0.05</button>
+      <button class="tip-preset-btn" data-amount="0.1">0.1</button>
+    </div>
+
+    <div class="tip-custom-row">
+      <label class="tip-custom-label" for="tip-custom-input">Amount (ETH)</label>
+      <input class="tip-custom-input" id="tip-custom-input" type="number" step="0.001" min="0.001" placeholder="0.05" value="0.05">
+    </div>
+
+    <div class="tip-status" id="tip-status"></div>
+
+    <div class="tip-actions">
+      <button class="tip-cancel-btn" id="tip-cancel-btn">Cancel</button>
+      <button class="tip-send-btn" id="tip-send-btn">💸 Send Tip</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// BROADCASTER UI WIRING
+// ─────────────────────────────────────────────────────────────
+
+(function () {
+
+  var broadcaster   = null;
+  var selectedSource = null;
+  var bitrateInterval = null;
+
+  // ── Access gate ──────────────────────────────────────────────
+  // Checks wallet connection + CAN.hostConcert() from main.js and
+  // either shows the studio or replaces it with a locked gate UI.
+  var gateEl    = document.getElementById('studio-gate');
+  var bodyEl    = document.getElementById('studio-body');
+  var gateTitle = document.getElementById('studio-gate-title');
+  var gateSub   = document.getElementById('studio-gate-sub');
+  var gateConn  = document.getElementById('studio-gate-connect');
+
+  function checkStudioAccess() {
+    var wallet = window.walletAddress || null;
+
+    // No wallet connected at all
+    if (!wallet) {
+      showGate(
+        'Connect Your Wallet',
+        'Connect your wallet so MSP can verify your creator account before going live.',
+        true   // show the connect-wallet button
+      );
+      return;
+    }
+
+    // Wallet connected — check capability
+    // CAN.hostConcert() is defined in main.js; falls back to false if not loaded yet
+    var canHost = (typeof CAN !== 'undefined' && typeof CAN.hostConcert === 'function')
+      ? CAN.hostConcert()
+      : false;
+
+    if (!canHost) {
+      // Determine if they're a creator with an expired sub vs a listener
+      var level = (typeof getAccess === 'function') ? (getAccess().level || 'none') : 'none';
+      var isExpiredCreator = level === 'creator_inactive';
+
+      showGate(
+        isExpiredCreator ? 'Subscription Expired' : 'Creator Account Required',
+        isExpiredCreator
+          ? 'Your creator subscription has expired. Renew to resume live streaming on MSP.'
+          : 'Going live requires an active Standard Creator or Platform NFT Creator account.',
+        false
+      );
+      return;
+    }
+
+    // Access granted — show the studio
+    hideGate();
+  }
+
+  function showGate(title, sub, showConnect) {
+    if (gateTitle) gateTitle.textContent = title;
+    if (gateSub)   gateSub.textContent   = sub;
+    if (gateConn)  gateConn.style.display = showConnect ? 'inline-block' : 'none';
+    if (gateEl)    gateEl.style.display   = '';
+    if (bodyEl)    bodyEl.style.display   = 'none';
+  }
+
+  function hideGate() {
+    if (gateEl)  gateEl.style.display  = 'none';
+    if (bodyEl)  bodyEl.style.display  = '';
+  }
+
+  // Connect-wallet button delegates to main.js connectWallet()
+  if (gateConn) gateConn.addEventListener('click', function () {
+    if (typeof connectWallet === 'function') {
+      connectWallet().then(checkStudioAccess).catch(function (e) {
+        if (gateSub) gateSub.textContent = 'Wallet connection failed: ' + e.message;
+      });
+    }
+  });
+
+  // Re-check when wallet connects or access level changes
+  // main.js fires 'msp:walletConnected' and 'msp:accessChanged' custom events
+  window.addEventListener('msp:walletConnected', checkStudioAccess);
+  window.addEventListener('msp:accessChanged',   checkStudioAccess);
+
+  // Initial check on load
+  checkStudioAccess();
+
+
+  var previewEl   = document.getElementById('studio-video-preview');
+  var noCamEl     = document.getElementById('studio-no-camera');
+  var hlsUrlEl    = document.getElementById('studio-hls-url');
+  var statusBadge = document.getElementById('studio-status-badge');
+  var statusText  = document.getElementById('studio-status-text');
+  var statsEl     = document.getElementById('studio-live-stats');
+  var setupEl     = document.getElementById('studio-setup');
+  var chatEl      = document.getElementById('studio-live-chat');
+  var chatLog     = document.getElementById('live-chat-log');
+  var chatInput   = document.getElementById('live-chat-input');
+  var chatSend    = document.getElementById('live-chat-send');
+  var endRow      = document.getElementById('studio-end-row');
+  var previewArea = document.getElementById('studio-preview-area');
+  var bitrateBar  = document.getElementById('studio-bitrate-bar');
+
+  // FIX #9: setStatus with optional spinner state
+  function setStatus(msg, live, spinning) {
+    if (statusText)  statusText.textContent = msg;
+    var cls = 'studio-status';
+    if (live)    cls += ' live';
+    if (spinning) cls += ' spinning';
+    if (statusBadge) statusBadge.className = cls;
+  }
+
+  function appendChat(name, text, type) {
+    if (!chatLog) return;
+    var row  = document.createElement('div');
+    row.className = 'chat-row' + (type === 'tip' ? ' chat-tip' : '') + (type === 'system' ? ' chat-system' : '');
+    var nm   = document.createElement('span'); nm.className = 'chat-name'; nm.textContent = name + ' ';
+    var tx   = document.createElement('span'); tx.className = 'chat-text'; tx.textContent = text;
+    row.appendChild(nm); row.appendChild(tx);
+    chatLog.appendChild(row);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  // FIX #14: Poll WebRTC stats for bitrate / resolution / fps
+  function startBitratePolling() {
+    if (!broadcaster || !broadcaster._pc) return;
+    bitrateBar.classList.add('visible');
+    var prevBytes = 0;
+    var prevTs    = performance.now();
+
+    bitrateInterval = setInterval(async function () {
+      if (!broadcaster || !broadcaster._pc) return stopBitratePolling();
+      try {
+        var stats = await broadcaster._pc.getStats();
+        stats.forEach(function (report) {
+          if (report.type === 'outbound-rtp' && report.kind === 'video') {
+            var now      = performance.now();
+            var elapsed  = (now - prevTs) / 1000;
+            var bytes    = report.bytesSent || 0;
+            var kbps     = Math.round(((bytes - prevBytes) * 8) / elapsed / 1000);
+            prevBytes    = bytes;
+            prevTs       = now;
+
+            var resStat   = document.getElementById('stat-resolution');
+            var bitStat   = document.getElementById('stat-bitrate');
+            var fpsStat   = document.getElementById('stat-fps');
+
+            if (resStat && report.frameWidth)  resStat.textContent  = report.frameWidth + '×' + report.frameHeight;
+            if (bitStat && kbps > 0)           bitStat.textContent  = kbps + ' kbps';
+            if (fpsStat && report.framesPerSecond) fpsStat.textContent = Math.round(report.framesPerSecond) + ' fps';
+          }
+        });
+      } catch (e) { /* silently ignore getStats errors */ }
+    }, 2000);
+  }
+
+  function stopBitratePolling() {
+    if (bitrateInterval) clearInterval(bitrateInterval);
+    bitrateInterval = null;
+    if (bitrateBar) bitrateBar.classList.remove('visible');
+  }
+
+  // Source selection
+  var srcCamera = document.getElementById('src-camera');
+  var srcScreen = document.getElementById('src-screen');
+
+  if (srcCamera) srcCamera.addEventListener('click', async function () {
+    try {
+      if (!broadcaster) broadcaster = new MSPLive.Broadcaster({
+        previewEl: previewEl, statusEl: statusText, statsEl: statsEl,
+        quality: (document.getElementById('live-quality') || {}).value || '720p',
+      });
+      await broadcaster.getCamera();
+      selectedSource = 'camera';
+      srcCamera.classList.add('active');
+      if (srcScreen) srcScreen.classList.remove('active');
+      previewEl.style.display = 'block';
+      noCamEl.style.display   = 'none';
+      document.getElementById('btn-go-live').disabled = false;
+      setStatus('Camera ready');
+    } catch (e) {
+      setStatus('Camera denied');
+      alert('Camera access denied: ' + e.message);
+    }
+  });
+
+  if (srcScreen) srcScreen.addEventListener('click', async function () {
+    try {
+      if (!broadcaster) broadcaster = new MSPLive.Broadcaster({
+        previewEl: previewEl, statusEl: statusText, statsEl: statsEl,
+        quality: (document.getElementById('live-quality') || {}).value || '720p',
+      });
+      await broadcaster.getScreenShare();
+      selectedSource = 'screen';
+      srcScreen.classList.add('active');
+      if (srcCamera) srcCamera.classList.remove('active');
+      previewEl.style.display = 'block';
+      noCamEl.style.display   = 'none';
+      document.getElementById('btn-go-live').disabled = false;
+      setStatus('Screen capture ready');
+    } catch (e) {
+      setStatus('Screen share denied');
+      alert('Screen share denied: ' + e.message);
+    }
+  });
+
+  // Go Live
+  var goLiveBtn = document.getElementById('btn-go-live');
+  if (goLiveBtn) goLiveBtn.addEventListener('click', async function () {
+    var title      = (document.getElementById('live-title')  || {}).value || '';
+    var artistName = (document.getElementById('live-artist') || {}).value || '';
+    if (!title || !artistName) { alert('Please enter a stream title and artist name.'); return; }
+    if (!broadcaster)          { alert('Start camera or screen share first.'); return; }
+
+    goLiveBtn.disabled = true;
+    // FIX #9: Show spinner while connecting
+    setStatus('Connecting…', false, true);
+
+    try {
+      broadcaster._opts.quality = (document.getElementById('live-quality') || {}).value || '720p';
+      var data = await broadcaster.startSession(title, artistName);
+
+      // Switch UI to live mode
+      setupEl.classList.add('hidden');
+      statsEl.classList.add('visible');
+      chatEl.classList.add('visible');
+      endRow.classList.add('visible');
+      previewArea.classList.add('live-active');
+
+      hlsUrlEl.textContent = 'HLS: ' + data.hlsUrl;
+      hlsUrlEl.classList.add('visible');
+      setStatus('● LIVE', true, false);
+
+      appendChat('MSP', 'You are now live! Share your stream link.', 'system');
+
+      // FIX #14: Start polling WebRTC stats
+      startBitratePolling();
+
+    } catch (e) {
+      goLiveBtn.disabled = false;
+      // If the server returns 403, the client-side gate missed it —
+      // re-run the access check so the gate UI reflects the real state.
+      if (e.status === 403 || (e.message && e.message.includes('403'))) {
+        setStatus('Access denied');
+        checkStudioAccess();
+        // checkStudioAccess() will replace the body with the gate UI automatically
+      } else {
+        setStatus('Error — ' + e.message);
+        alert('Failed to go live: ' + e.message);
+      }
+    }
+  });
+
+  // Mute / Camera toggles
+  var ovMute = document.getElementById('ov-mute');
+  var ovCam  = document.getElementById('ov-cam');
+
+  if (ovMute) ovMute.addEventListener('click', function () {
+    if (!broadcaster) return;
+    var muted = broadcaster.toggleMute();
+    ovMute.classList.toggle('muted', muted);
+    ovMute.textContent = muted ? '🔇' : '🎤';
+    ovMute.setAttribute('aria-label', muted ? 'Unmute Microphone' : 'Mute Microphone');
+  });
+
+  if (ovCam) ovCam.addEventListener('click', function () {
+    if (!broadcaster) return;
+    var off = broadcaster.toggleCamera();
+    ovCam.classList.toggle('cam-off', off);
+    ovCam.textContent = off ? '🚫' : '📷';
+    ovCam.setAttribute('aria-label', off ? 'Enable Camera' : 'Disable Camera');
+  });
+
+  // Chat send
+  function sendChat() {
+    var text = (chatInput && chatInput.value.trim()) || '';
+    if (!text || !broadcaster) return;
+    if (broadcaster._ws && broadcaster._ws.send) {
+      broadcaster._ws.send(JSON.stringify({ type: 'chat', text: text }));
+    }
+    appendChat('You', text);
+    chatInput.value = '';
+  }
+
+  if (chatSend)  chatSend.addEventListener('click', sendChat);
+  if (chatInput) chatInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') sendChat(); });
+
+  // End Stream — FIX #4: wrap endStream in try/catch
+  var endBtn = document.getElementById('btn-end-stream');
+  if (endBtn) endBtn.addEventListener('click', async function () {
+    if (!broadcaster || !confirm('End your live stream?')) return;
+    endBtn.disabled = true;
+    // FIX #9: spinner while ending
+    setStatus('Ending stream…', false, true);
+
+    var summary;
+    try {
+      summary = await broadcaster.endStream();
+    } catch (e) {
+      setStatus('Error ending stream — ' + e.message);
+      endBtn.disabled = false;
+      alert('Could not end stream cleanly: ' + e.message);
+      return;
+    }
+
+    // Stop bitrate polling
+    stopBitratePolling();
+
+    // Reset UI
+    statsEl.classList.remove('visible');
+    chatEl.classList.remove('visible');
+    endRow.classList.remove('visible');
+    setupEl.classList.remove('hidden');
+    hlsUrlEl.classList.remove('visible');
+    previewArea.classList.remove('live-active');
+    goLiveBtn.disabled = false;
+    endBtn.disabled    = false;
+    setStatus('Offline');
+    broadcaster = null;
+
+    // Open post-stream modal
+    var modal = new MSPLive.PostStreamModal(summary || {}, {
+      onArchive: function (data, mintNft) {
+        console.log('Archived:', data.archiveCid, mintNft ? '— minting NFT' : '— catalog only');
+      },
+      onRetry:   function () { goLiveBtn.click(); },
+      onDiscard: function () { console.log('Recording discarded'); },
+    });
+    modal.open();
+  });
+
+  // ── Studio mode tab switching ──────────────────────────────
+  document.querySelectorAll('.studio-mode-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      document.querySelectorAll('.studio-mode-tab').forEach(function (t) { t.classList.remove('active'); });
+      document.querySelectorAll('.studio-tab-panel').forEach(function (p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      var panel = document.getElementById('tab-' + tab.dataset.mode);
+      if (panel) panel.classList.add('active');
+
+      // FIX #8: Load RTMP key panel when switching to that tab
+      if (tab.dataset.mode === 'rtmp') {
+        var keyPanel = document.getElementById('rtmp-key-panel');
+        if (window.walletAddress && window.MSPLive) {
+          if (!broadcaster) broadcaster = new MSPLive.Broadcaster({ previewEl: previewEl, statusEl: statusText, statsEl: statsEl });
+          broadcaster.renderStreamKeyPanel('rtmp-key-panel').catch(function (e) {
+            if (keyPanel) keyPanel.innerHTML = '<p style="color:var(--ember);font-family:var(--font-m);font-size:12px;">' + e.message + '</p>';
+          });
+        } else {
+          // Restore the skeleton / wallet-prompt if not connected
+          var walletPrompt = document.getElementById('rtmp-wallet-prompt');
+          if (walletPrompt) walletPrompt.style.display = 'block';
+        }
+      }
+    });
+  });
+
+})();
+
+
+// ─────────────────────────────────────────────────────────────
+// VIEWER UI WIRING
+// ─────────────────────────────────────────────────────────────
+
+(function () {
+
+  var currentViewer = null;
+  var overlay       = document.getElementById('viewer-overlay');
+  var videoEl       = document.getElementById('viewer-video');
+  var chatLog       = document.getElementById('engage-chat-log');
+  var chatInput     = document.getElementById('engage-chat-input');
+  var chatSend      = document.getElementById('engage-send');
+  var closeBtn      = document.getElementById('viewer-close');
+  var reactLayer    = document.getElementById('reactions-layer');
+  var titleEl       = document.getElementById('viewer-stream-title');
+
+  function openViewer(sessionId) {
+    if (currentViewer) currentViewer.leave();
+
+    currentViewer = new MSPLive.Viewer({
+      videoEl:     videoEl,
+      chatEl:      chatLog,
+      reactionsEl: reactLayer,
+      statsEl:     overlay,
+      onEnded: function (msg) {
+        var p = document.createElement('div');
+        p.style.cssText = 'position:absolute;inset:0;background:rgba(8,8,10,0.8);display:flex;align-items:center;justify-content:center;z-index:5;';
+        p.innerHTML = '<div style="text-align:center;">' +
+          '<div style="font-family:var(--font-d);font-size:48px;font-weight:300;color:var(--text-1)">Stream Ended</div>' +
+          '<div style="font-family:var(--font-m);font-size:11px;color:var(--text-3);margin-top:12px;letter-spacing:0.1em;">THIS BROADCAST HAS CONCLUDED</div>' +
+          '</div>';
+        // FIX #1 + #2: Use the correct element reference — id is now on the element
+        var videoCol = document.getElementById('viewer-video-col');
+        if (videoCol) videoCol.appendChild(p);
+      },
+    });
+    currentViewer.join(sessionId);
+    overlay.classList.add('open');
+  }
+
+  // Load sessions and wire join buttons
+  if (window.MSPLive && MSPLive.renderSessions) {
+    MSPLive.renderSessions('live-sessions-grid', function (sessionId) {
+      openViewer(sessionId);
+    });
+  }
+
+  // Close viewer
+  if (closeBtn) closeBtn.addEventListener('click', function () {
+    if (currentViewer) { currentViewer.leave(); currentViewer = null; }
+    overlay.classList.remove('open');
+  });
+
+  // FIX #13: Fullscreen button
+  var fsBtn = document.getElementById('viewer-fullscreen-btn');
+  if (fsBtn && videoEl) {
+    fsBtn.addEventListener('click', function () {
+      if (!document.fullscreenElement) {
+        (videoEl.requestFullscreen ? videoEl.requestFullscreen() :
+         videoEl.webkitRequestFullscreen ? videoEl.webkitRequestFullscreen() : null);
+        fsBtn.textContent = '⛶';
+        fsBtn.setAttribute('aria-label', 'Exit fullscreen');
+      } else {
+        document.exitFullscreen && document.exitFullscreen();
+        fsBtn.textContent = '⛶';
+        fsBtn.setAttribute('aria-label', 'Toggle fullscreen');
+      }
+    });
+  }
+
+  // Chat
+  function sendViewerChat() {
+    var text = chatInput && chatInput.value.trim();
+    if (!text || !currentViewer) return;
+    currentViewer.sendChat(text);
+    chatInput.value = '';
+  }
+
+  if (chatSend)  chatSend.addEventListener('click', sendViewerChat);
+  if (chatInput) chatInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') sendViewerChat(); });
+
+  // FIX #7: Reactions with organic random x-offset and rotation
+  document.querySelectorAll('.react-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (!currentViewer) return;
+      currentViewer.sendReaction(btn.dataset.emoji);
+      spawnFloatingReaction(btn.dataset.emoji);
+    });
+  });
+
+  function spawnFloatingReaction(emoji) {
+    if (!reactLayer) return;
+    var el = document.createElement('span');
+    el.className = 'floating-reaction';
+    el.textContent = emoji;
+    // Random x-offset: -40px to +40px; random rotation: -12deg to +12deg
+    var rx = (Math.random() * 80 - 40).toFixed(1) + 'px';
+    var rr = (Math.random() * 24 - 12).toFixed(1) + 'deg';
+    el.style.setProperty('--rx', rx);
+    el.style.setProperty('--rr', rr);
+    // Spread them horizontally across the lower portion of the video
+    el.style.left = (20 + Math.random() * 60).toFixed(1) + '%';
+    reactLayer.appendChild(el);
+    el.addEventListener('animationend', function () { el.remove(); });
+  }
+
+  // FIX #5: Tip modal wiring (ethers.js integration)
+  var tipBtn        = document.getElementById('viewer-tip-btn');
+  var tipOverlay    = document.getElementById('tip-modal-overlay');
+  var tipCancelBtn  = document.getElementById('tip-cancel-btn');
+  var tipSendBtn    = document.getElementById('tip-send-btn');
+  var tipCustomInput = document.getElementById('tip-custom-input');
+  var tipStatus     = document.getElementById('tip-status');
+  var tipPresets    = document.getElementById('tip-presets');
+
+  // Preset selection
+  if (tipPresets) {
+    tipPresets.querySelectorAll('.tip-preset-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        tipPresets.querySelectorAll('.tip-preset-btn').forEach(function (b) { b.classList.remove('selected'); });
+        btn.classList.add('selected');
+        if (tipCustomInput) tipCustomInput.value = btn.dataset.amount;
+      });
+    });
+  }
+
+  if (tipCustomInput) {
+    tipCustomInput.addEventListener('input', function () {
+      if (tipPresets) {
+        tipPresets.querySelectorAll('.tip-preset-btn').forEach(function (b) { b.classList.remove('selected'); });
+        var matched = tipPresets.querySelector('[data-amount="' + tipCustomInput.value + '"]');
+        if (matched) matched.classList.add('selected');
+      }
+    });
+  }
+
+  if (tipBtn) tipBtn.addEventListener('click', function () {
+    if (!window.walletAddress || !currentViewer) {
+      alert('Connect wallet to tip');
+      return;
+    }
+    if (tipStatus) tipStatus.textContent = '';
+    if (tipOverlay) tipOverlay.classList.add('open');
+  });
+
+  if (tipCancelBtn) tipCancelBtn.addEventListener('click', function () {
+    if (tipOverlay) tipOverlay.classList.remove('open');
+  });
+
+  if (tipOverlay) tipOverlay.addEventListener('click', function (e) {
+    if (e.target === tipOverlay) tipOverlay.classList.remove('open');
+  });
+
+  if (tipSendBtn) tipSendBtn.addEventListener('click', async function () {
+    var amtRaw = tipCustomInput ? parseFloat(tipCustomInput.value) : NaN;
+    if (!amtRaw || isNaN(amtRaw) || amtRaw <= 0) {
+      if (tipStatus) { tipStatus.textContent = 'Enter a valid ETH amount.'; tipStatus.className = 'tip-status error'; }
+      return;
+    }
+
+    tipSendBtn.disabled = true;
+    if (tipStatus) { tipStatus.textContent = 'Confirm in wallet…'; tipStatus.className = 'tip-status'; }
+
+    try {
+      // Use ethers.js v5 (available as window.ethers from main.js)
+      if (!window.ethers) throw new Error('ethers.js not loaded');
+      var provider = new ethers.providers.Web3Provider(window.ethereum);
+      var signer   = provider.getSigner();
+
+      // Resolve recipient: prefer currentViewer's creator address if available
+      var recipient = (currentViewer && currentViewer._sessionData && currentViewer._sessionData.creatorAddress)
+        || window.MSPLive.config.tipRecipient
+        || null;
+
+      if (!recipient) throw new Error('No recipient address found for this stream.');
+
+      var tx = await signer.sendTransaction({
+        to:    recipient,
+        value: ethers.utils.parseEther(String(amtRaw)),
+      });
+
+      if (tipStatus) { tipStatus.textContent = 'Pending… ' + tx.hash.slice(0, 10) + '…'; tipStatus.className = 'tip-status'; }
+      await tx.wait(1);
+
+      if (tipStatus) { tipStatus.textContent = '✓ Tip sent! Thank you.'; tipStatus.className = 'tip-status success'; }
+
+      // Broadcast the tip via WebSocket for chat display
+      if (currentViewer && currentViewer._ws && currentViewer._ws.send) {
+        currentViewer._ws.send(JSON.stringify({ type: 'tip', amount: amtRaw, txHash: tx.hash }));
+      }
+
+      setTimeout(function () {
+        if (tipOverlay) tipOverlay.classList.remove('open');
+        tipSendBtn.disabled = false;
+        if (tipStatus) tipStatus.textContent = '';
+      }, 2500);
+
+    } catch (e) {
+      if (tipStatus) { tipStatus.textContent = e.message || 'Transaction failed.'; tipStatus.className = 'tip-status error'; }
+      tipSendBtn.disabled = false;
+    }
+  });
+
+  // FIX #3: WebSocket with reconnect logic and configurable endpoint
+  (function initNotifWs() {
+    var endpoint = (window.MSPLive && window.MSPLive.config && window.MSPLive.config.wsEndpoint)
+      || ((location.protocol === 'https:' ? 'wss' : 'ws') + '://' + location.host + '/ws');
+
+    var ws;
+    var retryDelay = 1000;
+    var maxDelay   = 30000;
+    var destroyed  = false;
+
+    function connect() {
+      if (destroyed) return;
+      ws = new WebSocket(endpoint);
+
+      ws.onopen = function () {
+        retryDelay = 1000; // reset backoff on successful connect
+      };
+
+      ws.onmessage = function (e) {
+        var msg;
+        try { msg = JSON.parse(e.data); } catch (err) { return; }
+        if (msg.type === 'session_started') {
+          if (window.MSPLive && MSPLive.renderSessions) {
+            MSPLive.renderSessions('live-sessions-grid', function (sessionId) { openViewer(sessionId); });
+          }
+        }
+        if (msg.type === 'reaction' && msg.emoji) {
+          spawnFloatingReaction(msg.emoji);
+        }
+      };
+
+      ws.onerror = function () { /* errors are handled by onclose */ };
+
+      ws.onclose = function () {
+        if (destroyed) return;
+        // Exponential backoff reconnect
+        setTimeout(function () {
+          retryDelay = Math.min(retryDelay * 2, maxDelay);
+          connect();
+        }, retryDelay);
+      };
+    }
+
+    connect();
+
+    // Expose teardown for page unload
+    window.addEventListener('unload', function () {
+      destroyed = true;
+      if (ws) ws.close();
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>
