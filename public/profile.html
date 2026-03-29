@@ -26,6 +26,7 @@
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="listen.html">Just Listen</a></li>
+          <li class="nav-item" id="nav-dashboard" style="display:none;"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="creators.html">Creators Corner</a></li>
           <li class="nav-item"><a class="nav-link" href="marketplace.html">NFT Marketplace</a></li>
           <li class="nav-item"><a class="nav-link active" aria-current="page" href="profile.html">Profile</a></li>
@@ -210,7 +211,7 @@
     </div>
 
     <!-- ── Recent Uploads ── (creator only) ──────────────────────────── -->
-    <section class="mb-5" data-requires="upload" id="recent-uploads-section" style="display:none;">
+    <section class="mb-5" id="recent-uploads-section" style="display:none;">
       <div class="d-flex align-items-center justify-content-between mb-3">
         <h5 class="mb-0" style="color:var(--teal);">🎵 Recent Uploads</h5>
         <a href="asset-manager.html" class="btn btn-sm btn-outline-secondary">View All →</a>
@@ -335,6 +336,76 @@
     </div>
   </div>
 
+  <!-- Hidden stubs for common.js -->
+  <audio id="audio-player" preload="none" style="display:none;"></audio>
+  <button id="play-btn" aria-hidden="true" tabindex="-1">▶</button>
+  <button id="pause-btn" aria-hidden="true" tabindex="-1">⏸</button>
+  <button id="stop-btn" aria-hidden="true" tabindex="-1">⏹</button>
+  <span id="duration-display" aria-hidden="true"></span>
+
+  <div id="msp-player-bar">
+
+  <!-- Left: cover art + track info -->
+  <div class="player-track-col">
+    <img
+      id="vinyl-icon"
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='24' fill='%231C1C21'/%3E%3Ccircle cx='24' cy='24' r='8' fill='%23222228'/%3E%3Ccircle cx='24' cy='24' r='2.5' fill='%23F5F000'/%3E%3C/svg%3E"
+      alt="Now playing"
+      width="48"
+      height="48"
+    >
+    <div class="player-track-text">
+      <div id="track-name" style="color:var(--text-secondary);font-style:italic;">No track selected</div>
+      <div id="player-artist-name" style="color:var(--text-muted);font-size:11px;">—</div>
+    </div>
+  </div>
+
+  <!-- Center: skip / play toggle / progress -->
+  <div class="player-center-col">
+    <div class="player-controls-row">
+
+      <button class="player-ctrl-btn" id="btn-skip-back" title="Back 15s">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
+          <text x="8" y="16" font-size="5.5" font-family="monospace" fill="currentColor" stroke="none">15</text>
+        </svg>
+      </button>
+
+      <button id="msp-play-toggle" aria-label="Play">
+        <svg id="icon-play" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <polygon points="3,1 15,8 3,15" fill="#08080A"/>
+        </svg>
+        <svg id="icon-pause" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:none;">
+          <rect x="2" y="1" width="4" height="14" rx="1" fill="#F5F000"/>
+          <rect x="10" y="1" width="4" height="14" rx="1" fill="#F5F000"/>
+        </svg>
+      </button>
+
+      <button class="player-ctrl-btn" id="btn-skip-fwd" title="Forward 15s">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-.49-3.5"/>
+          <text x="8" y="16" font-size="5.5" font-family="monospace" fill="currentColor" stroke="none">15</text>
+        </svg>
+      </button>
+
+    </div>
+
+    <div class="player-progress-row">
+      <span id="time-display">0:00</span>
+      <input type="range" id="progress-bar" min="0" max="100" value="0" step="0.1">
+    </div>
+  </div>
+
+  <!-- Right: volume -->
+  <div class="player-vol-col">
+    <span class="vol-icon">🔊</span>
+    <input type="range" id="volume-bar" min="0" max="1" step="0.01" value="1">
+  </div>
+
   <!-- Vendor scripts -->
   <script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="vendor/ethers/ethers.umd.min.js"></script>
@@ -345,136 +416,8 @@
   <script src="Scripts/common.js"></script>
   <script src="Scripts/favorites.js"></script>
   <script src="Scripts/main.js"></script>
+  <script src="Scripts/profile-page.js"></script>
 
-  <script>
-  (function () {
-    'use strict';
-
-    // Fee row observer (unchanged)
-    var feeEl  = document.getElementById('royalty-fee-rate');
-    var feeRow = document.getElementById('fee-row');
-    if (feeEl && feeRow) {
-      new MutationObserver(function () {
-        feeRow.style.display = feeEl.textContent.trim() ? '' : 'none';
-      }).observe(feeEl, { childList: true, characterData: true, subtree: true });
-    }
-
-    // ── Profile boot — runs after wallet connects ──────────────────────
-    function bootProfile() {
-      var F = window.MSPFavorites;
-
-      // ── Favorites count chip ──────────────────────────────────────────
-      var qlFavCount = document.getElementById('ql-fav-count');
-      if (qlFavCount && F) {
-        var total = F.totalCount();
-        qlFavCount.textContent = total > 0
-          ? total + ' item' + (total !== 1 ? 's' : '') + ' saved'
-          : 'Manage your favorites lists';
-      }
-
-      // ── Show creator quick links ──────────────────────────────────────
-      var qlAssets   = document.getElementById('ql-assets');
-      var qlPlaylists = document.getElementById('ql-playlists');
-      var recentSec  = document.getElementById('recent-uploads-section');
-
-      // CAN.upload() is set by main.js capability gates
-      if (typeof window.CAN !== 'undefined') {
-        if (CAN.upload && CAN.upload()) {
-          if (qlAssets)  qlAssets.style.display   = '';
-          if (recentSec) recentSec.style.display  = '';
-          loadRecentUploads();
-        }
-        if (CAN.createPlaylist && CAN.createPlaylist()) {
-          if (qlPlaylists) qlPlaylists.style.display = '';
-        }
-      }
-    }
-
-    // ── Load recent uploads from /api/catalog filtered by wallet ────────
-    async function loadRecentUploads() {
-      var listEl = document.getElementById('recent-uploads-list');
-      if (!listEl || !window.walletAddress) return;
-
-      try {
-        var r = await fetch('/api/catalog');
-        if (!r.ok) throw new Error('catalog fetch failed');
-        var all = await r.json();
-
-        // Filter to this wallet's uploads
-        var mine = all.filter(function (item) {
-          return (item.wallet || '').toLowerCase() === window.walletAddress.toLowerCase();
-        }).slice(0, 5); // show 5 most recent
-
-        var assetCountEl = document.getElementById('ql-asset-count');
-        if (assetCountEl) {
-          var total = all.filter(function (item) {
-            return (item.wallet || '').toLowerCase() === window.walletAddress.toLowerCase();
-          }).length;
-          assetCountEl.textContent = total + ' asset' + (total !== 1 ? 's' : '') + ' uploaded';
-        }
-
-        if (!mine.length) {
-          listEl.innerHTML = '<p class="text-muted small mb-0">No uploads yet. ' +
-            '<a href="creators.html" style="color:var(--teal);">Upload your first track →</a></p>';
-          return;
-        }
-
-        listEl.innerHTML = mine.map(function (item) {
-          var typeIcon = { music:'🎵', podcast:'🎙', video:'🎬', art_still:'🖼', art_animated:'🎨' };
-          var icon = typeIcon[item.contentType] || '🎵';
-          var cover = item.coverUrl
-            ? '<img class="recent-asset-cover" src="' + item.coverUrl + '" alt="">'
-            : '<div class="recent-asset-cover-ph">' + icon + '</div>';
-          var royaltyBadge = item.supporterRoyaltyEnabled
-            ? '<img src="assets/msp-vinyl.svg" width="12" height="12" style="vertical-align:middle;margin-left:4px;" title="Supporter royalties enabled">'
-            : '';
-          var plays = item.plays !== undefined ? item.plays : '—';
-          return '<div class="recent-asset-row">' +
-            cover +
-            '<div class="recent-asset-info">' +
-              '<div class="recent-asset-title">' + _esc(item.title) + royaltyBadge + '</div>' +
-              '<div class="recent-asset-meta">' + _esc(item.artistName || '—') + ' · ' + (item.contentType || 'music').toUpperCase() + '</div>' +
-            '</div>' +
-            '<span class="recent-asset-plays" title="Plays">▶ ' + plays + '</span>' +
-            '<button class="recent-asset-play" title="Preview"' +
-              ' data-hlsurl="' + (item.hlsUrl || '') + '"' +
-              ' data-title="' + _esc(item.title) + '"' +
-              ' data-artist="' + _esc(item.artistName || '') + '"' +
-              ' data-cover="' + (item.coverUrl || '') + '">▶</button>' +
-            '<a href="asset-manager.html#' + item.contentId + '" class="btn btn-sm btn-link p-0" style="color:var(--text-muted);font-size:11px;">Edit</a>' +
-          '</div>';
-        }).join('');
-
-        // Wire preview buttons
-        listEl.querySelectorAll('.recent-asset-play').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            if (typeof window.playHls === 'function') {
-              window.playHls(btn.dataset.hlsurl, '');
-              var tn = document.getElementById('track-name');
-              var an = document.getElementById('player-artist-name');
-              if (tn) tn.textContent = btn.dataset.title || '';
-              if (an) an.textContent = btn.dataset.artist || '';
-            }
-          });
-        });
-
-      } catch (err) {
-        if (listEl) listEl.innerHTML = '<p class="text-muted small mb-0">Could not load uploads.</p>';
-      }
-    }
-
-    function _esc(str) {
-      return String(str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    }
-
-    // Run after wallet connects (main.js fires walletConnected)
-    document.addEventListener('walletConnected', function () {
-      setTimeout(bootProfile, 400); // slight delay so main.js capability gates run first
-    });
-    if (window.walletAddress) setTimeout(bootProfile, 400);
-
-  })();
-  </script>
 
 </body>
 </html>

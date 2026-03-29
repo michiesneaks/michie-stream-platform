@@ -143,6 +143,66 @@ async function playHls(url, metadataUrl) {
 
 window.playHls = playHls;
 
+/**
+ * wirePlayButtons(container, selector)
+ * Wires play/pause toggle onto any set of play buttons within a container.
+ * Buttons need: data-hlsurl, data-metaurl, data-title, data-artist,
+ *               data-cover, data-contentid
+ *
+ * @param {Element} container  — the parent element to scope the reset sweep
+ * @param {string}  selector   — CSS selector for the play buttons
+ */
+function wirePlayButtons(container, selector) {
+  container.querySelectorAll(selector).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var audio    = document.getElementById('audio-player');
+      if (!audio) return;
+      var hlsUrl   = btn.dataset.hlsurl || '';
+      if (!hlsUrl) return;
+      var assetKey = hlsUrl;
+      var isSame   = (window.__mspCurrentAssetKey === assetKey);
+
+      // Same asset playing — pause
+      if (isSame && !audio.paused && !audio.ended) {
+        audio.pause();
+        btn.textContent = '▶';
+        return;
+      }
+      // Same asset paused — resume
+      if (isSame && (audio.paused || audio.ended)) {
+        audio.play().catch(function () {});
+        btn.textContent = '⏸';
+        return;
+      }
+      // Different asset — reset all buttons in container, load new track
+      container.querySelectorAll(selector).forEach(function (b) {
+        b.textContent = '▶';
+      });
+      window.__mspCurrentAssetKey = assetKey;
+      window.currentPlayingCid    = btn.dataset.contentid || null;
+
+      var tn = document.getElementById('track-name');
+      var an = document.getElementById('player-artist-name');
+      var vi = document.getElementById('vinyl-icon');
+      if (tn) { tn.textContent = btn.dataset.title || ''; tn.style.fontStyle = ''; }
+      if (an) an.textContent = btn.dataset.artist || '';
+      if (vi && btn.dataset.cover) vi.src = btn.dataset.cover;
+
+      if (typeof window.playHls === 'function') {
+        window.playHls(hlsUrl, btn.dataset.metaurl || '');
+        btn.textContent = '⏸';
+      }
+
+      audio.addEventListener('ended', function () {
+        btn.textContent = '▶';
+        window.__mspCurrentAssetKey = null;
+      }, { once: true });
+    });
+  });
+}
+
+window.wirePlayButtons = wirePlayButtons;
+
 // ── Telemetry ─────────────────────────────────────────────────────────────────
 let telemetryInterval = null;
 let currentPlaybackSessionId = null;
