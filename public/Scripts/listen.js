@@ -207,6 +207,25 @@
     return '<span class="track-type-badge ' + (typeClass[ct] || 'type-music') + '">' + (typeMap[ct] || 'MUSIC') + '</span>';
   }
 
+
+  function togglePlayPause(el) {
+    if (!el) return false;
+    var audio = document.getElementById('audio-player');
+    if (!audio) return false;
+    var hlsUrl = el.dataset.hlsurl || '';
+    if (!hlsUrl) return false;
+    if (window.__mspCurrentAssetKey !== hlsUrl) return false; // different track — let playItem handle it
+    // Same track — use is-playing class as source of truth to avoid HLS buffering race conditions
+    if (el.classList.contains('is-playing')) {
+      audio.pause();
+      el.classList.remove('is-playing');
+      return true;
+    }
+    audio.play().catch(function () {});
+    el.classList.add('is-playing');
+    return true;
+  }
+
   // ════════════════════════════════════════════════════════════════════════════
   //  EVENT DELEGATION — single listener on container handles everything
   // ════════════════════════════════════════════════════════════════════════════
@@ -215,15 +234,19 @@
 
       // Play inline button (list)
       if (e.target.closest('.track-play-inline')) {
-        e.stopPropagation();
-        playItem(e.target.closest('.track-row'));
-        return;
+       e.stopPropagation();
+       var row = e.target.closest('.track-row');
+       if (togglePlayPause(row)) return;
+       playItem(row);
+       return;
       }
       // Play button (tile)
       if (e.target.closest('.track-tile-play')) {
-        e.stopPropagation();
-        playItem(e.target.closest('.track-tile'));
-        return;
+       e.stopPropagation();
+       var tile = e.target.closest('.track-tile');
+       if (togglePlayPause(tile)) return;
+       playItem(tile);
+       return;
       }
       // Click info or cover → play
       if (e.target.closest('.track-info') || e.target.closest('.track-cover')) {
@@ -501,6 +524,7 @@
 
     window.currentPlayingCid = el.dataset.contentid || null;
 
+    window.__mspCurrentAssetKey = hlsUrl;
     if (typeof window.playHls === 'function') window.playHls(hlsUrl, metaUrl);
   }
 

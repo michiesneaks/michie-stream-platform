@@ -371,7 +371,7 @@ body::after {
 .am-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
 .am-tab-count { background: var(--bg-raised); border-radius: 8px; font-family: var(--font-mono); font-size: 10px; margin-left: 5px; padding: 1px 6px; }
 .am-list { display: flex; flex-direction: column; }
-.am-row { align-items: center; border-bottom: 1px solid var(--border-subtle); display: grid; gap: 0 12px; grid-template-columns: 44px 1fr 60px 80px 80px 110px 160px; padding: 10px 4px; transition: background .12s; }
+.am-row { align-items: center; border-bottom: 1px solid var(--border-subtle); display: inline; gap: 0 12px; grid-template-columns: 44px 1fr 60px 80px 80px 110px 160px; padding: 10px 4px; transition: background .12s; }
 .am-row:hover { background: var(--bg-raised); border-radius: 6px; }
 .am-row:last-child { border-bottom: none; }
 @media (max-width: 900px) { .am-row { grid-template-columns: 44px 1fr 110px 160px; } .am-col-plays, .am-col-avgtime, .am-col-totaltime, .am-col-royalties { display: none; } }
@@ -508,9 +508,8 @@ details .ufield-group { padding: 0 14px 14px; margin-bottom: 0; }
 .track-row:hover { background: var(--bg-raised); border-radius: 6px; }
 .track-row:last-child { border-bottom: none; }
 .track-num { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; text-align: center; }
-.track-row:hover .track-num { display:grid; }
-.track-play-inline { align-items: center; background: none; border: none; color: var(--teal); cursor: pointer; display: none; font-size: 16px; justify-content: center; padding: 0; width: 28px; }
-.track-row:hover .track-play-inline { display: flex; }
+.track-row:hover .track-num { display:inline; }
+.track-play-inline { align-items: center; background: none; border: none; color: var(--teal); cursor: pointer; display: flex; font-size: 16px; justify-content: center; padding: 0; width: 28px; }
 .track-cover { border-radius: 4px; flex-shrink: 0; height: 44px; object-fit: cover; width: 44px; }
 .track-cover-placeholder { align-items: center; background: var(--bg-raised); border-radius: 4px; color: var(--text-muted); display: flex; flex-shrink: 0; font-size: 20px; height: 44px; justify-content: center; width: 44px; }
 .track-info { min-width: 0; }
@@ -520,8 +519,11 @@ details .ufield-group { padding: 0 14px 14px; margin-bottom: 0; }
 .track-tags { display: none; }
 @media (min-width: 768px) { .track-row { grid-template-columns: 28px 44px 1fr 160px auto auto auto auto; } .track-tags { display: flex; gap: 4px; flex-wrap: nowrap; max-width: 160px; overflow: hidden; } .track-tag { background: var(--bg-raised); border-radius: 3px; color: var(--text-muted); font-size: 10px; padding: 1px 6px; white-space: nowrap; } }
 .track-duration { color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
+.track-dur-cell { align-items: center; display: inline-flex; gap: 3px; min-width: 0; white-space: nowrap; }
+.track-dur-cell .track-duration { color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
 .track-cover-wrap { flex-shrink: 0; height: 44px; position: relative; width: 44px; }
 .track-cover-wrap .track-cover, .track-cover-wrap .track-cover-placeholder { height: 44px; width: 44px; }
+
 .vinyl-cover-badge { filter: drop-shadow(0 1px 3px rgba(0,0,0,.9)); position: absolute; right: -4px; top: -4px; flex-shrink: 0; width: 18px !important; height: 18px !important; aspect-ratio: unset !important; object-fit: unset !important; }
 .vinyl-inline-badge { opacity: .85; }
 .track-tile .track-cover-wrap { aspect-ratio: 1; display: block; height: auto; position: relative; width: 100%; }
