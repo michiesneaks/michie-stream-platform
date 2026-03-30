@@ -1,9 +1,8 @@
 // Scripts/asset-manager.js
 // Asset management page logic for asset-manager.html.
 // Depends on: common.js, favorites.js, main.js (all loaded before this file).
-'use strict';
-
 (function () {
+  'use strict';
 
   var allAssets    = [];
   var currentTab   = 'all';
@@ -311,17 +310,9 @@
       var action = btn.dataset.action;
       var cid    = btn.dataset.contentid;
 
-      if (action === 'play') {
-        if (typeof window.playHls === 'function') {
-          window.playHls(btn.dataset.hlsurl||'', '');
-          var tn = document.getElementById('track-name');
-          var an = document.getElementById('player-artist-name');
-          if (tn) { tn.textContent = btn.dataset.title||''; tn.style.fontStyle = ''; }
-          if (an) an.textContent = btn.dataset.artist||'';
-          window.currentPlayingCid = btn.dataset.hlsurl ? cid : null;
-        }
-        return;
-      }
+       // ── play is handled by wirePlayButtons below, skip here ──
+      if (action === 'play') return;
+	  
       if (action === 'splits') {
         var p = document.getElementById('splits-' + cid); if (!p) return;
         if (openSplits && openSplits !== cid) { var prev = document.getElementById('splits-' + openSplits); if (prev) prev.classList.remove('open'); }
@@ -330,9 +321,11 @@
         openSplits = wasOpen ? null : cid;
         return;
       }
+	  
       if (action === 'close-splits') {
         var p2 = document.getElementById('splits-' + cid); if (p2) p2.classList.remove('open'); openSplits = null; return;
       }
+	  
       if (action === 'save-splits') {
         var inputs = c.querySelectorAll('[data-split][data-contentid="' + cid + '"]');
         var splits = {}; var total = 0;
@@ -357,6 +350,9 @@
         return;
       }
     });
+
+     // Wire play buttons directly with toggle support
+    window.wirePlayButtons(c, '.am-btn.play');
   }
 
   // ── Playlist analytics loader ─────────────────────────────────────────────

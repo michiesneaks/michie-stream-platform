@@ -122,7 +122,7 @@
         ? '<img class="track-cover" src="' + esc(item.coverUrl) + '" alt="' + esc(item.title) + '">'
         : '<div class="track-cover-placeholder">🎵</div>') +
       (isRoyalty ? VINYL_BADGE_COVER : '') +
-    '</div>';
+    ' </div>';
 
     var tags = (item.tags || []).slice(0, 3).map(function (t) {
       return '<span class="track-tag">' + esc(t) + '</span>';
@@ -135,16 +135,18 @@
 
     return '<div class="track-row"' + dataAttrs(item, ct) + '>' +
       '<span class="track-num">' + num + '</span>' +
-      '<button class="track-play-inline" title="Play">▶</button>' +
       cover +
       '<div class="track-info">' +
         '<div class="track-title">'  + esc(item.title || 'Untitled') + '</div>' +
         '<div class="track-artist">' + esc(item.artistName || '—') + ' ' + typeBadge + '</div>' +
       '</div>' +
       '<div class="track-tags">' + tags + '</div>' +
-      durCell +
+  
+       '<span class="track-duration" data-dur-id="' + esc(item.contentId) + '">—</span>' +
+      (isRoyalty ? VINYL_BADGE_INLINE : '') +
+      '<button class="track-play-inline" title="Play">▶</button>' +
       '<button class="fav-heart-btn ' + heartClass + '" data-contentid="' + esc(item.contentId) + '" title="Favorite" aria-label="Favorite">♥</button>' +
-      '<button class="track-options-btn" data-contentid="' + esc(item.contentId) + '" title="More options" aria-label="More options">⋮</button>' +
+      '<button class="track-options-btn" data-contentid="' + esc(item.contentId) + '" title="More options"    aria-label="More options">⋮</button>' +
     '</div>';
   }
 

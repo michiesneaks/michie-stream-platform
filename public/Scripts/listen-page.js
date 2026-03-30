@@ -1,14 +1,9 @@
-// Scripts/favorites-page.js
-// Page logic for favorites.html only.
+// Scripts/listen.js
+// All page logic for listen.html.
 // Depends on: common.js, favorites.js, main.js (all loaded before this file).
-// Do NOT load on any other page.
-
-
 
 (function () {
   'use strict';
-
-  if (!document.body || !document.body.classList.contains('page-favorites')) return;
 
   var F = window.MSPFavorites; // shorthand
 
@@ -156,7 +151,21 @@
     });
 
     // Play buttons
-    window.wirePlayButtons(document, '.fav-item-play');
+    document.querySelectorAll('.fav-item-play').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (typeof window.playHls === 'function') {
+          window.playHls(btn.dataset.hlsurl, btn.dataset.metaurl || '');
+          // Update player bar if elements exist
+          var tn = document.getElementById('track-name');
+          var an = document.getElementById('player-artist-name');
+          var vi = document.getElementById('vinyl-icon');
+          if (tn) { tn.textContent = btn.dataset.title || ''; tn.style.fontStyle = ''; }
+          if (an) an.textContent = btn.dataset.artist || '';
+          if (vi && btn.dataset.cover) vi.src = btn.dataset.cover;
+        }
+      });
+    });
 
     // Visibility toggle buttons
     document.querySelectorAll('.fav-vis-btn').forEach(function (btn) {
@@ -210,12 +219,9 @@
           });
           var data = await res.json();
           if (!res.ok) throw new Error(data.error || 'Failed');
-          btn.textContent = '✔ Created — open Playlists';
+          btn.textContent = '✔ Created!';
           btn.style.background = 'var(--teal)';
           if (nameEl) nameEl.value = '';
-          setTimeout(function () {
-            window.location.href = 'playlists.html';
-          }, 900);
           setTimeout(function () {
             btn.textContent = 'Create Playlist';
             btn.style.background = '';
@@ -274,4 +280,3 @@
   if (window.walletAddress) boot();
 
 })();
-

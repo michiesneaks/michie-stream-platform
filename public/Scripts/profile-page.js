@@ -91,7 +91,7 @@
               '<div class="recent-asset-title">' + _esc(item.title) + royaltyBadge + '</div>' +
               '<div class="recent-asset-meta">' + _esc(item.artistName || '—') + ' · ' + (item.contentType || 'music').toUpperCase() + '</div>' +
             '</div>' +
-            '<span class="recent-asset-plays" title="Plays">▶ ' + plays + '</span>' +
+            '<span class="recent-asset-plays" title="Plays"> ' + plays + '</span>' +
             '<button class="recent-asset-play" title="Preview"' +
               ' data-hlsurl="' + (item.hlsUrl || '') + '"' +
               ' data-title="' + _esc(item.title) + '"' +
